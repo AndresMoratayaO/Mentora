@@ -1,0 +1,160 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #1e293b;
+    background: linear-gradient(135deg, #eef2ff, #f0fdfa);
+}
+
+.tarjeta {
+    width: 100%;
+    max-width: 440px;
+    padding: 40px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 24px;
+    box-shadow: 0 18px 50px rgba(30, 41, 59, 0.08);
+}
+
+.encabezado {
+    margin-bottom: 36px;
+    text-align: center;
+}
+
+.marca {
+    color: #1100ce;
+    font-size: 36px;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.marca span {
+    color: #0f766e;
+}
+
+.encabezado p,
+.descripcion,
+footer {
+    color: #64748b;
+    line-height: 1.6;
+}
+
+.encabezado p {
+    margin: 8px 0 0;
+}
+
+h1 {
+    margin: 0 0 10px;
+    font-size: 26px;
+}
+
+.descripcion {
+    margin: 0 0 28px;
+}
+
+.campo {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+input {
+    width: 100%;
+    padding: 13px 14px;
+    border: 1px solid #94a3b8;
+    border-radius: 10px;
+    font: inherit;
+    color: #1e293b;
+    background: #ffffff;
+}
+
+input:focus {
+    border-color: #4f46e5;
+    outline: 3px solid #e0e7ff;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    background: #4338ca;
+    color: #ffffff;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+.difuminado {
+    background-color: #ffffff;
+    color: rgb(255, 254, 254);
+    
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background: linear-gradient(to right, #000033, #2ec4a3);
+
+    box-shadow: 0 0 15px rgba(83, 212, 216, 0.63);
+}
+
+button:hover {
+    background: #e4e1e1d3;
+}
+
+a:focus-visible,
+button:focus-visible {
+    outline: 3px solid #0f766e;
+    outline-offset: 4px;
+}
+
+.mensaje {
+    margin: 14px 0 0;
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.mensaje:empty {
+    display: none;
+}
+
+.crear-cuenta {
+    margin-top: 26px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.crear-cuenta a {
+    color: #006b62;
+    font-weight: 700;
+}
+
+footer {
+    margin-top: 32px;
+    padding-top: 20px;
+    border-top: 1px solid #e2e8f0;
+    text-align: center;
+    font-size: 12px;
+}
+
+@media (max-width: 480px) {
+    .tarjeta {
+        padding: 28px 22px;
+    }
+
+    h1 {
+        font-size: 23px;
+    }
+}
