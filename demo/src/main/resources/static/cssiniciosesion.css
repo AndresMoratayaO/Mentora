@@ -158,3 +158,18 @@ footer {
         font-size: 23px;
     }
 }
+
+select {
+    width: 100%;
+    padding: 13px 14px;
+    border: 1px solid #94a3b8;
+    border-radius: 10px;
+    font: inherit;
+    color: #1e293b;
+    background: #ffffff;
+}
+
+select:focus {
+    border-color: #4f46e5;
+    outline: 3px solid #e0e7ff;
+}

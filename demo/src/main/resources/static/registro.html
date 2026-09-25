@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Crear cuenta | Mentora</title>
+
+    <link rel="stylesheet" href="cssiniciosesion.css">
+</head>
+<body>
+    <main class="tarjeta">
+        <header class="encabezado">
+            <img
+                src="logomentora.png"
+                alt="Mentora"
+                width="250"
+                height="250"
+            >
+        </header>
+
+        <section aria-labelledby="titulo">
+            <h1 id="titulo">Crear cuenta</h1>
+
+            <form action="/registro" method="post">
+                <div class="campo">
+                    <label>Nombre completo</label>
+                    <input
+                        type="text"
+                        id="nombre"
+                        name="nombre"
+                        autocomplete="name"
+                        maxlength="100"
+                        required
+                    >
+                </div>
+
+                <div class="campo">
+                    <label>Correo electrónico</label>
+                    <input
+                        type="email"
+                        id="correo"
+                        name="correo"
+                        autocomplete="email"
+                        maxlength="254"
+                        required
+                    >
+                </div>
+
+                <div class="campo">
+                    <label>Tipo de cuenta</label>
+                    <select id="tipoUsuario" name="tipoUsuario" required>
+                        <option value="" disabled selected>
+                            Selecciona una opción
+                        </option>
+                        <option value="ESTUDIANTE">Estudiante</option>
+                        <option value="TUTOR">Tutor</option>
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label>Contraseña</label>
+                    <input
+                        type="password"
+                        id="contrasena"
+                        name="contrasena"
+                        autocomplete="new-password"
+                        minlength="8"
+                        required
+                    >
+                </div>
+
+                <div class="campo">
+                    <label>
+                        Confirmar contraseña
+                    </label>
+                    <input
+                        type="password"
+                        id="confirmarContrasena"
+                        name="confirmarContrasena"
+                        autocomplete="new-password"
+                        minlength="8"
+                        required
+                    >
+                </div>
+
+                <button type="submit" class="difuminado">
+                    Crear cuenta
+                </button>
+            </form>
+
+            <p class="crear-cuenta">
+                ¿Ya tienes cuenta?
+                <a href="iniciosesion.html">Iniciar sesión</a>
+            </p>
+        </section>
+    </main>
+</body>
+</html>
