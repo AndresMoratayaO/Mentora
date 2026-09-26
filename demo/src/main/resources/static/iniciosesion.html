@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mentora inicio de sesión</title>
+
+    <link rel="stylesheet" href="cssiniciosesion.css">
+</head>
+<body>
+    <main class="tarjeta">
+        <header class="encabezado">
+            <img src="logomentora.png" width="250" height="250">
+        </header>
+
+        <section aria-labelledby="titulo">
+            
+
+            <form action="/login" method="post">
+                <div class="campo">
+                    <label>Correo electrónico</label>
+                    <input
+                        type="email"
+                        id="correo"
+                        name="correo"
+                        autocomplete="username"
+                        required
+                    >
+                </div>
+
+                <div class="campo">
+                    <label>Contraseña</label>
+                    <input
+                        type="password"
+                        id="contrasena"
+                        name="contrasena"
+                        autocomplete="current-password"
+                        required
+                    >
+                </div>
+
+                <button type="submit" class="difuminado">Iniciar sesión</button>
+            </form>
+
+            <p class="crear-cuenta">¿No tienes cuenta?<a href="registro.html">Crear cuenta</a></p>
+        </section>
+
+        <footer>
+            
+        </footer>
+    </main>
+
+</body>
+</html>
