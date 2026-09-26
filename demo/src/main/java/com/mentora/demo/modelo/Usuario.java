@@ -5,11 +5,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
 
-@Entity 
+@Entity
 @Table(name = "usuarios")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Usuario {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,11 +30,10 @@ public class Usuario {
     @Column(name = "tipo_usuario", nullable = false, length = 20)
     private String tipoUsuario;
 
-    protected Usuario(){
-
+    protected Usuario() {
     }
 
-    public Usuario(String nombre, String correo, String contrasenaHash, String tipoUsuario){
+    public Usuario(String nombre, String correo, String contrasenaHash, String tipoUsuario) {
         this.nombre = nombre;
         this.correo = correo;
         this.contrasenaHash = contrasenaHash;
