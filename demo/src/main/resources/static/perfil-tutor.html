@@ -158,7 +158,22 @@
             font-size: 12px;
             font-weight: bold;
         }
+        .estado-disponible {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 12px 0 0;
+            color: #087b69;
+            font-size: 14px;
+            font-weight: bold;
+        }
 
+        .punto-disponible {
+            width: 10px;
+            height: 10px;
+            background-color: #20b99a;
+            border-radius: 50%;
+        }
         .especialidad {
             margin: 10px 0 2px;
             color: var(--verde-oscuro);
@@ -537,7 +552,10 @@
                     <p class="ubicacion">
                         Guatemala · Clases virtuales
                     </p>
-
+                    <div class="estado-disponible">
+                        <span class="punto-disponible"></span>
+                        <span>Disponible para nuevas tutorías</span>
+                    </div>
                     <div class="estadisticas">
 
                         <span>
