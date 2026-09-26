@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Perfil del tutor | Mentora</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-width: 1200px;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #172033;
+            background-color: #f5f7fb;
+        }
+
+        /* Barra superior */
+        .barra-superior {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 60px;
+            background-color: white;
+            border-bottom: 1px solid #dddddd;
+        }
+
+        .marca {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #11105d;
+            font-size: 24px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .marca img {
+            width: 55px;
+            height: 55px;
+            object-fit: contain;
+            border-radius: 50%;
+        }
+
+        .navegacion {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .navegacion a {
+            color: #172033;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .boton-iniciar {
+            padding: 10px 18px;
+            color: #11105d;
+            background-color: white;
+            border: 1px solid #11105d;
+            border-radius: 8px;
+        }
+
+        /* Contenido */
+        .contenedor {
+            width: 1100px;
+            margin: 30px auto 60px;
+        }
+
+        .volver {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #087b69;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        /* Encabezado del perfil */
+        .perfil-principal {
+            display: grid;
+            grid-template-columns: 750px 280px;
+            gap: 30px;
+            padding: 35px;
+            background-color: white;
+            border: 1px solid #dddddd;
+            border-radius: 18px;
+        }
+
+        .informacion-tutor {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .foto-tutor {
+            width: 125px;
+            height: 125px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            background: linear-gradient(to right, #11105d, #20b99a);
+            border-radius: 50%;
+            font-size: 36px;
+            font-weight: bold;
+        }
+
+        .datos-tutor h1 {
+            margin: 0;
+            color: #172033;
+            font-size: 38px;
+        }
+
+        .verificado {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 5px 10px;
+            color: #087b69;
+            background-color: #dff8f1;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .especialidad {
+            margin: 10px 0 2px;
+            color: #087b69;
+            font-size: 19px;
+            font-weight: bold;
+        }
+
+        .ubicacion {
+            margin: 0;
+            color: #667085;
+        }
+
+        .estadisticas {
+            display: flex;
+            gap: 20px;
+            margin-top: 18px;
+            color: #667085;
+            font-size: 14px;
+        }
+
+        .estadisticas strong {
+            color: #172033;
+        }
+
+        /* Reserva */
+        .reserva {
+            padding: 22px;
+            border: 1px solid #dddddd;
+            border-radius: 15px;
+        }
+
+        .precio {
+            margin-top: 0;
+        }
+
+        .precio span {
+            display: block;
+            color: #667085;
+            font-size: 13px;
+        }
+
+        .precio strong {
+            color: #11105d;
+            font-size: 28px;
+        }
+
+        .boton {
+            width: 100%;
+            display: block;
+            margin-top: 10px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .boton-reservar {
+            color: white;
+            background: linear-gradient(to right, #11105d, #20b99a);
+            border: none;
+        }
+
+        .boton-contactar {
+            color: #11105d;
+            background-color: white;
+            border: 1px solid #11105d;
+        }
+
+        .nota {
+            color: #667085;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        /* Secciones inferiores */
+        .contenido {
+            display: grid;
+            grid-template-columns: 720px 350px;
+            gap: 30px;
+            margin-top: 25px;
+        }
+
+        .columna-principal,
+        .columna-lateral {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .tarjeta {
+            padding: 28px;
+            background-color: white;
+            border: 1px solid #dddddd;
+            border-radius: 15px;
+        }
+
+        .tarjeta h2 {
+            margin-top: 0;
+            color: #11105d;
+            font-size: 21px;
+        }
+
+        .tarjeta p {
+            margin-bottom: 0;
+            line-height: 1.7;
+        }
+
+        /* Materias */
+        .materias {
+            display: flex;
+            gap: 10px;
+            padding: 0;
+            list-style: none;
+        }
+
+        .materias li {
+            padding: 7px 12px;
+            color: #11105d;
+            background-color: #e9eafe;
+            border-radius: 15px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* Metodología */
+        .metodologia {
+            padding: 0;
+            list-style: none;
+        }
+
+        .metodologia li {
+            margin-bottom: 12px;
+        }
+
+        .metodologia li::before {
+            content: "✓";
+            margin-right: 10px;
+            color: #087b69;
+            font-weight: bold;
+        }
+
+        /* Formación */
+        .formacion {
+            margin-bottom: 18px;
+        }
+
+        .formacion strong {
+            display: block;
+        }
+
+        .formacion span {
+            color: #667085;
+            font-size: 14px;
+        }
+
+        /* Horarios */
+        .horario {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            padding: 12px;
+            background-color: #f5f7fb;
+            border-radius: 8px;
+        }
+
+        .horario strong {
+            color: #11105d;
+        }
+
+        footer {
+            padding: 25px;
+            color: #667085;
+            background-color: white;
+            border-top: 1px solid #dddddd;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="barra-superior">
+        <a href="/" class="marca">
+            <img src="logomentora.png" alt="Logo de Mentora">
+            <span>Mentora</span>
+        </a>
+
+        <nav class="navegacion">
+            <a href="/">Inicio</a>
+            <a href="#disponibilidad">Disponibilidad</a>
+            <a href="iniciosesion.html" class="boton-iniciar">
+                Iniciar sesión
+            </a>
+        </nav>
+    </header>
+
+    <main class="contenedor">
+
+        <a href="/" class="volver">
+            ← Volver a tutores
+        </a>
+
+        <section class="perfil-principal">
+
+            <div class="informacion-tutor">
+
+                <!-- Cambiar por las iniciales o fotografía del tutor -->
+                <div class="foto-tutor">
+                    AM
+                </div>
+
+                <div class="datos-tutor">
+
+                    <!-- Nombre del tutor -->
+                    <h1>Ana Martínez</h1>
+
+                    <span class="verificado">
+                        Tutor verificado
+                    </span>
+
+                    <!-- Especialidad -->
+                    <p class="especialidad">
+                        Matemática y Física
+                    </p>
+
+                    <!-- Ubicación y modalidad -->
+                    <p class="ubicacion">
+                        Guatemala · Clases virtuales
+                    </p>
+
+                    <div class="estadisticas">
+                        <span>
+                            <strong>4.9</strong> ★ calificación
+                        </span>
+
+                        <span>
+                            <strong>38</strong> reseñas
+                        </span>
+
+                        <span>
+                            <strong>5</strong> años de experiencia
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+
+            <aside class="reserva">
+
+                <p class="precio">
+                    <span>Desde</span>
+                    <strong>Q75</strong> / hora
+                </p>
+
+                <a href="#disponibilidad"
+                   class="boton boton-reservar">
+                    Ver disponibilidad
+                </a>
+
+                <button type="button"
+                        class="boton boton-contactar">
+                    Contactar al tutor
+                </button>
+
+                <p class="nota">
+                    No se realizará ningún cobro todavía.
+                </p>
+
+            </aside>
+        </section>
+
+        <div class="contenido">
+
+            <div class="columna-principal">
+
+                <section class="tarjeta">
+                    <h2>Sobre mí</h2>
+
+                    <p>
+                        Soy tutora de Matemática y Física.
+                        Me gusta explicar cada tema paso a paso
+                        y adaptar las clases al ritmo y objetivos
+                        de cada estudiante.
+                    </p>
+                </section>
+
+                <section class="tarjeta">
+                    <h2>Materias que enseño</h2>
+
+                    <ul class="materias">
+                        <li>Álgebra</li>
+                        <li>Geometría</li>
+                        <li>Cálculo</li>
+                        <li>Física básica</li>
+                    </ul>
+                </section>
+
+                <section class="tarjeta">
+                    <h2>Metodología</h2>
+
+                    <ul class="metodologia">
+                        <li>
+                            Diagnóstico inicial para conocer
+                            las necesidades del estudiante.
+                        </li>
+
+                        <li>
+                            Explicaciones claras con ejemplos
+                            y ejercicios prácticos.
+                        </li>
+
+                        <li>
+                            Material de apoyo y seguimiento
+                            después de cada sesión.
+                        </li>
+                    </ul>
+                </section>
+
+                <section class="tarjeta" id="disponibilidad">
+                    <h2>Disponibilidad semanal</h2>
+
+                    <div class="horario">
+                        <strong>Lunes a miércoles</strong>
+                        <span>16:00 – 20:00</span>
+                    </div>
+
+                    <div class="horario">
+                        <strong>Sábado</strong>
+                        <span>09:00 – 13:00</span>
+                    </div>
+                </section>
+
+            </div>
+
+            <aside class="columna-lateral">
+
+                <section class="tarjeta">
+                    <h2>Formación</h2>
+
+                    <div class="formacion">
+                        <strong>Licenciatura en Física</strong>
+                        <span>
+                            Universidad de San Carlos de Guatemala
+                        </span>
+                    </div>
+
+                    <div class="formacion">
+                        <strong>Diplomado en Docencia</strong>
+                        <span>Formación complementaria</span>
+                    </div>
+                </section>
+
+                <section class="tarjeta">
+                    <h2>Idiomas</h2>
+
+                    <p>Español · Nativo</p>
+                    <p>Inglés · Intermedio</p>
+                </section>
+
+            </aside>
+        </div>
+
+    </main>
+
+    <footer>
+        © 2026 Mentora · Aprende con acompañamiento personalizado
+    </footer>
+
+</body>
+</html>
