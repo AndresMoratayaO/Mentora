@@ -1,0 +1,384 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <title>Opiniones de tutores | Mentora</title>
+    <link rel="stylesheet" href="cssopiniones.css">
+</head>
+<body>
+
+<main class="contenedor">
+
+    <header class="encabezado">
+        <img src="logomentora.png"
+             alt="Mentora" class="logo">
+
+        <h1>Opiniones y valoraciones</h1>
+        <p>Conoce las experiencias de otros estudiantes
+           y comparte tu opinión sobre nuestros tutores.</p>
+    </header>
+
+    <section class="panel">
+
+        <h2>Selecciona un tutor</h2>
+
+        <label for="selectorTutor">
+            Tutor que deseas consultar
+        </label>
+
+        <select id="selectorTutor">
+            <option value="">Cargando tutores...</option>
+        </select>
+
+        <div id="resumen" class="resumen oculto">
+            <div id="avatar" class="avatar">T</div>
+
+            <div class="datos-tutor">
+                <h2 id="nombreTutor"></h2>
+                <p id="experienciaTutor"></p>
+                <p id="materiasTutor"></p>
+            </div>
+
+            <div class="calificacion">
+                <strong id="promedio">0.0</strong>
+                <div id="estrellasPromedio"
+                     class="estrellas-promedio"></div>
+                <span id="totalOpiniones"></span>
+            </div>
+        </div>
+
+    </section>
+
+    <section class="panel">
+        <h2>Opiniones de estudiantes</h2>
+        <div id="listaOpiniones">
+            <p class="mensaje">Selecciona un tutor para ver sus opiniones.</p>
+        </div>
+    </section>
+
+    <section class="panel">
+        <h2>Deja tu valoración</h2>
+        <p class="subtitulo">
+            Comparte tu experiencia con este tutor.
+        </p>
+
+        <form id="formOpinion">
+
+            <label for="idEstudiante">
+                ID de estudiante (solo para pruebas)
+            </label>
+            <input type="number" id="idEstudiante"
+                   min="1" value="3" required>
+
+            <label>Tu calificación</label>
+
+            <div id="estrellasFormulario"
+                 class="estrellas-formulario"
+                 role="group"
+                 aria-label="Selecciona una calificación">
+                <button type="button" data-valor="1"
+                        aria-label="1 estrella">☆</button>
+                <button type="button" data-valor="2"
+                        aria-label="2 estrellas">☆</button>
+                <button type="button" data-valor="3"
+                        aria-label="3 estrellas">☆</button>
+                <button type="button" data-valor="4"
+                        aria-label="4 estrellas">☆</button>
+                <button type="button" data-valor="5"
+                        aria-label="5 estrellas">☆</button>
+            </div>
+
+            <p id="textoCalificacion" class="ayuda">
+                Selecciona de 1 a 5 estrellas.
+            </p>
+
+            <label for="comentario">Tu opinión</label>
+            <textarea id="comentario" maxlength="1000"
+                      rows="5" required
+                      placeholder="¿Cómo fue tu experiencia con este tutor?"></textarea>
+
+            <button id="botonPublicar" type="submit"
+                    class="boton-principal">
+                Publicar opinión
+            </button>
+        </form>
+
+        <p id="mensajeFormulario" role="status"></p>
+    </section>
+
+    <footer>
+        <a href="buscartutores.html">Volver a buscar tutores</a>
+    </footer>
+
+</main>
+
+<script>
+const selector = document.getElementById("selectorTutor");
+const lista = document.getElementById("listaOpiniones");
+const resumen = document.getElementById("resumen");
+const mensajeFormulario =
+    document.getElementById("mensajeFormulario");
+
+let tutores = [];
+let calificacionSeleccionada = 0;
+
+function crearTexto(etiqueta, texto, clase = "") {
+    const elemento = document.createElement(etiqueta);
+    elemento.textContent = texto;
+    if (clase) elemento.className = clase;
+    return elemento;
+}
+
+async function cargarTutores() {
+    try {
+        const respuesta = await fetch("/tutores");
+        if (!respuesta.ok) throw new Error("No se pudieron cargar los tutores.");
+
+        tutores = await respuesta.json();
+        selector.innerHTML = "";
+
+        const inicial = new Option("Selecciona un tutor", "");
+        selector.add(inicial);
+
+        tutores.forEach(tutor => {
+            const id = tutor.idTutor ?? tutor.id;
+            selector.add(new Option(tutor.nombre, id));
+        });
+
+        const parametros = new URLSearchParams(location.search);
+        const idSolicitado = parametros.get("idTutor");
+
+        if (idSolicitado &&
+            [...selector.options].some(op => op.value === idSolicitado)) {
+            selector.value = idSolicitado;
+            await seleccionarTutor();
+        }
+    } catch (error) {
+        selector.innerHTML = "";
+        selector.add(new Option("No se pudieron cargar los tutores", ""));
+        lista.replaceChildren(
+            crearTexto("p", error.message, "error")
+        );
+    }
+}
+
+async function seleccionarTutor() {
+    const id = selector.value;
+
+    resumen.classList.add("oculto");
+    lista.replaceChildren();
+
+    if (!id) {
+        lista.appendChild(
+            crearTexto("p", "Selecciona un tutor.", "mensaje")
+        );
+        return;
+    }
+
+    const tutor = tutores.find(t =>
+        String(t.idTutor ?? t.id) === id
+    );
+
+    if (!tutor) return;
+
+    document.getElementById("nombreTutor").textContent =
+        tutor.nombre;
+    document.getElementById("avatar").textContent =
+        tutor.nombre?.trim().charAt(0).toUpperCase() || "T";
+    document.getElementById("experienciaTutor").textContent =
+        tutor.experiencia || "Sin experiencia registrada";
+
+    const materias = Array.isArray(tutor.materias)
+        ? tutor.materias.map(m => m.nombre).join(", ")
+        : "";
+
+    document.getElementById("materiasTutor").textContent =
+        materias || "Sin materias registradas";
+
+    resumen.classList.remove("oculto");
+    await cargarOpiniones(id);
+}
+
+async function cargarOpiniones(idTutor) {
+    lista.replaceChildren(
+        crearTexto("p", "Cargando opiniones...", "mensaje")
+    );
+
+    try {
+        const respuesta =
+            await fetch("/opiniones/tutor/" + encodeURIComponent(idTutor));
+
+        if (!respuesta.ok) {
+            throw new Error("No fue posible consultar las opiniones.");
+        }
+
+        const datos = await respuesta.json();
+
+        document.getElementById("promedio").textContent =
+            Number(datos.promedio).toFixed(1);
+
+        document.getElementById("estrellasPromedio").textContent =
+            dibujarEstrellas(datos.promedio);
+
+        document.getElementById("totalOpiniones").textContent =
+            datos.totalOpiniones +
+            (datos.totalOpiniones === 1
+                ? " opinión" : " opiniones");
+
+        lista.replaceChildren();
+
+        if (datos.opiniones.length === 0) {
+            lista.appendChild(
+                crearTexto("p",
+                    "Este tutor todavía no tiene opiniones.",
+                    "mensaje")
+            );
+            return;
+        }
+
+        datos.opiniones.forEach(opinion => {
+            const tarjeta = document.createElement("article");
+            tarjeta.className = "tarjeta-opinion";
+
+            const cabecera = document.createElement("div");
+            cabecera.className = "cabecera-opinion";
+
+            cabecera.appendChild(
+                crearTexto("strong", opinion.nombreEstudiante)
+            );
+            cabecera.appendChild(
+                crearTexto("span",
+                    dibujarEstrellas(opinion.valoracion),
+                    "estrellas-opinion")
+            );
+
+            tarjeta.appendChild(cabecera);
+            tarjeta.appendChild(
+                crearTexto("p", opinion.comentario)
+            );
+            lista.appendChild(tarjeta);
+        });
+    } catch (error) {
+        lista.replaceChildren(
+            crearTexto("p", error.message, "error")
+        );
+    }
+}
+
+function dibujarEstrellas(valor) {
+    const cantidad = Math.round(Number(valor));
+    return "★".repeat(Math.max(0, Math.min(5, cantidad))) +
+           "☆".repeat(Math.max(0, 5 - cantidad));
+}
+
+function actualizarEstrellas() {
+    document.querySelectorAll(
+        "#estrellasFormulario button"
+    ).forEach(boton => {
+        const valor = Number(boton.dataset.valor);
+        boton.textContent =
+            valor <= calificacionSeleccionada ? "★" : "☆";
+        boton.setAttribute("aria-pressed",
+            String(valor === calificacionSeleccionada));
+    });
+
+    document.getElementById("textoCalificacion").textContent =
+        calificacionSeleccionada
+            ? calificacionSeleccionada + " de 5 estrellas"
+            : "Selecciona de 1 a 5 estrellas.";
+}
+
+document.querySelectorAll(
+    "#estrellasFormulario button"
+).forEach(boton => {
+    boton.addEventListener("click", () => {
+        calificacionSeleccionada = Number(boton.dataset.valor);
+        actualizarEstrellas();
+    });
+});
+
+selector.addEventListener("change", seleccionarTutor);
+
+document.getElementById("formOpinion")
+    .addEventListener("submit", async evento => {
+        evento.preventDefault();
+
+        mensajeFormulario.textContent = "";
+        mensajeFormulario.className = "";
+
+        if (!selector.value) {
+            mensajeFormulario.textContent =
+                "Primero selecciona un tutor.";
+            mensajeFormulario.className = "error";
+            return;
+        }
+
+        if (calificacionSeleccionada < 1) {
+            mensajeFormulario.textContent =
+                "Selecciona una calificación.";
+            mensajeFormulario.className = "error";
+            return;
+        }
+
+        const comentario =
+            document.getElementById("comentario").value.trim();
+        const idEstudiante =
+            document.getElementById("idEstudiante").value;
+
+        if (!comentario || !idEstudiante) {
+            mensajeFormulario.textContent =
+                "Completa todos los campos.";
+            mensajeFormulario.className = "error";
+            return;
+        }
+
+        const boton = document.getElementById("botonPublicar");
+        boton.disabled = true;
+
+        const datos = new URLSearchParams({
+            idEstudiante,
+            idTutor: selector.value,
+            comentario,
+            valoracion: String(calificacionSeleccionada)
+        });
+
+        try {
+            const respuesta = await fetch("/opiniones", {
+                method: "POST",
+                headers: {
+                    "Content-Type":
+                        "application/x-www-form-urlencoded"
+                },
+                body: datos.toString()
+            });
+
+            if (!respuesta.ok) {
+                const detalle = await respuesta.text();
+                throw new Error(detalle ||
+                    "No fue posible publicar la opinión.");
+            }
+
+            document.getElementById("comentario").value = "";
+            calificacionSeleccionada = 0;
+            actualizarEstrellas();
+
+            mensajeFormulario.textContent =
+                "¡Tu opinión se publicó correctamente!";
+            mensajeFormulario.className = "exito";
+
+            await cargarOpiniones(selector.value);
+        } catch (error) {
+            mensajeFormulario.textContent = error.message;
+            mensajeFormulario.className = "error";
+        } finally {
+            boton.disabled = false;
+        }
+    });
+
+cargarTutores();
+</script>
+</body>
+</html>

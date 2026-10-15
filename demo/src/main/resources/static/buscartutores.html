@@ -147,10 +147,37 @@
                             </p>
                         </div>
 
-                        <div class="precio">
-                            <span>Precio</span>
-                            <strong>Q${Number(tutor.precio).toFixed(2)}</strong>
-                        </div>
+                        
+              
+<div class="precio">
+    <span>Precio</span>
+
+    <strong>
+        Q${Number(tutor.precio).toFixed(2)}
+    </strong>
+
+    <a
+        href="opinionestutores.html?idTutor=${encodeURIComponent(tutor.idTutor ?? tutor.id)}"
+        class="boton-opiniones"
+        style="
+            display: block;
+            margin-top: 15px;
+            padding: 12px 16px;
+            background: linear-gradient(to right, #000033, #2ec4a3);
+            color: white;
+            border-radius: 10px;
+            text-decoration: none;
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+            white-space: nowrap;
+        "
+    >
+        ⭐ Ver opiniones
+    </a>
+</div>
+
+
                     `;
 
                     resultados.appendChild(tarjeta);

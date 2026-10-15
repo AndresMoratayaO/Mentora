@@ -1,0 +1,322 @@
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    padding: 35px 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #1e293b;
+    background: linear-gradient(135deg, #eef2ff, #f0fdfa);
+}
+
+.contenedor {
+    max-width: 1050px;
+    margin: auto;
+}
+
+.encabezado {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.logo {
+    width: 170px;
+    height: 170px;
+    object-fit: contain;
+}
+
+h1 {
+    font-size: 36px;
+    margin: 14px 0;
+}
+
+.encabezado p,
+.subtitulo,
+.mensaje,
+.ayuda {
+    color: #64748b;
+    line-height: 1.6;
+}
+
+.panel {
+    background: #ffffff;
+    padding: 30px;
+    margin-bottom: 25px;
+    border: 1px solid #e2e8f0;
+    border-radius: 22px;
+    box-shadow: 0 18px 50px rgba(30, 41, 59, 0.08);
+}
+
+.panel h2 {
+    margin-top: 0;
+}
+
+label {
+    display: block;
+    margin: 20px 0 8px;
+    font-weight: 700;
+}
+
+select,
+input,
+textarea {
+    width: 100%;
+    padding: 13px 14px;
+    font: inherit;
+    color: #1e293b;
+    background: white;
+    border: 1px solid #94a3b8;
+    border-radius: 10px;
+}
+
+textarea {
+    resize: vertical;
+}
+
+select:focus,
+input:focus,
+textarea:focus {
+    border-color: #4f46e5;
+    outline: 3px solid #e0e7ff;
+}
+
+.resumen {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    margin-top: 26px;
+    padding: 24px;
+    background: #f8fafc;
+    border-radius: 16px;
+}
+
+.avatar {
+    width: 70px;
+    height: 70px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    color: white;
+    font-size: 28px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #000033, #2ec4a3);
+}
+
+.datos-tutor {
+    flex: 1;
+}
+
+.datos-tutor h2 {
+    margin: 0 0 8px;
+}
+
+.datos-tutor p {
+    margin: 6px 0;
+    color: #64748b;
+}
+
+.calificacion {
+    text-align: center;
+    min-width: 125px;
+}
+
+.calificacion strong {
+    display: block;
+    color: #00796f;
+    font-size: 34px;
+}
+
+.calificacion span {
+    color: #64748b;
+    font-size: 13px;
+}
+
+.estrellas-promedio,
+.estrellas-opinion {
+    color: #e9a500;
+    font-size: 24px;
+    letter-spacing: 2px;
+}
+
+.tarjeta-opinion {
+    padding: 20px 0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.tarjeta-opinion:last-child {
+    border-bottom: none;
+}
+
+.cabecera-opinion {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.tarjeta-opinion p {
+    color: #475569;
+    line-height: 1.6;
+}
+
+.estrellas-formulario {
+    display: flex;
+    gap: 8px;
+}
+
+.estrellas-formulario button {
+    border: none;
+    padding: 2px;
+    background: transparent;
+    color: #e9a500;
+    font-size: 42px;
+    cursor: pointer;
+}
+
+.estrellas-formulario button:hover {
+    transform: scale(1.12);
+}
+
+.boton-principal {
+    display: block;
+    width: 100%;
+    padding: 15px 24px;
+    margin-top: 25px;
+    border: none;
+    border-radius: 10px;
+    color: #ffffff;
+    font: inherit;
+    font-weight: 800;
+    cursor: pointer;
+    background: linear-gradient(to right, #000033, #2ec4a3);
+    box-shadow: 0 0 15px rgba(83, 212, 216, 0.35);
+}
+
+.boton-principal:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+.oculto {
+    display: none;
+}
+
+.error {
+    color: #b91c1c;
+}
+
+.exito {
+    color: #047857;
+    font-weight: 700;
+}
+
+footer {
+    text-align: center;
+    padding: 15px;
+}
+
+footer a {
+    color: #006b62;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 650px) {
+    .panel {
+        padding: 22px;
+    }
+
+    .resumen {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .cabecera-opinion {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+}
+
+/* Botón para consultar opiniones del tutor */
+
+.boton-opiniones {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 11px 16px;
+
+    border-radius: 10px;
+
+    background: linear-gradient(
+        to right,
+        #000033,
+        #2ec4a3
+    );
+
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    white-space: nowrap;
+
+    box-shadow: 0 4px 12px rgba(46, 196, 163, 0.25);
+    transition: transform 0.2s ease;
+}
+
+.boton-opiniones:hover {
+    transform: translateY(-2px);
+}
+
+.boton-opiniones:focus-visible {
+    outline: 3px solid #4f46e5;
+    outline-offset: 3px;
+}
+
+/* Botón de opiniones de los tutores */
+
+.precio .boton-opiniones {
+    display: block;
+    width: max-content;
+    max-width: 100%;
+    margin: 14px auto 0;
+    padding: 11px 16px;
+
+    background: linear-gradient(to right, #000033, #2ec4a3);
+    color: #ffffff;
+    border-radius: 10px;
+
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    text-align: center;
+    white-space: nowrap;
+
+    box-shadow: 0 4px 12px rgba(46, 196, 163, 0.25);
+    transition: transform 0.2s ease;
+}
+
+.precio .boton-opiniones:visited {
+    color: #ffffff;
+}
+
+.precio .boton-opiniones:hover {
+    transform: translateY(-2px);
+    color: #ffffff;
+}
+
+.precio .boton-opiniones:focus-visible {
+    outline: 3px solid #4f46e5;
+    outline-offset: 3px;
+}
