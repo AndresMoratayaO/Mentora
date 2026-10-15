@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Gestionar disponibilidad | Mentora</title>
+
+    <style>
+        :root {
+            --azul: #11105d;
+            --verde: #20b99a;
+            --verde-oscuro: #087b69;
+            --rojo: #b42318;
+            --texto: #172033;
+            --texto-suave: #667085;
+            --fondo: #f5f7fb;
+            --borde: #d8dde6;
+            --blanco: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            color: var(--texto);
+            background-color: var(--fondo);
+        }
+
+        .barra-superior {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 75px;
+            padding: 10px 50px;
+            background-color: var(--blanco);
+            border-bottom: 1px solid var(--borde);
+        }
+
+        .marca {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--azul);
+            font-size: 23px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .marca img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            border-radius: 50%;
+        }
+
+        .volver {
+            color: var(--verde-oscuro);
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .contenedor {
+            width: calc(100% - 40px);
+            max-width: 1000px;
+            margin: 35px auto;
+        }
+
+        .encabezado {
+            margin-bottom: 25px;
+        }
+
+        .encabezado h1 {
+            margin-bottom: 5px;
+            color: var(--azul);
+        }
+
+        .encabezado p {
+            margin-top: 0;
+            color: var(--texto-suave);
+        }
+
+        .contenido {
+            display: grid;
+            grid-template-columns: 340px minmax(0, 1fr);
+            gap: 25px;
+            align-items: start;
+        }
+
+        .tarjeta {
+            padding: 25px;
+            background-color: var(--blanco);
+            border: 1px solid var(--borde);
+            border-radius: 15px;
+        }
+
+        .tarjeta h2 {
+            margin-top: 0;
+            color: var(--azul);
+            font-size: 21px;
+        }
+
+        .campo {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        select,
+        input {
+            width: 100%;
+            padding: 11px 12px;
+            color: var(--texto);
+            background-color: var(--blanco);
+            border: 1px solid #98a2b3;
+            border-radius: 8px;
+            font: inherit;
+        }
+
+        select:focus,
+        input:focus {
+            border-color: var(--verde);
+            outline: 3px solid #d5f5ee;
+        }
+
+        .boton {
+            padding: 11px 15px;
+            border: none;
+            border-radius: 8px;
+            font: inherit;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .boton-principal {
+            width: 100%;
+            color: var(--blanco);
+            background: linear-gradient(
+                to right,
+                var(--azul),
+                var(--verde)
+            );
+        }
+
+        .boton-secundario {
+            display: none;
+            width: 100%;
+            margin-top: 10px;
+            color: var(--azul);
+            background-color: var(--blanco);
+            border: 1px solid var(--azul);
+        }
+
+        .boton-editar {
+            color: var(--azul);
+            background-color: #e9eafe;
+        }
+
+        .boton-desactivar {
+            color: var(--rojo);
+            background-color: #fee4e2;
+        }
+
+        .boton-activar {
+            color: var(--verde-oscuro);
+            background-color: #dff8f1;
+        }
+
+        .boton:hover {
+            filter: brightness(0.96);
+        }
+
+        .mensaje {
+            display: none;
+            margin: 0 0 20px;
+            padding: 12px 15px;
+            border-radius: 8px;
+        }
+
+        .mensaje-exito {
+            display: block;
+            color: #05603a;
+            background-color: #dcfae6;
+            border: 1px solid #75e0a7;
+        }
+
+        .mensaje-error {
+            display: block;
+            color: #912018;
+            background-color: #fee4e2;
+            border: 1px solid #fda29b;
+        }
+
+        .lista-horarios {
+            display: grid;
+            gap: 15px;
+        }
+
+        .horario {
+            display: grid;
+            grid-template-columns: minmax(130px, 1fr) 1fr auto;
+            gap: 15px;
+            align-items: center;
+            padding: 16px;
+            background-color: var(--fondo);
+            border: 1px solid var(--borde);
+            border-radius: 10px;
+        }
+
+        .horario-inactivo {
+            opacity: 0.65;
+        }
+
+        .dia {
+            display: block;
+            color: var(--azul);
+            font-size: 17px;
+        }
+
+        .horas {
+            color: var(--texto-suave);
+        }
+
+        .estado {
+            display: inline-block;
+            margin-top: 5px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .estado-activo {
+            color: var(--verde-oscuro);
+            background-color: #dff8f1;
+        }
+
+        .estado-inactivo {
+            color: var(--rojo);
+            background-color: #fee4e2;
+        }
+
+        .acciones {
+            display: flex;
+            gap: 8px;
+        }
+
+        .acciones .boton {
+            padding: 8px 10px;
+            font-size: 13px;
+        }
+
+        .sin-horarios {
+            padding: 25px;
+            color: var(--texto-suave);
+            background-color: var(--fondo);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        @media (max-width: 760px) {
+            .barra-superior {
+                padding: 10px 18px;
+            }
+
+            .contenido {
+                grid-template-columns: 1fr;
+            }
+
+            .horario {
+                grid-template-columns: 1fr;
+            }
+
+            .acciones {
+                flex-wrap: wrap;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .contenedor {
+                width: calc(100% - 24px);
+                margin-top: 22px;
+            }
+
+            .marca {
+                font-size: 19px;
+            }
+
+            .marca img {
+                width: 43px;
+                height: 43px;
+            }
+
+            .volver {
+                font-size: 13px;
+            }
+
+            .tarjeta {
+                padding: 20px 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="barra-superior">
+        <a href="perfil-tutor.html" class="marca">
+            <img
+                src="logomentora.png"
+                alt="Logo de Mentora"
+            >
+            <span>Mentora</span>
+        </a>
+
+        <a
+            href="perfil-tutor.html"
+            id="enlace-volver"
+            class="volver"
+        >
+            ← Volver al perfil
+        </a>
+    </header>
+
+    <main class="contenedor">
+
+        <header class="encabezado">
+            <h1>Gestionar disponibilidad</h1>
+
+            <p>
+                Registra y actualiza los horarios en los que
+                puedes impartir tutorías.
+            </p>
+        </header>
+
+        <p id="mensaje" class="mensaje"></p>
+
+        <div class="contenido">
+
+            <section class="tarjeta">
+                <h2 id="titulo-formulario">
+                    Agregar horario
+                </h2>
+
+                <form id="formulario-horario">
+
+                    <div class="campo">
+                        <label for="dia">
+                            Día
+                        </label>
+
+                        <select id="dia" name="dia" required>
+                            <option value="">
+                                Selecciona un día
+                            </option>
+                            <option value="Lunes">Lunes</option>
+                            <option value="Martes">Martes</option>
+                            <option value="Miércoles">
+                                Miércoles
+                            </option>
+                            <option value="Jueves">Jueves</option>
+                            <option value="Viernes">Viernes</option>
+                            <option value="Sábado">Sábado</option>
+                            <option value="Domingo">Domingo</option>
+                        </select>
+                    </div>
+
+                    <div class="campo">
+                        <label for="horaInicio">
+                            Hora de inicio
+                        </label>
+
+                        <input
+                            type="time"
+                            id="horaInicio"
+                            name="horaInicio"
+                            required
+                        >
+                    </div>
+
+                    <div class="campo">
+                        <label for="horaFin">
+                            Hora de finalización
+                        </label>
+
+                        <input
+                            type="time"
+                            id="horaFin"
+                            name="horaFin"
+                            required
+                        >
+                    </div>
+
+                    <button
+                        type="submit"
+                        id="boton-guardar"
+                        class="boton boton-principal"
+                    >
+                        Guardar horario
+                    </button>
+
+                    <button
+                        type="button"
+                        id="boton-cancelar"
+                        class="boton boton-secundario"
+                    >
+                        Cancelar edición
+                    </button>
+
+                </form>
+            </section>
+
+            <section class="tarjeta">
+                <h2>Mis horarios</h2>
+
+                <div
+                    id="lista-horarios"
+                    class="lista-horarios"
+                >
+                    <p class="sin-horarios">
+                        Cargando horarios...
+                    </p>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <script>
+        /*
+         * Identificador temporal del tutor de prueba.
+         * Posteriormente se obtendrá de la sesión iniciada.
+         */
+        const parametros = new URLSearchParams(
+            window.location.search
+        );
+
+        const tutorIdParametro = Number(
+            parametros.get("tutorId")
+        );
+
+        const TUTOR_ID =
+            Number.isInteger(tutorIdParametro)
+            && tutorIdParametro > 0
+                ? tutorIdParametro
+                : 1;
+
+        document.getElementById("enlace-volver").href =
+            `perfil-tutor.html?tutorId=${TUTOR_ID}`;
+
+        const API_URL =
+            `/api/tutores/${TUTOR_ID}/disponibilidades`;
+
+        const formulario =
+            document.getElementById("formulario-horario");
+
+        const listaHorarios =
+            document.getElementById("lista-horarios");
+
+        const mensaje =
+            document.getElementById("mensaje");
+
+        const tituloFormulario =
+            document.getElementById("titulo-formulario");
+
+        const botonGuardar =
+            document.getElementById("boton-guardar");
+
+        const botonCancelar =
+            document.getElementById("boton-cancelar");
+
+        let horarioEditandoId = null;
+        let horariosActuales = [];
+
+        /*
+         * Consulta todos los horarios, incluyendo
+         * los que están desactivados.
+         */
+        async function cargarHorarios() {
+            try {
+                const respuesta = await fetch(
+                    `${API_URL}?soloDisponibles=false`
+                );
+
+                if (!respuesta.ok) {
+                    throw new Error(await respuesta.text());
+                }
+
+                horariosActuales = await respuesta.json();
+
+                mostrarHorarios();
+            } catch (error) {
+                mostrarMensaje(error.message, false);
+            }
+        }
+
+        /*
+         * Muestra los horarios en la página.
+         */
+        function mostrarHorarios() {
+            listaHorarios.replaceChildren();
+
+            if (horariosActuales.length === 0) {
+                const texto = document.createElement("p");
+
+                texto.className = "sin-horarios";
+                texto.textContent =
+                    "Todavía no tienes horarios registrados.";
+
+                listaHorarios.appendChild(texto);
+                return;
+            }
+
+            horariosActuales.forEach(horario => {
+                listaHorarios.appendChild(
+                    crearElementoHorario(horario)
+                );
+            });
+        }
+
+        /*
+         * Crea de manera segura los elementos HTML
+         * correspondientes a un horario.
+         */
+        function crearElementoHorario(horario) {
+            const contenedor = document.createElement("article");
+
+            contenedor.className = horario.disponible
+                ? "horario"
+                : "horario horario-inactivo";
+
+            const informacion = document.createElement("div");
+
+            const dia = document.createElement("strong");
+            dia.className = "dia";
+            dia.textContent = horario.dia;
+
+            const estado = document.createElement("span");
+            estado.className = horario.disponible
+                ? "estado estado-activo"
+                : "estado estado-inactivo";
+
+            estado.textContent = horario.disponible
+                ? "Disponible"
+                : "No disponible";
+
+            informacion.append(dia, estado);
+
+            const horas = document.createElement("div");
+            horas.className = "horas";
+            horas.textContent =
+                `${formatearHora(horario.horaInicio)} - ` +
+                `${formatearHora(horario.horaFin)}`;
+
+            const acciones = document.createElement("div");
+            acciones.className = "acciones";
+
+            const botonEditar = document.createElement("button");
+            botonEditar.type = "button";
+            botonEditar.className = "boton boton-editar";
+            botonEditar.textContent = "Editar";
+
+            botonEditar.addEventListener("click", () => {
+                comenzarEdicion(horario);
+            });
+
+            const botonEstado = document.createElement("button");
+            botonEstado.type = "button";
+
+            botonEstado.className = horario.disponible
+                ? "boton boton-desactivar"
+                : "boton boton-activar";
+
+            botonEstado.textContent = horario.disponible
+                ? "Desactivar"
+                : "Activar";
+
+            botonEstado.addEventListener("click", () => {
+                cambiarEstado(
+                    horario.id,
+                    !horario.disponible
+                );
+            });
+
+            acciones.append(botonEditar, botonEstado);
+            contenedor.append(informacion, horas, acciones);
+
+            return contenedor;
+        }
+
+        /*
+         * Registra un horario nuevo o actualiza
+         * el horario seleccionado.
+         */
+        formulario.addEventListener("submit", async evento => {
+            evento.preventDefault();
+
+            const datos = new URLSearchParams();
+            datos.append("dia", formulario.dia.value);
+            datos.append(
+                "horaInicio",
+                formulario.horaInicio.value
+            );
+            datos.append("horaFin", formulario.horaFin.value);
+
+            const editando = horarioEditandoId !== null;
+
+            const direccion = editando
+                ? `${API_URL}/${horarioEditandoId}`
+                : API_URL;
+
+            const metodo = editando ? "PUT" : "POST";
+
+            try {
+                const respuesta = await fetch(direccion, {
+                    method: metodo,
+                    headers: {
+                        "Content-Type":
+                            "application/x-www-form-urlencoded"
+                    },
+                    body: datos
+                });
+
+                if (!respuesta.ok) {
+                    throw new Error(await respuesta.text());
+                }
+
+                mostrarMensaje(
+                    editando
+                        ? "Horario actualizado correctamente."
+                        : "Horario registrado correctamente.",
+                    true
+                );
+
+                cancelarEdicion();
+                await cargarHorarios();
+            } catch (error) {
+                mostrarMensaje(error.message, false);
+            }
+        });
+
+        /*
+         * Coloca los datos del horario seleccionado
+         * dentro del formulario.
+         */
+        function comenzarEdicion(horario) {
+            horarioEditandoId = horario.id;
+
+            formulario.dia.value = horario.dia;
+            formulario.horaInicio.value =
+                horario.horaInicio.substring(0, 5);
+            formulario.horaFin.value =
+                horario.horaFin.substring(0, 5);
+
+            tituloFormulario.textContent = "Editar horario";
+            botonGuardar.textContent = "Actualizar horario";
+            botonCancelar.style.display = "block";
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        }
+
+        /*
+         * Regresa el formulario al modo de creación.
+         */
+        function cancelarEdicion() {
+            horarioEditandoId = null;
+
+            formulario.reset();
+
+            tituloFormulario.textContent = "Agregar horario";
+            botonGuardar.textContent = "Guardar horario";
+            botonCancelar.style.display = "none";
+        }
+
+        botonCancelar.addEventListener(
+            "click",
+            cancelarEdicion
+        );
+
+        /*
+         * Activa o desactiva un horario.
+         */
+        async function cambiarEstado(
+                disponibilidadId,
+                disponible) {
+
+            const datos = new URLSearchParams();
+            datos.append("disponible", disponible);
+
+            try {
+                const respuesta = await fetch(
+                    `${API_URL}/${disponibilidadId}/estado`,
+                    {
+                        method: "PATCH",
+                        headers: {
+                            "Content-Type":
+                                "application/x-www-form-urlencoded"
+                        },
+                        body: datos
+                    }
+                );
+
+                if (!respuesta.ok) {
+                    throw new Error(await respuesta.text());
+                }
+
+                mostrarMensaje(
+                    disponible
+                        ? "Horario activado correctamente."
+                        : "Horario desactivado correctamente.",
+                    true
+                );
+
+                await cargarHorarios();
+            } catch (error) {
+                mostrarMensaje(error.message, false);
+            }
+        }
+
+        /*
+         * Quita los segundos de la hora.
+         */
+        function formatearHora(hora) {
+            return hora.substring(0, 5);
+        }
+
+        /*
+         * Muestra mensajes de éxito o error.
+         */
+        function mostrarMensaje(texto, esExito) {
+            mensaje.textContent = texto;
+
+            mensaje.className = esExito
+                ? "mensaje mensaje-exito"
+                : "mensaje mensaje-error";
+        }
+
+        cargarHorarios();
+    </script>
+
+</body>
+</html>

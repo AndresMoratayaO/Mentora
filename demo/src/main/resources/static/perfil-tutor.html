@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Perfil del tutor | Mentora</title>
+
+    <style>
+        :root {
+            --azul: #11105d;
+            --azul-claro: #e9eafe;
+            --verde: #20b99a;
+            --verde-oscuro: #087b69;
+            --texto: #172033;
+            --texto-suave: #667085;
+            --borde: #dddddd;
+            --fondo: #f5f7fb;
+            --blanco: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            color: var(--texto);
+            background-color: var(--fondo);
+        }
+
+        /* Barra superior */
+
+        .barra-superior {
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+            padding: 10px 60px;
+            background-color: var(--blanco);
+            border-bottom: 1px solid var(--borde);
+        }
+
+        .marca {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--azul);
+            font-size: 24px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .marca img {
+            width: 55px;
+            height: 55px;
+            object-fit: contain;
+            border-radius: 50%;
+        }
+
+        .navegacion {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .navegacion a {
+            color: var(--texto);
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .navegacion a:hover {
+            color: var(--verde-oscuro);
+        }
+
+        .navegacion .boton-iniciar {
+            padding: 10px 18px;
+            color: var(--azul);
+            background-color: var(--blanco);
+            border: 1px solid var(--azul);
+            border-radius: 8px;
+        }
+
+        /* Contenedor */
+
+        .contenedor {
+            width: calc(100% - 40px);
+            max-width: 1100px;
+            margin: 30px auto 60px;
+        }
+
+        .volver {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--verde-oscuro);
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        /* Perfil principal */
+
+        .perfil-principal {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 280px;
+            gap: 30px;
+            padding: 35px;
+            background-color: var(--blanco);
+            border: 1px solid var(--borde);
+            border-radius: 18px;
+        }
+
+        .informacion-tutor {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .foto-tutor {
+            width: 125px;
+            height: 125px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--blanco);
+            background: linear-gradient(
+                to right,
+                var(--azul),
+                var(--verde)
+            );
+            border-radius: 50%;
+            font-size: 36px;
+            font-weight: bold;
+        }
+
+        .datos-tutor h1 {
+            margin: 0;
+            color: var(--texto);
+            font-size: 38px;
+        }
+
+        .verificado {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 5px 10px;
+            color: var(--verde-oscuro);
+            background-color: #dff8f1;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .especialidad {
+            margin: 10px 0 2px;
+            color: var(--verde-oscuro);
+            font-size: 19px;
+            font-weight: bold;
+        }
+
+        .ubicacion {
+            margin: 0;
+            color: var(--texto-suave);
+        }
+
+        .estado-disponible {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 12px 0 0;
+            color: var(--verde-oscuro);
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .punto-disponible {
+            width: 10px;
+            height: 10px;
+            background-color: var(--verde);
+            border-radius: 50%;
+        }
+
+        .estadisticas {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 20px;
+            margin-top: 18px;
+            color: var(--texto-suave);
+            font-size: 14px;
+        }
+
+        .estadisticas strong {
+            color: var(--texto);
+        }
+
+        /* Reserva */
+
+        .reserva {
+            padding: 22px;
+            border: 1px solid var(--borde);
+            border-radius: 15px;
+        }
+
+        .precio {
+            margin-top: 0;
+        }
+
+        .precio span {
+            display: block;
+            color: var(--texto-suave);
+            font-size: 13px;
+        }
+
+        .precio strong {
+            color: var(--azul);
+            font-size: 28px;
+        }
+
+        .boton {
+            width: 100%;
+            display: block;
+            margin-top: 10px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .boton-reservar {
+            color: var(--blanco);
+            background: linear-gradient(
+                to right,
+                var(--azul),
+                var(--verde)
+            );
+            border: none;
+        }
+
+        .boton-contactar {
+            color: var(--azul);
+            background-color: var(--blanco);
+            border: 1px solid var(--azul);
+        }
+
+        .boton-administrar {
+            color: var(--blanco);
+            background-color: var(--verde-oscuro);
+            border: none;
+        }
+
+        .boton:hover {
+            filter: brightness(0.95);
+        }
+
+        .boton:focus,
+        a:focus {
+            outline: 3px solid #7de0cd;
+            outline-offset: 3px;
+        }
+
+        .nota {
+            color: var(--texto-suave);
+            font-size: 12px;
+            text-align: center;
+        }
+
+        /* Secciones inferiores */
+
+        .contenido {
+            display: grid;
+            grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+            gap: 30px;
+            margin-top: 25px;
+        }
+
+        .columna-principal,
+        .columna-lateral {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .tarjeta {
+            padding: 28px;
+            background-color: var(--blanco);
+            border: 1px solid var(--borde);
+            border-radius: 15px;
+        }
+
+        .tarjeta h2 {
+            margin-top: 0;
+            color: var(--azul);
+            font-size: 21px;
+        }
+
+        .tarjeta p {
+            line-height: 1.7;
+        }
+
+        /* Materias */
+
+        .materias {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 0;
+            list-style: none;
+        }
+
+        .materias li {
+            padding: 7px 12px;
+            color: var(--azul);
+            background-color: var(--azul-claro);
+            border-radius: 15px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* Metodología */
+
+        .metodologia {
+            padding: 0;
+            list-style: none;
+        }
+
+        .metodologia li {
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        .metodologia li::before {
+            content: "✓";
+            margin-right: 10px;
+            color: var(--verde-oscuro);
+            font-weight: bold;
+        }
+
+        /* Formación */
+
+        .formacion {
+            margin-bottom: 18px;
+        }
+
+        .formacion strong {
+            display: block;
+        }
+
+        .formacion span {
+            color: var(--texto-suave);
+            font-size: 14px;
+        }
+
+        /* Horarios */
+
+        #horarios-disponibles {
+            display: grid;
+            gap: 10px;
+        }
+
+        .horario {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 12px;
+            background-color: var(--fondo);
+            border-radius: 8px;
+        }
+
+        .horario strong {
+            color: var(--azul);
+        }
+
+        .sin-disponibilidad {
+            margin: 0;
+            padding: 14px;
+            color: var(--texto-suave);
+            background-color: var(--fondo);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        footer {
+            padding: 25px;
+            color: var(--texto-suave);
+            background-color: var(--blanco);
+            border-top: 1px solid var(--borde);
+            text-align: center;
+        }
+
+        /* Responsive para tabletas */
+
+        @media (max-width: 900px) {
+            .barra-superior {
+                padding: 10px 30px;
+            }
+
+            .perfil-principal {
+                grid-template-columns: 1fr;
+            }
+
+            .reserva {
+                width: 100%;
+            }
+
+            .contenido {
+                grid-template-columns: 1fr;
+            }
+
+            .columna-lateral {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* Responsive para celulares */
+
+        @media (max-width: 600px) {
+            .barra-superior {
+                min-height: auto;
+                padding: 12px 16px;
+            }
+
+            .marca {
+                font-size: 20px;
+            }
+
+            .marca img {
+                width: 45px;
+                height: 45px;
+            }
+
+            .navegacion {
+                gap: 10px;
+            }
+
+            .navegacion > a:not(.boton-iniciar) {
+                display: none;
+            }
+
+            .navegacion .boton-iniciar {
+                padding: 8px 12px;
+                font-size: 13px;
+            }
+
+            .contenedor {
+                width: calc(100% - 24px);
+                margin-top: 20px;
+            }
+
+            .perfil-principal {
+                padding: 24px 18px;
+            }
+
+            .informacion-tutor {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .foto-tutor {
+                width: 100px;
+                height: 100px;
+                font-size: 30px;
+            }
+
+            .datos-tutor h1 {
+                font-size: 29px;
+            }
+
+            .estadisticas {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .tarjeta {
+                padding: 22px 18px;
+            }
+
+            .columna-lateral {
+                display: flex;
+            }
+
+            .horario {
+                flex-direction: column;
+                gap: 4px;
+            }
+
+            footer {
+                padding: 20px 15px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="barra-superior">
+
+        <a href="/" class="marca">
+            <img
+                src="logomentora.png"
+                alt="Logo de Mentora"
+            >
+
+            <span>Mentora</span>
+        </a>
+
+        <nav class="navegacion">
+            <a href="/">Inicio</a>
+
+            <a href="#disponibilidad">
+                Disponibilidad
+            </a>
+
+            <a
+                href="iniciosesion.html"
+                class="boton-iniciar"
+            >
+                Iniciar sesión
+            </a>
+        </nav>
+
+    </header>
+
+    <main class="contenedor">
+
+        <a href="/" class="volver">
+            ← Volver a tutores
+        </a>
+
+        <section class="perfil-principal">
+
+            <div class="informacion-tutor">
+
+                <div class="foto-tutor">
+                    AM
+                </div>
+
+                <div class="datos-tutor">
+
+                    <h1>Ana Martínez</h1>
+
+                    <span class="verificado">
+                        Tutor verificado
+                    </span>
+
+                    <p class="especialidad">
+                        Matemática y Física
+                    </p>
+
+                    <p class="ubicacion">
+                        Guatemala · Clases virtuales
+                    </p>
+
+                    <div class="estado-disponible">
+                        <span class="punto-disponible"></span>
+                        <span>
+                            Disponible para nuevas tutorías
+                        </span>
+                    </div>
+
+                    <div class="estadisticas">
+
+                        <span>
+                            <strong>4.9</strong>
+                            ★ calificación
+                        </span>
+
+                        <span>
+                            <strong>38</strong>
+                            reseñas
+                        </span>
+
+                        <span>
+                            <strong>5</strong>
+                            años de experiencia
+                        </span>
+
+                    </div>
+                </div>
+            </div>
+
+            <aside class="reserva">
+
+                <p class="precio">
+                    <span>Desde</span>
+                    <strong>Q75</strong> / hora
+                </p>
+
+                <a
+                    href="#disponibilidad"
+                    class="boton boton-reservar"
+                >
+                    Ver disponibilidad
+                </a>
+
+                <button
+                    type="button"
+                    class="boton boton-contactar"
+                >
+                    Contactar al tutor
+                </button>
+
+                <a
+                    href="gestionar-disponibilidad.html"
+                    id="enlace-administrar"
+                    class="boton boton-administrar"
+                >
+                    Administrar horarios
+                </a>
+
+                <p class="nota">
+                    No se realizará ningún cobro todavía.
+                </p>
+
+            </aside>
+        </section>
+
+        <div class="contenido">
+
+            <div class="columna-principal">
+
+                <section class="tarjeta">
+                    <h2>Sobre mí</h2>
+
+                    <p>
+                        Soy tutora de Matemática y Física.
+                        Me gusta explicar cada tema paso a paso
+                        y adaptar las clases al ritmo y objetivos
+                        de cada estudiante.
+                    </p>
+                </section>
+
+                <section class="tarjeta">
+                    <h2>Materias que enseño</h2>
+
+                    <ul class="materias">
+                        <li>Álgebra</li>
+                        <li>Geometría</li>
+                        <li>Cálculo</li>
+                        <li>Física básica</li>
+                    </ul>
+                </section>
+
+                <section class="tarjeta">
+                    <h2>Metodología</h2>
+
+                    <ul class="metodologia">
+
+                        <li>
+                            Diagnóstico inicial para conocer las
+                            necesidades del estudiante.
+                        </li>
+
+                        <li>
+                            Explicaciones claras con ejemplos y
+                            ejercicios prácticos.
+                        </li>
+
+                        <li>
+                            Material de apoyo y seguimiento
+                            después de cada sesión.
+                        </li>
+
+                    </ul>
+                </section>
+
+                <section
+                    class="tarjeta"
+                    id="disponibilidad"
+                >
+                    <h2>Disponibilidad semanal</h2>
+
+                    <div id="horarios-disponibles">
+                        <p class="sin-disponibilidad">
+                            Cargando horarios disponibles...
+                        </p>
+                    </div>
+                </section>
+
+            </div>
+
+            <aside class="columna-lateral">
+
+                <section class="tarjeta">
+                    <h2>Formación</h2>
+
+                    <div class="formacion">
+                        <strong>Licenciatura en Física</strong>
+
+                        <span>
+                            Universidad de San Carlos
+                            de Guatemala
+                        </span>
+                    </div>
+
+                    <div class="formacion">
+                        <strong>Diplomado en Docencia</strong>
+                        <span>Formación complementaria</span>
+                    </div>
+                </section>
+
+                <section class="tarjeta">
+                    <h2>Idiomas</h2>
+
+                    <p>Español · Nativo</p>
+                    <p>Inglés · Intermedio</p>
+                </section>
+
+            </aside>
+        </div>
+
+    </main>
+
+    <footer>
+        © 2026 Mentora · Aprende con acompañamiento personalizado
+    </footer>
+
+    <script>
+        /*
+         * Identificador temporal del tutor mostrado.
+         *
+         * Posteriormente deberá obtenerse de la sesión
+         * iniciada o de la dirección del perfil.
+         */
+        const parametros = new URLSearchParams(
+            window.location.search
+        );
+
+        const tutorIdParametro = Number(
+            parametros.get("tutorId")
+        );
+
+        const TUTOR_ID =
+            Number.isInteger(tutorIdParametro)
+            && tutorIdParametro > 0
+                ? tutorIdParametro
+                : 1;
+
+        document.getElementById("enlace-administrar").href =
+            `gestionar-disponibilidad.html?tutorId=${TUTOR_ID}`;
+
+        /*
+         * Consulta únicamente los horarios activos.
+         */
+        async function cargarDisponibilidad() {
+            const contenedor = document.getElementById(
+                "horarios-disponibles"
+            );
+
+            try {
+                const respuesta = await fetch(
+                    `/api/tutores/${TUTOR_ID}/disponibilidades`
+                );
+
+                if (!respuesta.ok) {
+                    throw new Error(await respuesta.text());
+                }
+
+                const horarios = await respuesta.json();
+
+                contenedor.replaceChildren();
+
+                if (horarios.length === 0) {
+                    mostrarSinDisponibilidad(contenedor);
+                    return;
+                }
+
+                horarios.forEach(horario => {
+                    const fila = crearFilaHorario(horario);
+                    contenedor.appendChild(fila);
+                });
+            } catch (error) {
+                contenedor.replaceChildren();
+
+                const mensaje = document.createElement("p");
+
+                mensaje.className = "sin-disponibilidad";
+                mensaje.textContent =
+                    "No fue posible cargar la disponibilidad.";
+
+                contenedor.appendChild(mensaje);
+
+                console.error(error);
+            }
+        }
+
+        /*
+         * Crea una fila para mostrar un horario.
+         */
+        function crearFilaHorario(horario) {
+            const fila = document.createElement("div");
+            fila.className = "horario";
+
+            const dia = document.createElement("strong");
+            dia.textContent = horario.dia;
+
+            const horas = document.createElement("span");
+            horas.textContent =
+                `${formatearHora(horario.horaInicio)} - ` +
+                `${formatearHora(horario.horaFin)}`;
+
+            fila.append(dia, horas);
+
+            return fila;
+        }
+
+        /*
+         * Muestra un mensaje cuando no existen
+         * horarios activos.
+         */
+        function mostrarSinDisponibilidad(contenedor) {
+            const mensaje = document.createElement("p");
+
+            mensaje.className = "sin-disponibilidad";
+            mensaje.textContent =
+                "El tutor no tiene horarios disponibles.";
+
+            contenedor.appendChild(mensaje);
+        }
+
+        /*
+         * Elimina los segundos de una hora.
+         *
+         * Ejemplo:
+         * 16:00:00 se convierte en 16:00.
+         */
+        function formatearHora(hora) {
+            return hora.substring(0, 5);
+        }
+
+        cargarDisponibilidad();
+    </script>
+
+</body>
+</html>
