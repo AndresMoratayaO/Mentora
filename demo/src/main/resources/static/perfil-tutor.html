@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
 
-    <!-- Permite que la página se adapte a celulares y tabletas -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Perfil del tutor | Mentora</title>
 
@@ -90,7 +92,7 @@
             border-radius: 8px;
         }
 
-        /* Contenedor principal */
+        /* Contenedor */
 
         .contenedor {
             width: calc(100% - 40px);
@@ -106,7 +108,7 @@
             text-decoration: none;
         }
 
-        /* Encabezado del perfil */
+        /* Perfil principal */
 
         .perfil-principal {
             display: grid;
@@ -158,22 +160,7 @@
             font-size: 12px;
             font-weight: bold;
         }
-        .estado-disponible {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin: 12px 0 0;
-            color: #087b69;
-            font-size: 14px;
-            font-weight: bold;
-        }
 
-        .punto-disponible {
-            width: 10px;
-            height: 10px;
-            background-color: #20b99a;
-            border-radius: 50%;
-        }
         .especialidad {
             margin: 10px 0 2px;
             color: var(--verde-oscuro);
@@ -184,6 +171,23 @@
         .ubicacion {
             margin: 0;
             color: var(--texto-suave);
+        }
+
+        .estado-disponible {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 12px 0 0;
+            color: var(--verde-oscuro);
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .punto-disponible {
+            width: 10px;
+            height: 10px;
+            background-color: var(--verde);
+            border-radius: 50%;
         }
 
         .estadisticas {
@@ -250,11 +254,13 @@
             background-color: var(--blanco);
             border: 1px solid var(--azul);
         }
+
         .boton-administrar {
             color: var(--blanco);
             background-color: var(--verde-oscuro);
             border: none;
         }
+
         .boton:hover {
             filter: brightness(0.95);
         }
@@ -359,11 +365,15 @@
 
         /* Horarios */
 
+        #horarios-disponibles {
+            display: grid;
+            gap: 10px;
+        }
+
         .horario {
             display: flex;
             justify-content: space-between;
             gap: 20px;
-            margin-top: 10px;
             padding: 12px;
             background-color: var(--fondo);
             border-radius: 8px;
@@ -371,6 +381,15 @@
 
         .horario strong {
             color: var(--azul);
+        }
+
+        .sin-disponibilidad {
+            margin: 0;
+            padding: 14px;
+            color: var(--texto-suave);
+            background-color: var(--fondo);
+            border-radius: 8px;
+            text-align: center;
         }
 
         footer {
@@ -381,9 +400,7 @@
             text-align: center;
         }
 
-        /*
-         * RESPONSIVE PARA TABLETAS
-         */
+        /* Responsive para tabletas */
 
         @media (max-width: 900px) {
             .barra-superior {
@@ -408,9 +425,7 @@
             }
         }
 
-        /*
-         * RESPONSIVE PARA CELULARES
-         */
+        /* Responsive para celulares */
 
         @media (max-width: 600px) {
             .barra-superior {
@@ -530,36 +545,33 @@
 
             <div class="informacion-tutor">
 
-                <!--
-                    Aquí puedes colocar las iniciales
-                    o cambiarlo posteriormente por una imagen.
-                -->
                 <div class="foto-tutor">
                     AM
                 </div>
 
                 <div class="datos-tutor">
 
-                    <!-- Nombre del tutor -->
                     <h1>Ana Martínez</h1>
 
                     <span class="verificado">
                         Tutor verificado
                     </span>
 
-                    <!-- Especialidad del tutor -->
                     <p class="especialidad">
                         Matemática y Física
                     </p>
 
-                    <!-- Ubicación y modalidad -->
                     <p class="ubicacion">
                         Guatemala · Clases virtuales
                     </p>
+
                     <div class="estado-disponible">
                         <span class="punto-disponible"></span>
-                        <span>Disponible para nuevas tutorías</span>
+                        <span>
+                            Disponible para nuevas tutorías
+                        </span>
                     </div>
+
                     <div class="estadisticas">
 
                         <span>
@@ -601,12 +613,14 @@
                 >
                     Contactar al tutor
                 </button>
+
                 <a
                     href="gestionar-disponibilidad.html"
                     class="boton boton-administrar"
                 >
                     Administrar horarios
                 </a>
+
                 <p class="nota">
                     No se realizará ningún cobro todavía.
                 </p>
@@ -669,17 +683,13 @@
                 >
                     <h2>Disponibilidad semanal</h2>
 
-                    <div class="horario">
-                        <strong>Lunes a miércoles</strong>
-                        <span>16:00 – 20:00</span>
+                    <div id="horarios-disponibles">
+                        <p class="sin-disponibilidad">
+                            Cargando horarios disponibles...
+                        </p>
                     </div>
-
-                    <div class="horario">
-                        <strong>Sábado</strong>
-                        <span>09:00 – 13:00</span>
-                    </div>
-
                 </section>
+
             </div>
 
             <aside class="columna-lateral">
@@ -717,6 +727,107 @@
     <footer>
         © 2026 Mentora · Aprende con acompañamiento personalizado
     </footer>
+
+    <script>
+        /*
+         * Identificador temporal del tutor mostrado.
+         *
+         * Posteriormente deberá obtenerse de la sesión
+         * iniciada o de la dirección del perfil.
+         */
+        const TUTOR_ID = 1;
+
+        /*
+         * Consulta únicamente los horarios activos.
+         */
+        async function cargarDisponibilidad() {
+            const contenedor = document.getElementById(
+                "horarios-disponibles"
+            );
+
+            try {
+                const respuesta = await fetch(
+                    `/api/tutores/${TUTOR_ID}/disponibilidades`
+                );
+
+                if (!respuesta.ok) {
+                    throw new Error(await respuesta.text());
+                }
+
+                const horarios = await respuesta.json();
+
+                contenedor.replaceChildren();
+
+                if (horarios.length === 0) {
+                    mostrarSinDisponibilidad(contenedor);
+                    return;
+                }
+
+                horarios.forEach(horario => {
+                    const fila = crearFilaHorario(horario);
+                    contenedor.appendChild(fila);
+                });
+            } catch (error) {
+                contenedor.replaceChildren();
+
+                const mensaje = document.createElement("p");
+
+                mensaje.className = "sin-disponibilidad";
+                mensaje.textContent =
+                    "No fue posible cargar la disponibilidad.";
+
+                contenedor.appendChild(mensaje);
+
+                console.error(error);
+            }
+        }
+
+        /*
+         * Crea una fila para mostrar un horario.
+         */
+        function crearFilaHorario(horario) {
+            const fila = document.createElement("div");
+            fila.className = "horario";
+
+            const dia = document.createElement("strong");
+            dia.textContent = horario.dia;
+
+            const horas = document.createElement("span");
+            horas.textContent =
+                `${formatearHora(horario.horaInicio)} - ` +
+                `${formatearHora(horario.horaFin)}`;
+
+            fila.append(dia, horas);
+
+            return fila;
+        }
+
+        /*
+         * Muestra un mensaje cuando no existen
+         * horarios activos.
+         */
+        function mostrarSinDisponibilidad(contenedor) {
+            const mensaje = document.createElement("p");
+
+            mensaje.className = "sin-disponibilidad";
+            mensaje.textContent =
+                "El tutor no tiene horarios disponibles.";
+
+            contenedor.appendChild(mensaje);
+        }
+
+        /*
+         * Elimina los segundos de una hora.
+         *
+         * Ejemplo:
+         * 16:00:00 se convierte en 16:00.
+         */
+        function formatearHora(hora) {
+            return hora.substring(0, 5);
+        }
+
+        cargarDisponibilidad();
+    </script>
 
 </body>
 </html>
