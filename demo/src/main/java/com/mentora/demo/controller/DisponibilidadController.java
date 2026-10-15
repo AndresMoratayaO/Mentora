@@ -37,14 +37,10 @@ public class DisponibilidadController {
     }
 
     /*
-     * Consulta los horarios de un tutor.
+     * Consulta los horarios del tutor.
      *
-     * De forma predeterminada devuelve únicamente
-     * los horarios que están disponibles.
-     *
-     * Para consultar también los horarios desactivados:
-     *
-     * ?soloDisponibles=false
+     * De forma predeterminada devuelve solamente
+     * los horarios disponibles.
      */
     @GetMapping
     public ResponseEntity<?> listarDisponibilidades(
@@ -134,6 +130,20 @@ public class DisponibilidadController {
                     .body("La hora final debe ser posterior a la hora inicial.");
         }
 
+        if (existeConflicto(
+                tutorId,
+                null,
+                diaNormalizado,
+                horaInicio,
+                horaFin)) {
+
+            return ResponseEntity
+                    .badRequest()
+                    .body(
+                        "El horario se cruza con otra disponibilidad activa."
+                    );
+        }
+
         Disponibilidad disponibilidad = new Disponibilidad(
                 tutor,
                 diaNormalizado,
@@ -149,8 +159,7 @@ public class DisponibilidadController {
     }
 
     /*
-     * Modifica el día, la hora inicial y la hora final
-     * de un horario que pertenece al tutor.
+     * Modifica el día y las horas de una disponibilidad.
      */
     @PutMapping("/{disponibilidadId}")
     public ResponseEntity<?> actualizarDisponibilidad(
@@ -192,6 +201,25 @@ public class DisponibilidadController {
                     .body("La hora final debe ser posterior a la hora inicial.");
         }
 
+        /*
+         * Solamente se verifica el conflicto si el horario
+         * que se está editando se encuentra activo.
+         */
+        if (disponibilidad.isDisponible()
+                && existeConflicto(
+                        tutorId,
+                        disponibilidadId,
+                        diaNormalizado,
+                        horaInicio,
+                        horaFin)) {
+
+            return ResponseEntity
+                    .badRequest()
+                    .body(
+                        "El horario se cruza con otra disponibilidad activa."
+                    );
+        }
+
         disponibilidad.setDia(diaNormalizado);
         disponibilidad.setHoraInicio(horaInicio);
         disponibilidad.setHoraFin(horaFin);
@@ -205,9 +233,6 @@ public class DisponibilidadController {
 
     /*
      * Activa o desactiva un horario.
-     *
-     * Los horarios desactivados permanecen en la base
-     * de datos, pero no se muestran como disponibles.
      */
     @PatchMapping("/{disponibilidadId}/estado")
     public ResponseEntity<?> cambiarEstado(
@@ -227,6 +252,26 @@ public class DisponibilidadController {
                     .body("El horario indicado no existe para este tutor.");
         }
 
+        /*
+         * Antes de activar un horario, se comprueba que
+         * no se cruce con otro horario que ya esté activo.
+         */
+        if (disponible
+                && existeConflicto(
+                        tutorId,
+                        disponibilidadId,
+                        horario.getDia(),
+                        horario.getHoraInicio(),
+                        horario.getHoraFin())) {
+
+            return ResponseEntity
+                    .badRequest()
+                    .body(
+                        "No se puede activar porque se cruza " +
+                        "con otra disponibilidad activa."
+                    );
+        }
+
         horario.setDisponible(disponible);
 
         Disponibilidad horarioActualizado =
@@ -237,10 +282,40 @@ public class DisponibilidadController {
     }
 
     /*
-     * Convierte la entidad Disponibilidad en una respuesta.
+     * Comprueba si un horario se cruza con otro horario
+     * activo del mismo tutor y del mismo día.
      *
-     * De esta manera no se envían datos privados del tutor,
-     * como el correo o la contraseña.
+     * El identificador ignorado permite editar un horario
+     * sin compararlo consigo mismo.
+     */
+    private boolean existeConflicto(
+            Long tutorId,
+            Long disponibilidadIdIgnorada,
+            String dia,
+            LocalTime horaInicio,
+            LocalTime horaFin) {
+
+        List<Disponibilidad> horariosActivos =
+                disponibilidadRepositorio
+                        .findByTutor_IdAndDisponibleTrueOrderByDiaAscHoraInicioAsc(
+                                tutorId);
+
+        return horariosActivos
+                .stream()
+                .filter(horario ->
+                        disponibilidadIdIgnorada == null
+                        || !horario.getId().equals(
+                                disponibilidadIdIgnorada))
+                .filter(horario ->
+                        horario.getDia().equalsIgnoreCase(dia))
+                .anyMatch(horario ->
+                        horaInicio.isBefore(horario.getHoraFin())
+                        && horaFin.isAfter(
+                                horario.getHoraInicio()));
+    }
+
+    /*
+     * Convierte la entidad en una respuesta segura.
      */
     private DisponibilidadRespuesta convertirRespuesta(
             Disponibilidad disponibilidad) {
@@ -254,7 +329,7 @@ public class DisponibilidadController {
     }
 
     /*
-     * Valida y normaliza el nombre de un día.
+     * Valida y normaliza el día.
      */
     private String normalizarDia(String dia) {
 
@@ -277,7 +352,7 @@ public class DisponibilidadController {
     }
 
     /*
-     * Representa los datos que se devuelven como JSON.
+     * Información enviada como JSON.
      */
     public record DisponibilidadRespuesta(
             Long id,
