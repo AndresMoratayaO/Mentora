@@ -325,7 +325,11 @@
             <span>Mentora</span>
         </a>
 
-        <a href="perfil-tutor.html" class="volver">
+        <a
+            href="perfil-tutor.html"
+            id="enlace-volver"
+            class="volver"
+        >
             ← Volver al perfil
         </a>
     </header>
@@ -439,7 +443,22 @@
          * Identificador temporal del tutor de prueba.
          * Posteriormente se obtendrá de la sesión iniciada.
          */
-        const TUTOR_ID = 1;
+        const parametros = new URLSearchParams(
+            window.location.search
+        );
+
+        const tutorIdParametro = Number(
+            parametros.get("tutorId")
+        );
+
+        const TUTOR_ID =
+            Number.isInteger(tutorIdParametro)
+            && tutorIdParametro > 0
+                ? tutorIdParametro
+                : 1;
+
+        document.getElementById("enlace-volver").href =
+            `perfil-tutor.html?tutorId=${TUTOR_ID}`;
 
         const API_URL =
             `/api/tutores/${TUTOR_ID}/disponibilidades`;

@@ -616,6 +616,7 @@
 
                 <a
                     href="gestionar-disponibilidad.html"
+                    id="enlace-administrar"
                     class="boton boton-administrar"
                 >
                     Administrar horarios
@@ -735,7 +736,22 @@
          * Posteriormente deberá obtenerse de la sesión
          * iniciada o de la dirección del perfil.
          */
-        const TUTOR_ID = 1;
+        const parametros = new URLSearchParams(
+            window.location.search
+        );
+
+        const tutorIdParametro = Number(
+            parametros.get("tutorId")
+        );
+
+        const TUTOR_ID =
+            Number.isInteger(tutorIdParametro)
+            && tutorIdParametro > 0
+                ? tutorIdParametro
+                : 1;
+
+        document.getElementById("enlace-administrar").href =
+            `gestionar-disponibilidad.html?tutorId=${TUTOR_ID}`;
 
         /*
          * Consulta únicamente los horarios activos.
