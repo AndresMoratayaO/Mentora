@@ -23,40 +23,26 @@ public class ControladorMateria {
     }
 
     @PostMapping
-    public ResponseEntity<?> crearMateria(
+    public ResponseEntity<Materia> crearMateria(
             @RequestParam String nombre,
             @RequestParam String descripcion) {
 
-        String nombreLimpio = nombre.trim();
-        String descripcionLimpia = descripcion.trim();
-
-        if (nombreLimpio.isBlank()) {
-            return ResponseEntity
-                    .badRequest()
-                    .body("El nombre de la materia es obligatorio.");
+        if (repositorioMateria.existsByNombreIgnoreCase(nombre)) {
+            return ResponseEntity.badRequest().build();
         }
 
-        if (repositorioMateria.existsByNombreIgnoreCase(nombreLimpio)) {
-            return ResponseEntity
-                    .badRequest()
-                    .body("La materia ya existe.");
-        }
+        Materia materia = new Materia(nombre, descripcion);
 
-        Materia materia = new Materia(
-                nombreLimpio,
-                descripcionLimpia
-        );
+        Materia materiaGuardada = repositorioMateria.save(materia);
 
-        return ResponseEntity.ok(
-                repositorioMateria.save(materia)
-        );
+        return ResponseEntity.ok(materiaGuardada);
     }
 
     @GetMapping
     public ResponseEntity<List<Materia>> listarMaterias() {
 
-        return ResponseEntity.ok(
-                repositorioMateria.findAll()
-        );
+        List<Materia> materias = repositorioMateria.findAll();
+
+        return ResponseEntity.ok(materias);
     }
 }

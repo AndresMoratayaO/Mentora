@@ -6,23 +6,36 @@ import java.util.Locale;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mentora.demo.modelo.Usuario;
-import com.mentora.demo.repositorio.repositoriousuario;
+import com.mentora.demo.modelo.Estudiante;
+import com.mentora.demo.modelo.Materia;
+import com.mentora.demo.modelo.Tutor;
+import com.mentora.demo.repositorio.repositorioEstudiante;
+import com.mentora.demo.repositorio.repositorioMateria;
+import com.mentora.demo.repositorio.repositorioTutor;
 
 @RestController
 public class Registrocontroller {
 
-    private final repositoriousuario repositorio;
-    private final BCryptPasswordEncoder encoder =
-            new BCryptPasswordEncoder();
+    private final repositorioEstudiante estudiantes;
+    private final repositorioTutor tutores;
+    private final repositorioMateria materias;
+    private final PasswordEncoder encoder;
 
-    public Registrocontroller(repositoriousuario repositorio) {
-        this.repositorio = repositorio;
+    public Registrocontroller(
+            repositorioEstudiante estudiantes,
+            repositorioTutor tutores,
+            repositorioMateria materias,
+            PasswordEncoder encoder) {
+
+        this.estudiantes = estudiantes;
+        this.tutores = tutores;
+        this.materias = materias;
+        this.encoder = encoder;
     }
 
     @PostMapping(
@@ -34,7 +47,15 @@ public class Registrocontroller {
             @RequestParam("correo") String correo,
             @RequestParam("tipoUsuario") String tipoUsuario,
             @RequestParam("contrasena") String contrasena,
-            @RequestParam("confirmarContrasena") String confirmarContrasena) {
+            @RequestParam("confirmarContrasena") String confirmarContrasena,
+            @RequestParam(value = "experiencia", required = false)
+                String experiencia,
+            @RequestParam(value = "precio", required = false)
+                Double precio,
+            @RequestParam(value = "descripcion", required = false)
+                String descripcion,
+            @RequestParam(value = "idMateria", required = false)
+                Long idMateria) {
 
         nombre = nombre.trim();
         correo = correo.trim().toLowerCase(Locale.ROOT);
@@ -61,7 +82,6 @@ public class Registrocontroller {
                     .body("La contraseña debe tener al menos 8 caracteres.");
         }
 
-        // BCrypt admite como máximo 72 bytes.
         if (contrasena.getBytes(StandardCharsets.UTF_8).length > 72) {
             return ResponseEntity.badRequest()
                     .body("La contraseña es demasiado larga.");
@@ -72,20 +92,74 @@ public class Registrocontroller {
                     .body("Las contraseñas no coinciden.");
         }
 
-        if (repositorio.existsByCorreo(correo)) {
+        if (estudiantes.existsByCorreo(correo)
+                || tutores.existsByCorreo(correo)) {
             return ResponseEntity.status(409)
                     .body("Ya existe una cuenta con ese correo.");
         }
 
-        Usuario usuario = new Usuario(
-                nombre,
-                correo,
-                encoder.encode(contrasena),
-                tipoUsuario
-        );
+        Tutor tutor = null;
+
+        if (tipoUsuario.equals("TUTOR")) {
+
+            if (experiencia == null
+                    || experiencia.isBlank()
+                    || experiencia.trim().length() > 255) {
+                return ResponseEntity.badRequest()
+                        .body("Ingresa tu experiencia: máximo 255 caracteres.");
+            }
+
+            if (precio == null
+                    || !Double.isFinite(precio)
+                    || precio < 0) {
+                return ResponseEntity.badRequest()
+                        .body("Ingresa un precio válido, mayor o igual a cero.");
+            }
+
+            descripcion = descripcion == null
+                    ? ""
+                    : descripcion.trim();
+
+            if (descripcion.length() > 500) {
+                return ResponseEntity.badRequest()
+                        .body("La descripción admite hasta 500 caracteres.");
+            }
+
+            if (idMateria == null) {
+                return ResponseEntity.badRequest()
+                        .body("Selecciona una materia.");
+            }
+
+            Materia materia = materias.findById(idMateria).orElse(null);
+
+            if (materia == null) {
+                return ResponseEntity.badRequest()
+                        .body("La materia seleccionada no existe.");
+            }
+
+            tutor = new Tutor(
+                    nombre,
+                    correo,
+                    encoder.encode(contrasena),
+                    experiencia.trim(),
+                    precio,
+                    descripcion
+            );
+
+            tutor.agregarMateria(materia);
+        }
 
         try {
-            repositorio.saveAndFlush(usuario);
+            if (tutor != null) {
+                tutores.saveAndFlush(tutor);
+            } else {
+                estudiantes.saveAndFlush(new Estudiante(
+                        nombre,
+                        correo,
+                        encoder.encode(contrasena)
+                ));
+            }
+
         } catch (DataIntegrityViolationException ex) {
             return ResponseEntity.status(409)
                     .body("No se pudo guardar la cuenta. Revisa los datos; "

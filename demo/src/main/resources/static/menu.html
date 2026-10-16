@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Menú | Mentora</title>
+
+    <link rel="stylesheet" href="cssmenu.css">
+    <script src="mentora.js"></script>
+</head>
+<body>
+
+    <main class="contenedor">
+
+        <header class="encabezado">
+            <img src="logomentora.png" alt="Mentora" class="logo">
+
+            <h1 id="saludo">Bienvenido</h1>
+            <p id="subtitulo"></p>
+        </header>
+
+        <section id="opciones" class="opciones" aria-label="Opciones"></section>
+
+        <div class="acciones">
+            <button type="button" id="btnSalir" class="boton-salir">
+                Cerrar sesión
+            </button>
+        </div>
+
+    </main>
+
+    <script>
+        function opcionesPara(sesion) {
+
+            if (sesion.tipoUsuario === "TUTOR") {
+                return [{
+                    titulo: "Mi perfil",
+                    texto: "Mira cómo ven los estudiantes tu perfil de tutor.",
+                    href: "perfil-tutor.html?id=" + encodeURIComponent(sesion.id)
+                }];
+            }
+
+            return [{
+                titulo: "Buscar tutores",
+                texto: "Encuentra un tutor por materia o por nombre y consulta su perfil.",
+                href: "buscartutores.html"
+            }];
+        }
+
+        async function iniciar() {
+
+            const sesion = await exigirSesion();
+
+            if (!sesion) {
+                return;
+            }
+
+            document.getElementById("saludo").textContent =
+                "Hola, " + sesion.nombre;
+
+            document.getElementById("subtitulo").textContent =
+                sesion.tipoUsuario === "TUTOR"
+                    ? "Cuenta de tutor"
+                    : "Cuenta de estudiante";
+
+            const contenedor = document.getElementById("opciones");
+
+            opcionesPara(sesion).forEach(function (opcion) {
+
+                const enlace = document.createElement("a");
+                enlace.className = "opcion";
+                enlace.href = opcion.href;
+
+                const titulo = document.createElement("h2");
+                titulo.textContent = opcion.titulo;
+
+                const texto = document.createElement("p");
+                texto.textContent = opcion.texto;
+
+                enlace.append(titulo, texto);
+                contenedor.appendChild(enlace);
+            });
+        }
+
+        document.getElementById("btnSalir")
+            .addEventListener("click", cerrarSesion);
+
+        iniciar();
+    </script>
+
+</body>
+</html>

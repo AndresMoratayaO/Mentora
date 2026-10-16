@@ -7,6 +7,7 @@
     <title>Crear cuenta | Mentora</title>
 
     <link rel="stylesheet" href="cssiniciosesion.css">
+    <script src="mentora.js"></script>
 </head>
 <body>
     <main class="tarjeta">
@@ -22,9 +23,9 @@
         <section aria-labelledby="titulo">
             <h1 id="titulo">Crear cuenta</h1>
 
-            <form action="/registro" method="post">
+            <form id="formRegistro">
                 <div class="campo">
-                    <label>Nombre completo</label>
+                    <label for="nombre">Nombre completo</label>
                     <input
                         type="text"
                         id="nombre"
@@ -36,7 +37,7 @@
                 </div>
 
                 <div class="campo">
-                    <label>Correo electrónico</label>
+                    <label for="correo">Correo electrónico</label>
                     <input
                         type="email"
                         id="correo"
@@ -48,7 +49,7 @@
                 </div>
 
                 <div class="campo">
-                    <label>Tipo de cuenta</label>
+                    <label for="tipoUsuario">Tipo de cuenta</label>
                     <select id="tipoUsuario" name="tipoUsuario" required>
                         <option value="" disabled selected>
                             Selecciona una opción
@@ -58,8 +59,54 @@
                     </select>
                 </div>
 
+                <!-- Solo se muestra si elige "Tutor" -->
+                <div id="camposTutor" hidden>
+                    <div class="campo">
+                        <label for="idMateria">Materia que enseñas</label>
+                        <select id="idMateria" name="idMateria">
+                            <option value="" disabled selected>
+                                Cargando materias...
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="campo">
+                        <label for="experiencia">Experiencia</label>
+                        <input
+                            type="text"
+                            id="experiencia"
+                            name="experiencia"
+                            maxlength="255"
+                            placeholder="Ej. 3 años dando clases de álgebra"
+                        >
+                    </div>
+
+                    <div class="campo">
+                        <label for="precio">Precio por hora (Q)</label>
+                        <input
+                            type="number"
+                            id="precio"
+                            name="precio"
+                            min="0"
+                            step="0.01"
+                            placeholder="75"
+                        >
+                    </div>
+
+                    <div class="campo">
+                        <label for="descripcion">Descripción (opcional)</label>
+                        <textarea
+                            id="descripcion"
+                            name="descripcion"
+                            maxlength="500"
+                            rows="3"
+                            placeholder="Cuéntales a los estudiantes cómo das tus clases"
+                        ></textarea>
+                    </div>
+                </div>
+
                 <div class="campo">
-                    <label>Contraseña</label>
+                    <label for="contrasena">Contraseña</label>
                     <input
                         type="password"
                         id="contrasena"
@@ -68,10 +115,11 @@
                         minlength="8"
                         required
                     >
+                    <p class="ayuda">Mínimo 8 caracteres.</p>
                 </div>
 
                 <div class="campo">
-                    <label>
+                    <label for="confirmarContrasena">
                         Confirmar contraseña
                     </label>
                     <input
@@ -84,9 +132,11 @@
                     >
                 </div>
 
-                <button type="submit" class="difuminado">
+                <button type="submit" id="btnRegistro" class="difuminado">
                     Crear cuenta
                 </button>
+
+                <p id="mensaje" class="mensaje" role="alert"></p>
             </form>
 
             <p class="crear-cuenta">
@@ -95,5 +145,138 @@
             </p>
         </section>
     </main>
+
+    <script>
+        const formulario = document.getElementById("formRegistro");
+        const boton = document.getElementById("btnRegistro");
+        const mensaje = document.getElementById("mensaje");
+        const tipoUsuario = document.getElementById("tipoUsuario");
+        const camposTutor = document.getElementById("camposTutor");
+        const selectMateria = document.getElementById("idMateria");
+
+        function mostrarMensaje(texto, clase) {
+            mensaje.textContent = texto;
+            mensaje.className = "mensaje " + clase;
+        }
+
+        function valor(id) {
+            return document.getElementById(id).value;
+        }
+
+        // Muestra los campos extra solo para tutores y los vuelve obligatorios.
+        function actualizarCampos() {
+            const esTutor = tipoUsuario.value === "TUTOR";
+
+            camposTutor.hidden = !esTutor;
+            selectMateria.required = esTutor;
+            document.getElementById("experiencia").required = esTutor;
+            document.getElementById("precio").required = esTutor;
+        }
+
+        // Llena el selector con las materias que hay en la base de datos.
+        async function cargarMaterias() {
+
+            selectMateria.innerHTML = "";
+
+            try {
+                const respuesta = await fetch("/materias");
+
+                if (!respuesta.ok) {
+                    throw new Error("No se pudieron cargar las materias.");
+                }
+
+                const materias = await respuesta.json();
+
+                if (materias.length === 0) {
+                    selectMateria.add(new Option(
+                        "Aún no hay materias disponibles", "", true, true));
+                    selectMateria.options[0].disabled = true;
+                    return;
+                }
+
+                const instruccion = new Option(
+                    "Selecciona una materia", "", true, true);
+                instruccion.disabled = true;
+                selectMateria.add(instruccion);
+
+                materias.forEach(function (materia) {
+                    selectMateria.add(
+                        new Option(materia.nombre, materia.idMateria));
+                });
+
+            } catch (error) {
+                const aviso = new Option(
+                    "No se pudieron cargar las materias", "", true, true);
+                aviso.disabled = true;
+                selectMateria.add(aviso);
+                console.error(error);
+            }
+        }
+
+        tipoUsuario.addEventListener("change", actualizarCampos);
+
+        formulario.addEventListener("submit", async function (evento) {
+
+            evento.preventDefault();
+            mostrarMensaje("", "");
+
+            const datos = new URLSearchParams({
+                nombre: valor("nombre"),
+                correo: valor("correo"),
+                tipoUsuario: valor("tipoUsuario"),
+                contrasena: valor("contrasena"),
+                confirmarContrasena: valor("confirmarContrasena")
+            });
+
+            // Estos campos solo se envían si la cuenta es de tutor.
+            if (tipoUsuario.value === "TUTOR") {
+                datos.append("idMateria", valor("idMateria"));
+                datos.append("experiencia", valor("experiencia"));
+                datos.append("precio", valor("precio"));
+                datos.append("descripcion", valor("descripcion"));
+            }
+
+            boton.disabled = true;
+
+            try {
+                const respuesta = await fetch("/registro", {
+                    method: "POST",
+                    body: datos
+                });
+
+                const texto = await leerMensaje(
+                    respuesta,
+                    "No se pudo crear la cuenta. Revisa los datos."
+                );
+
+                if (respuesta.status === 201) {
+                    mostrarMensaje(
+                        texto + " Te llevamos al inicio de sesión...",
+                        "ok"
+                    );
+
+                    // El botón queda desactivado mientras se redirige.
+                    setTimeout(function () {
+                        window.location.href = "iniciosesion.html";
+                    }, 1500);
+                    return;
+                }
+
+                mostrarMensaje(texto, "error");
+                boton.disabled = false;
+
+            } catch (error) {
+                mostrarMensaje(
+                    "No se pudo conectar con el servidor.",
+                    "error"
+                );
+                console.error(error);
+                boton.disabled = false;
+            }
+        });
+
+        cargarMaterias();
+        actualizarCampos();
+    </script>
 </body>
 </html>

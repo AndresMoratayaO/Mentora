@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Perfil del tutor | Mentora</title>
+
+    <style>
+        :root {
+            --azul: #11105d;
+            --azul-claro: #e9eafe;
+            --verde: #20b99a;
+            --verde-oscuro: #087b69;
+            --texto: #172033;
+            --texto-suave: #667085;
+            --borde: #dddddd;
+            --fondo: #f5f7fb;
+            --blanco: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            color: var(--texto);
+            background-color: var(--fondo);
+        }
+
+
+        .barra-superior {
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+            padding: 10px 60px;
+            background-color: var(--blanco);
+            border-bottom: 1px solid var(--borde);
+        }
+
+        .marca {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--azul);
+            font-size: 24px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .marca img {
+            width: 55px;
+            height: 55px;
+            object-fit: contain;
+            border-radius: 50%;
+        }
+
+        .navegacion {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .navegacion a {
+            color: var(--texto);
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .navegacion a:hover {
+            color: var(--verde-oscuro);
+        }
+
+        .navegacion .boton-iniciar {
+            padding: 10px 18px;
+            color: var(--azul);
+            background-color: var(--blanco);
+            border: 1px solid var(--azul);
+            border-radius: 8px;
+        }
+
+
+        .contenedor {
+            width: calc(100% - 40px);
+            max-width: 1100px;
+            margin: 30px auto 60px;
+        }
+
+        .volver {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--verde-oscuro);
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+
+        .perfil-principal {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 280px;
+            gap: 30px;
+            padding: 35px;
+            background-color: var(--blanco);
+            border: 1px solid var(--borde);
+            border-radius: 18px;
+        }
+
+        .informacion-tutor {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .foto-tutor {
+            width: 125px;
+            height: 125px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--blanco);
+            background: linear-gradient(
+                to right,
+                var(--azul),
+                var(--verde)
+            );
+            border-radius: 50%;
+            font-size: 36px;
+            font-weight: bold;
+        }
+
+        .datos-tutor h1 {
+            margin: 0;
+            color: var(--texto);
+            font-size: 38px;
+        }
+
+        .verificado {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 5px 10px;
+            color: var(--verde-oscuro);
+            background-color: #dff8f1;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .estado-disponible {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 12px 0 0;
+            color: #087b69;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .punto-disponible {
+            width: 10px;
+            height: 10px;
+            background-color: #20b99a;
+            border-radius: 50%;
+        }
+        .especialidad {
+            margin: 10px 0 2px;
+            color: var(--verde-oscuro);
+            font-size: 19px;
+            font-weight: bold;
+        }
+
+        .ubicacion {
+            margin: 0;
+            color: var(--texto-suave);
+        }
+
+        .estadisticas {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 20px;
+            margin-top: 18px;
+            color: var(--texto-suave);
+            font-size: 14px;
+        }
+
+        .estadisticas strong {
+            color: var(--texto);
+        }
+
+
+        .reserva {
+            padding: 22px;
+            border: 1px solid var(--borde);
+            border-radius: 15px;
+        }
+
+        .precio {
+            margin-top: 0;
+        }
+
+        .precio span {
+            display: block;
+            color: var(--texto-suave);
+            font-size: 13px;
+        }
+
+        .precio strong {
+            color: var(--azul);
+            font-size: 28px;
+        }
+
+        .boton {
+            width: 100%;
+            display: block;
+            margin-top: 10px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .boton-reservar {
+            color: var(--blanco);
+            background: linear-gradient(
+                to right,
+                var(--azul),
+                var(--verde)
+            );
+            border: none;
+        }
+
+        .boton-contactar {
+            color: var(--azul);
+            background-color: var(--blanco);
+            border: 1px solid var(--azul);
+        }
+
+        .boton:hover {
+            filter: brightness(0.95);
+        }
+
+        .boton:focus,
+        a:focus {
+            outline: 3px solid #7de0cd;
+            outline-offset: 3px;
+        }
+
+        .nota {
+            color: var(--texto-suave);
+            font-size: 12px;
+            text-align: center;
+        }
+
+
+        .contenido {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 30px;
+            margin-top: 25px;
+        }
+
+        .columna-principal,
+        .columna-lateral {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .tarjeta {
+            padding: 28px;
+            background-color: var(--blanco);
+            border: 1px solid var(--borde);
+            border-radius: 15px;
+        }
+
+        .tarjeta h2 {
+            margin-top: 0;
+            color: var(--azul);
+            font-size: 21px;
+        }
+
+        .tarjeta p {
+            line-height: 1.7;
+        }
+
+
+        .materias {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 0;
+            list-style: none;
+        }
+
+        .materias li {
+            padding: 7px 12px;
+            color: var(--azul);
+            background-color: var(--azul-claro);
+            border-radius: 15px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .metodologia {
+            padding: 0;
+            list-style: none;
+        }
+
+        .metodologia li {
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        .metodologia li::before {
+            content: "✓";
+            margin-right: 10px;
+            color: var(--verde-oscuro);
+            font-weight: bold;
+        }
+        .formacion {
+            margin-bottom: 18px;
+        }
+
+        .formacion strong {
+            display: block;
+        }
+
+        .formacion span {
+            color: var(--texto-suave);
+            font-size: 14px;
+        }
+
+
+        .horario {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 10px;
+            padding: 12px;
+            background-color: var(--fondo);
+            border-radius: 8px;
+        }
+
+        .horario strong {
+            color: var(--azul);
+        }
+
+        footer {
+            padding: 25px;
+            color: var(--texto-suave);
+            background-color: var(--blanco);
+            border-top: 1px solid var(--borde);
+            text-align: center;
+        }
+
+
+        @media (max-width: 900px) {
+            .barra-superior {
+                padding: 10px 30px;
+            }
+
+            .perfil-principal {
+                grid-template-columns: 1fr;
+            }
+
+            .reserva {
+                width: 100%;
+            }
+
+            .contenido {
+                grid-template-columns: 1fr;
+            }
+
+            .columna-lateral {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+
+        @media (max-width: 600px) {
+            .barra-superior {
+                min-height: auto;
+                padding: 12px 16px;
+            }
+
+            .marca {
+                font-size: 20px;
+            }
+
+            .marca img {
+                width: 45px;
+                height: 45px;
+            }
+
+            .navegacion {
+                gap: 10px;
+            }
+
+            .navegacion > a:not(.boton-iniciar) {
+                display: none;
+            }
+
+            .navegacion .boton-iniciar {
+                padding: 8px 12px;
+                font-size: 13px;
+            }
+
+            .contenedor {
+                width: calc(100% - 24px);
+                margin-top: 20px;
+            }
+
+            .perfil-principal {
+                padding: 24px 18px;
+            }
+
+            .informacion-tutor {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .foto-tutor {
+                width: 100px;
+                height: 100px;
+                font-size: 30px;
+            }
+
+            .datos-tutor h1 {
+                font-size: 29px;
+            }
+
+            .estadisticas {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .tarjeta {
+                padding: 22px 18px;
+            }
+
+            .columna-lateral {
+                display: flex;
+            }
+
+            .horario {
+                flex-direction: column;
+                gap: 4px;
+            }
+
+            footer {
+                padding: 20px 15px;
+                font-size: 13px;
+            }
+        }
+
+        /* Añadidos para el perfil dinámico */
+
+        [hidden] {
+            display: none !important;
+        }
+
+        .navegacion button.boton-iniciar {
+            font: inherit;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .estado-carga {
+            padding: 30px;
+            color: var(--texto-suave);
+            background-color: var(--blanco);
+            border: 1px solid var(--borde);
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .boton:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+        }
+
+        /* Opiniones y disponibilidad */
+
+        .resumen-opiniones {
+            margin: 0 0 15px;
+            color: var(--texto-suave);
+        }
+
+        .opinion {
+            margin-top: 12px;
+            padding: 14px;
+            background-color: var(--fondo);
+            border-radius: 8px;
+        }
+
+        .opinion .estrellas {
+            color: #e8a200;
+            letter-spacing: 2px;
+        }
+
+        .opinion p {
+            margin: 6px 0 0;
+        }
+
+        .formulario-mini {
+            display: grid;
+            gap: 10px;
+            margin-top: 18px;
+            padding-top: 18px;
+            border-top: 1px solid var(--borde);
+        }
+
+        .formulario-mini label {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .formulario-mini input,
+        .formulario-mini select,
+        .formulario-mini textarea {
+            width: 100%;
+            padding: 10px;
+            font: inherit;
+            border: 1px solid var(--borde);
+            border-radius: 8px;
+        }
+
+        .formulario-mini .fila {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .formulario-mini button,
+        .horario button {
+            padding: 10px 14px;
+            color: var(--blanco);
+            background: linear-gradient(to right, var(--azul), var(--verde));
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .horario.inactivo {
+            opacity: 0.55;
+        }
+
+        .mensaje-form {
+            margin: 0;
+            font-size: 14px;
+            color: var(--texto-suave);
+        }
+    </style>
+
+    <script src="mentora.js"></script>
+</head>
+
+<body>
+
+    <header class="barra-superior">
+
+        <a href="menu.html" class="marca">
+            <img
+                src="logomentora.png"
+                alt="Logo de Mentora"
+            >
+
+            <span>Mentora</span>
+        </a>
+
+        <nav class="navegacion">
+            <a href="menu.html">Inicio</a>
+
+            <button
+                type="button"
+                id="btnSalir"
+                class="boton-iniciar"
+            >
+                Cerrar sesión
+            </button>
+        </nav>
+
+    </header>
+
+    <main class="contenedor">
+
+        <a href="buscartutores.html" class="volver" id="enlaceVolver">
+            ← Volver a tutores
+        </a>
+
+        <p id="estado" class="estado-carga">Cargando perfil...</p>
+
+        <div id="perfil" hidden>
+
+            <section class="perfil-principal">
+
+                <div class="informacion-tutor">
+
+                    <div class="foto-tutor" id="iniciales"></div>
+
+                    <div class="datos-tutor">
+
+                        <h1 id="nombre"></h1>
+
+                        <p class="especialidad" id="especialidad"></p>
+
+                    </div>
+                </div>
+
+                <aside class="reserva">
+
+                    <p class="precio">
+                        <span>Precio por hora</span>
+                        <strong id="precio"></strong>
+                    </p>
+
+                    <button
+                        type="button"
+                        class="boton boton-contactar"
+                        disabled
+                        title="Disponible próximamente"
+                    >
+                        Contactar al tutor (próximamente)
+                    </button>
+
+                    <p class="nota">
+                        No se realizará ningún cobro todavía.
+                    </p>
+
+                </aside>
+            </section>
+
+            <div class="contenido">
+
+                <div class="columna-principal">
+
+                    <section class="tarjeta">
+                        <h2>Sobre mí</h2>
+
+                        <p id="descripcion"></p>
+                    </section>
+
+                    <section class="tarjeta">
+                        <h2>Materias que enseño</h2>
+
+                        <ul class="materias" id="materias"></ul>
+                    </section>
+
+                    <section class="tarjeta">
+                        <h2>Experiencia</h2>
+
+                        <p id="experiencia"></p>
+                    </section>
+
+
+                    <section class="tarjeta" id="tarjetaEdicion" hidden>
+                        <h2>Editar mi perfil</h2>
+
+                        <form id="formPerfil" class="formulario-mini">
+                            <label for="eNombre">Nombre</label>
+                            <input type="text" id="eNombre" maxlength="100" required>
+
+                            <label for="eExperiencia">Experiencia</label>
+                            <input type="text" id="eExperiencia" maxlength="255" required>
+
+                            <label for="ePrecio">Precio por hora (Q)</label>
+                            <input type="number" id="ePrecio" min="0" step="0.01" required>
+
+                            <label for="eDescripcion">Sobre mí</label>
+                            <textarea id="eDescripcion" rows="4" maxlength="500"></textarea>
+
+                            <button type="submit">Guardar cambios</button>
+                            <p class="mensaje-form" id="msgPerfil"></p>
+                        </form>
+
+                        <form id="formMateria" class="formulario-mini">
+                            <label for="eMateria">Agregar una materia</label>
+                            <select id="eMateria"></select>
+
+                            <button type="submit">Agregar materia</button>
+                            <p class="mensaje-form" id="msgMateria"></p>
+                        </form>
+                    </section>
+
+                    <section class="tarjeta">
+                        <h2>Disponibilidad</h2>
+
+                        <div id="horarios"></div>
+
+                        <form id="formHorario" class="formulario-mini" hidden>
+                            <div class="fila">
+                                <div>
+                                    <label for="hDia">Día</label>
+                                    <select id="hDia" required>
+                                        <option>Lunes</option>
+                                        <option>Martes</option>
+                                        <option>Miércoles</option>
+                                        <option>Jueves</option>
+                                        <option>Viernes</option>
+                                        <option>Sábado</option>
+                                        <option>Domingo</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="hInicio">Desde</label>
+                                    <input type="time" id="hInicio" required>
+                                </div>
+                                <div>
+                                    <label for="hFin">Hasta</label>
+                                    <input type="time" id="hFin" required>
+                                </div>
+                            </div>
+                            <button type="submit">Agregar horario</button>
+                            <p class="mensaje-form" id="msgHorario"></p>
+                        </form>
+                    </section>
+
+                    <section class="tarjeta">
+                        <h2>Opiniones</h2>
+
+                        <p class="resumen-opiniones" id="resumenOpiniones"></p>
+
+                        <div id="opiniones"></div>
+
+                        <form id="formOpinion" class="formulario-mini" hidden>
+                            <label for="oValoracion">Tu valoración</label>
+                            <select id="oValoracion" required>
+                                <option value="5">5 - Excelente</option>
+                                <option value="4">4 - Muy bueno</option>
+                                <option value="3">3 - Bueno</option>
+                                <option value="2">2 - Regular</option>
+                                <option value="1">1 - Malo</option>
+                            </select>
+
+                            <label for="oComentario">Tu comentario</label>
+                            <textarea id="oComentario" rows="3"
+                                      maxlength="1000" required></textarea>
+
+                            <button type="submit">Publicar opinión</button>
+                            <p class="mensaje-form" id="msgOpinion"></p>
+                        </form>
+                    </section>
+
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer>
+        © 2026 Mentora · Aprende con acompañamiento personalizado
+    </footer>
+
+    <script>
+        const estado = document.getElementById("estado");
+        const perfil = document.getElementById("perfil");
+
+        function mostrarError(texto) {
+            perfil.hidden = true;
+            estado.hidden = false;
+            estado.textContent = texto;
+        }
+
+        function obtenerIniciales(nombre) {
+
+            const partes = (nombre || "").trim().split(/\s+/).filter(Boolean);
+
+            if (partes.length === 0) {
+                return "T";
+            }
+
+            return partes
+                .slice(0, 2)
+                .map(function (parte) {
+                    return parte.charAt(0).toUpperCase();
+                })
+                .join("");
+        }
+
+        function mostrarTutor(tutor) {
+
+            document.title = tutor.nombre + " | Mentora";
+
+            document.getElementById("iniciales").textContent =
+                obtenerIniciales(tutor.nombre);
+
+            document.getElementById("nombre").textContent = tutor.nombre;
+
+            const materias = Array.isArray(tutor.materias)
+                ? tutor.materias
+                : [];
+
+            document.getElementById("especialidad").textContent =
+                materias.length > 0
+                    ? materias.map(function (m) { return m.nombre; }).join(" · ")
+                    : "Sin materias registradas";
+
+            document.getElementById("precio").textContent =
+                "Q" + Number(tutor.precio).toFixed(2);
+
+            document.getElementById("descripcion").textContent =
+                tutor.descripcion ||
+                "Este tutor todavía no ha agregado una descripción.";
+
+            document.getElementById("experiencia").textContent =
+                tutor.experiencia;
+
+            const lista = document.getElementById("materias");
+            lista.innerHTML = "";
+
+            if (materias.length === 0) {
+                const vacio = document.createElement("li");
+                vacio.textContent = "Sin materias registradas";
+                lista.appendChild(vacio);
+            }
+
+            const esDueno = sesionActual
+                && sesionActual.tipoUsuario === "TUTOR"
+                && String(sesionActual.id) === String(tutor.id);
+
+            materias.forEach(function (materia) {
+                const item = document.createElement("li");
+                item.textContent = materia.nombre;
+
+                if (esDueno && materias.length > 1) {
+                    const quitar = document.createElement("button");
+                    quitar.type = "button";
+                    quitar.textContent = "×";
+                    quitar.title = "Quitar esta materia";
+                    quitar.style.cssText =
+                        "margin-left:8px;border:none;background:none;"
+                        + "color:inherit;font-weight:bold;cursor:pointer;";
+                    quitar.addEventListener("click", function () {
+                        quitarMateria(tutor.id, materia.idMateria);
+                    });
+                    item.appendChild(quitar);
+                }
+
+                lista.appendChild(item);
+            });
+
+            prepararEdicion(tutor, esDueno);
+
+            estado.hidden = true;
+            perfil.hidden = false;
+        }
+
+
+        let tutorId = null;
+        let sesionActual = null;
+
+        function estrellas(n) {
+            return "★".repeat(n) + "☆".repeat(5 - n);
+        }
+
+        function recortarHora(h) {
+            return String(h).slice(0, 5);
+        }
+
+
+
+        async function quitarMateria(idTutor, idMateria) {
+            const respuesta = await fetch(
+                "/tutores/" + idTutor + "/materias/" + idMateria,
+                { method: "DELETE" });
+
+            if (respuesta.ok) {
+                mostrarTutor(await respuesta.json());
+            } else {
+                alert((await respuesta.text()) || "No se pudo quitar la materia.");
+            }
+        }
+
+        async function prepararEdicion(tutor, esDueno) {
+
+            const tarjeta = document.getElementById("tarjetaEdicion");
+            tarjeta.hidden = !esDueno;
+
+            if (!esDueno) {
+                return;
+            }
+
+            document.getElementById("eNombre").value = tutor.nombre;
+            document.getElementById("eExperiencia").value = tutor.experiencia;
+            document.getElementById("ePrecio").value = tutor.precio;
+            document.getElementById("eDescripcion").value =
+                tutor.descripcion || "";
+
+            const select = document.getElementById("eMateria");
+            select.innerHTML = "";
+
+            try {
+                const resp = await fetch("/materias");
+                const todas = resp.ok ? await resp.json() : [];
+                const propias = new Set(
+                    (tutor.materias || []).map(function (m) { return m.idMateria; }));
+
+                todas
+                    .filter(function (m) { return !propias.has(m.idMateria); })
+                    .forEach(function (m) {
+                        const op = document.createElement("option");
+                        op.value = m.idMateria;
+                        op.textContent = m.nombre;
+                        select.appendChild(op);
+                    });
+            } catch (e) {
+                console.error(e);
+            }
+
+            const formMateria = document.getElementById("formMateria");
+            formMateria.hidden = select.options.length === 0;
+
+            document.getElementById("formPerfil").onsubmit =
+                async function (evento) {
+                    evento.preventDefault();
+
+                    const msg = document.getElementById("msgPerfil");
+
+                    const datos = new URLSearchParams({
+                        nombre: document.getElementById("eNombre").value,
+                        experiencia: document.getElementById("eExperiencia").value,
+                        precio: document.getElementById("ePrecio").value,
+                        descripcion: document.getElementById("eDescripcion").value
+                    });
+
+                    const respuesta = await fetch("/tutores/" + tutor.id, {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: datos
+                    });
+
+                    if (respuesta.ok) {
+                        mostrarTutor(await respuesta.json());
+                        document.getElementById("msgPerfil").textContent =
+                            "Cambios guardados.";
+                    } else {
+                        msg.textContent =
+                            (await respuesta.text()) || "No se pudo guardar.";
+                    }
+                };
+
+            formMateria.onsubmit = async function (evento) {
+                evento.preventDefault();
+
+                const msg = document.getElementById("msgMateria");
+
+                if (!select.value) {
+                    return;
+                }
+
+                const respuesta = await fetch(
+                    "/tutores/" + tutor.id + "/materias/" + select.value,
+                    { method: "POST" });
+
+                if (respuesta.ok) {
+                    mostrarTutor(await respuesta.json());
+                } else {
+                    msg.textContent =
+                        (await respuesta.text()) || "No se pudo agregar.";
+                }
+            };
+        }
+
+
+        async function cargarHorarios() {
+
+            const contenedor = document.getElementById("horarios");
+            const esDueno = sesionActual.tipoUsuario === "TUTOR"
+                && String(sesionActual.id) === String(tutorId);
+
+            const url = "/api/tutores/" + tutorId + "/disponibilidades"
+                + (esDueno ? "?soloDisponibles=false" : "");
+
+            contenedor.textContent = "";
+
+            const respuesta = await fetch(url);
+
+            if (!respuesta.ok) {
+                contenedor.textContent = "No se pudo cargar la disponibilidad.";
+                return;
+            }
+
+            const horarios = await respuesta.json();
+
+            if (horarios.length === 0) {
+                contenedor.textContent = "Este tutor aún no ha publicado horarios.";
+                return;
+            }
+
+            horarios.forEach(function (h) {
+
+                const fila = document.createElement("div");
+                fila.className = "horario" + (h.disponible ? "" : " inactivo");
+
+                const dia = document.createElement("strong");
+                dia.textContent = h.dia;
+
+                const hora = document.createElement("span");
+                hora.textContent =
+                    recortarHora(h.horaInicio) + " - " + recortarHora(h.horaFin);
+
+                fila.append(dia, hora);
+
+                if (esDueno) {
+                    const boton = document.createElement("button");
+                    boton.type = "button";
+                    boton.textContent = h.disponible ? "Desactivar" : "Activar";
+                    boton.addEventListener("click", async function () {
+                        await fetch(
+                            "/api/tutores/" + tutorId + "/disponibilidades/"
+                                + h.id + "/estado?disponible=" + !h.disponible,
+                            { method: "PATCH" });
+                        cargarHorarios();
+                    });
+                    fila.appendChild(boton);
+                }
+
+                contenedor.appendChild(fila);
+            });
+        }
+
+        function prepararFormHorario() {
+
+            const esDueno = sesionActual.tipoUsuario === "TUTOR"
+                && String(sesionActual.id) === String(tutorId);
+
+            const form = document.getElementById("formHorario");
+            form.hidden = !esDueno;
+
+            form.addEventListener("submit", async function (evento) {
+                evento.preventDefault();
+
+                const msg = document.getElementById("msgHorario");
+
+                const datos = new URLSearchParams({
+                    dia: document.getElementById("hDia").value,
+                    horaInicio: document.getElementById("hInicio").value + ":00",
+                    horaFin: document.getElementById("hFin").value + ":00"
+                });
+
+                const respuesta = await fetch(
+                    "/api/tutores/" + tutorId + "/disponibilidades",
+                    {
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: datos
+                    });
+
+                if (respuesta.ok) {
+                    msg.textContent = "";
+                    form.reset();
+                    cargarHorarios();
+                } else {
+                    msg.textContent = (await respuesta.text()) || "No se pudo guardar.";
+                }
+            });
+        }
+
+
+        async function cargarOpiniones() {
+
+            const contenedor = document.getElementById("opiniones");
+            const resumen = document.getElementById("resumenOpiniones");
+
+            contenedor.textContent = "";
+
+            const respuesta = await fetch("/opiniones/tutor/" + tutorId);
+
+            if (!respuesta.ok) {
+                resumen.textContent = "No se pudieron cargar las opiniones.";
+                return;
+            }
+
+            const datos = await respuesta.json();
+
+            resumen.textContent = datos.totalOpiniones === 0
+                ? "Todavía no hay opiniones."
+                : datos.promedio + " / 5 · " + datos.totalOpiniones
+                    + (datos.totalOpiniones === 1 ? " opinión" : " opiniones");
+
+            datos.opiniones.forEach(function (o) {
+
+                const caja = document.createElement("div");
+                caja.className = "opinion";
+
+                const cabecera = document.createElement("div");
+
+                const nombre = document.createElement("strong");
+                nombre.textContent = o.nombreEstudiante + " ";
+
+                const stars = document.createElement("span");
+                stars.className = "estrellas";
+                stars.textContent = estrellas(o.valoracion);
+
+                cabecera.append(nombre, stars);
+
+                const texto = document.createElement("p");
+                texto.textContent = o.comentario;
+
+                caja.append(cabecera, texto);
+                contenedor.appendChild(caja);
+            });
+        }
+
+        function prepararFormOpinion() {
+
+            const form = document.getElementById("formOpinion");
+            form.hidden = sesionActual.tipoUsuario !== "ESTUDIANTE";
+
+            form.addEventListener("submit", async function (evento) {
+                evento.preventDefault();
+
+                const msg = document.getElementById("msgOpinion");
+
+                const datos = new URLSearchParams({
+                    idTutor: tutorId,
+                    comentario: document.getElementById("oComentario").value,
+                    valoracion: document.getElementById("oValoracion").value
+                });
+
+                const respuesta = await fetch("/opiniones", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: datos
+                });
+
+                if (respuesta.ok) {
+                    msg.textContent = "";
+                    form.reset();
+                    cargarOpiniones();
+                } else {
+                    msg.textContent = (await respuesta.text()) || "No se pudo publicar.";
+                }
+            });
+        }
+
+        async function iniciar() {
+
+            const sesion = await exigirSesion();
+
+            if (!sesion) {
+                return;
+            }
+
+            sesionActual = sesion;
+
+            if (sesion.tipoUsuario === "TUTOR") {
+                const volver = document.getElementById("enlaceVolver");
+                volver.href = "menu.html";
+                volver.textContent = "← Volver al menú";
+            }
+
+            const id = new URLSearchParams(window.location.search).get("id");
+
+            if (!id || !/^\d+$/.test(id)) {
+                mostrarError("No se indicó qué tutor mostrar.");
+                return;
+            }
+
+            try {
+                const respuesta = await fetch("/tutores/" + id);
+
+                if (respuesta.status === 404) {
+                    mostrarError("No encontramos a este tutor.");
+                    return;
+                }
+
+                if (!respuesta.ok) {
+                    throw new Error("Error al cargar el perfil.");
+                }
+
+                mostrarTutor(await respuesta.json());
+
+                tutorId = id;
+                prepararFormHorario();
+                prepararFormOpinion();
+                cargarHorarios();
+                cargarOpiniones();
+
+            } catch (error) {
+                mostrarError("No se pudo cargar el perfil del tutor.");
+                console.error(error);
+            }
+        }
+
+        document.getElementById("btnSalir")
+            .addEventListener("click", cerrarSesion);
+
+        iniciar();
+    </script>
+
+</body>
+</html>
