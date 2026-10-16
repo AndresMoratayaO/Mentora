@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +20,9 @@ import com.mentora.demo.modelo.Materia;
 import com.mentora.demo.modelo.Tutor;
 import com.mentora.demo.repositorio.repositorioMateria;
 import com.mentora.demo.repositorio.repositorioTutor;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * Consulta y administración de perfiles de tutor.
@@ -37,12 +42,73 @@ public class ControladorTutor {
         this.repositorioMateria = repositorioMateria;
     }
 
+    /**
+     * Solo el propio tutor (sesión iniciada como TUTOR con ese id)
+     * puede modificar su perfil. Devuelve null si está autorizado.
+     */
+    private ResponseEntity<String> verificarDueno(
+            Long idTutor, HttpServletRequest request) {
+
+        HttpSession sesion = request.getSession(false);
+
+        if (sesion == null
+                || sesion.getAttribute(ControladorSesion.ATTR_ID) == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Debes iniciar sesión.");
+        }
+
+        boolean esTutor = "TUTOR".equals(
+                sesion.getAttribute(ControladorSesion.ATTR_TIPO));
+        boolean esElMismo = idTutor.equals(
+                sesion.getAttribute(ControladorSesion.ATTR_ID));
+
+        if (!esTutor || !esElMismo) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body("Solo puedes modificar tu propio perfil.");
+        }
+
+        return null;
+    }
+
     @PutMapping("/{id}")
-    public ResponseEntity<TutorDTO> actualizarPerfilTutor(
+    public ResponseEntity<?> actualizarPerfilTutor(
             @PathVariable Long id,
+            @RequestParam String nombre,
             @RequestParam String experiencia,
             @RequestParam double precio,
-            @RequestParam String descripcion) {
+            @RequestParam(required = false, defaultValue = "")
+                String descripcion,
+            HttpServletRequest request) {
+
+        ResponseEntity<String> prohibido = verificarDueno(id, request);
+
+        if (prohibido != null) {
+            return prohibido;
+        }
+
+        nombre = nombre.trim();
+        experiencia = experiencia.trim();
+        descripcion = descripcion.trim();
+
+        if (nombre.isBlank() || nombre.length() > 100) {
+            return ResponseEntity.badRequest()
+                    .body("El nombre es obligatorio y admite hasta 100 caracteres.");
+        }
+
+        if (experiencia.isBlank() || experiencia.length() > 255) {
+            return ResponseEntity.badRequest()
+                    .body("La experiencia es obligatoria: máximo 255 caracteres.");
+        }
+
+        if (!Double.isFinite(precio) || precio < 0) {
+            return ResponseEntity.badRequest()
+                    .body("Ingresa un precio válido, mayor o igual a cero.");
+        }
+
+        if (descripcion.length() > 500) {
+            return ResponseEntity.badRequest()
+                    .body("La descripción admite hasta 500 caracteres.");
+        }
 
         Optional<Tutor> tutorEncontrado = repositorioTutor.findById(id);
 
@@ -52,19 +118,31 @@ public class ControladorTutor {
 
         Tutor tutor = tutorEncontrado.get();
 
+        tutor.setNombre(nombre);
         tutor.setExperiencia(experiencia);
         tutor.setPrecio(precio);
         tutor.setDescripcion(descripcion);
 
         Tutor tutorActualizado = repositorioTutor.save(tutor);
 
+        // El saludo del menú lee el nombre de la sesión: se mantiene al día.
+        request.getSession(false)
+                .setAttribute(ControladorSesion.ATTR_NOMBRE, nombre);
+
         return ResponseEntity.ok(TutorDTO.desde(tutorActualizado));
     }
 
     @PostMapping("/{idTutor}/materias/{idMateria}")
-    public ResponseEntity<TutorDTO> agregarMateria(
+    public ResponseEntity<?> agregarMateria(
             @PathVariable Long idTutor,
-            @PathVariable Long idMateria) {
+            @PathVariable Long idMateria,
+            HttpServletRequest request) {
+
+        ResponseEntity<String> prohibido = verificarDueno(idTutor, request);
+
+        if (prohibido != null) {
+            return prohibido;
+        }
 
         Optional<Tutor> tutorEncontrado =
                 repositorioTutor.findById(idTutor);
@@ -77,9 +155,42 @@ public class ControladorTutor {
         }
 
         Tutor tutor = tutorEncontrado.get();
-        Materia materia = materiaEncontrada.get();
 
-        tutor.agregarMateria(materia);
+        tutor.agregarMateria(materiaEncontrada.get());
+
+        Tutor tutorActualizado = repositorioTutor.save(tutor);
+
+        return ResponseEntity.ok(TutorDTO.desde(tutorActualizado));
+    }
+
+    @DeleteMapping("/{idTutor}/materias/{idMateria}")
+    public ResponseEntity<?> quitarMateria(
+            @PathVariable Long idTutor,
+            @PathVariable Long idMateria,
+            HttpServletRequest request) {
+
+        ResponseEntity<String> prohibido = verificarDueno(idTutor, request);
+
+        if (prohibido != null) {
+            return prohibido;
+        }
+
+        Optional<Tutor> tutorEncontrado =
+                repositorioTutor.findById(idTutor);
+
+        if (tutorEncontrado.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Tutor tutor = tutorEncontrado.get();
+
+        if (tutor.getMaterias().size() <= 1) {
+            return ResponseEntity.badRequest()
+                    .body("Debes enseñar al menos una materia.");
+        }
+
+        tutor.getMaterias()
+                .removeIf(m -> idMateria.equals(m.getIdMateria()));
 
         Tutor tutorActualizado = repositorioTutor.save(tutor);
 

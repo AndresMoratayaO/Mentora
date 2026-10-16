@@ -2,8 +2,6 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-
-    <!-- Permite que la página se adapte a celulares y tabletas -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Perfil del tutor | Mentora</title>
@@ -36,7 +34,6 @@
             background-color: var(--fondo);
         }
 
-        /* Barra superior */
 
         .barra-superior {
             min-height: 80px;
@@ -90,7 +87,6 @@
             border-radius: 8px;
         }
 
-        /* Contenedor principal */
 
         .contenedor {
             width: calc(100% - 40px);
@@ -106,7 +102,6 @@
             text-decoration: none;
         }
 
-        /* Encabezado del perfil */
 
         .perfil-principal {
             display: grid;
@@ -199,7 +194,6 @@
             color: var(--texto);
         }
 
-        /* Reserva */
 
         .reserva {
             padding: 22px;
@@ -267,7 +261,6 @@
             text-align: center;
         }
 
-        /* Secciones inferiores */
 
         .contenido {
             display: grid;
@@ -300,7 +293,6 @@
             line-height: 1.7;
         }
 
-        /* Materias */
 
         .materias {
             display: flex;
@@ -319,8 +311,6 @@
             font-weight: bold;
         }
 
-        /* Metodología */
-
         .metodologia {
             padding: 0;
             list-style: none;
@@ -337,9 +327,6 @@
             color: var(--verde-oscuro);
             font-weight: bold;
         }
-
-        /* Formación */
-
         .formacion {
             margin-bottom: 18px;
         }
@@ -353,7 +340,6 @@
             font-size: 14px;
         }
 
-        /* Horarios */
 
         .horario {
             display: flex;
@@ -377,9 +363,6 @@
             text-align: center;
         }
 
-        /*
-         * RESPONSIVE PARA TABLETAS
-         */
 
         @media (max-width: 900px) {
             .barra-superior {
@@ -404,9 +387,6 @@
             }
         }
 
-        /*
-         * RESPONSIVE PARA CELULARES
-         */
 
         @media (max-width: 600px) {
             .barra-superior {
@@ -508,6 +488,79 @@
         .boton:disabled {
             opacity: 0.55;
             cursor: not-allowed;
+        }
+
+        /* Opiniones y disponibilidad */
+
+        .resumen-opiniones {
+            margin: 0 0 15px;
+            color: var(--texto-suave);
+        }
+
+        .opinion {
+            margin-top: 12px;
+            padding: 14px;
+            background-color: var(--fondo);
+            border-radius: 8px;
+        }
+
+        .opinion .estrellas {
+            color: #e8a200;
+            letter-spacing: 2px;
+        }
+
+        .opinion p {
+            margin: 6px 0 0;
+        }
+
+        .formulario-mini {
+            display: grid;
+            gap: 10px;
+            margin-top: 18px;
+            padding-top: 18px;
+            border-top: 1px solid var(--borde);
+        }
+
+        .formulario-mini label {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .formulario-mini input,
+        .formulario-mini select,
+        .formulario-mini textarea {
+            width: 100%;
+            padding: 10px;
+            font: inherit;
+            border: 1px solid var(--borde);
+            border-radius: 8px;
+        }
+
+        .formulario-mini .fila {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .formulario-mini button,
+        .horario button {
+            padding: 10px 14px;
+            color: var(--blanco);
+            background: linear-gradient(to right, var(--azul), var(--verde));
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .horario.inactivo {
+            opacity: 0.55;
+        }
+
+        .mensaje-form {
+            margin: 0;
+            font-size: 14px;
+            color: var(--texto-suave);
         }
     </style>
 
@@ -611,6 +664,95 @@
                         <p id="experiencia"></p>
                     </section>
 
+
+                    <section class="tarjeta" id="tarjetaEdicion" hidden>
+                        <h2>Editar mi perfil</h2>
+
+                        <form id="formPerfil" class="formulario-mini">
+                            <label for="eNombre">Nombre</label>
+                            <input type="text" id="eNombre" maxlength="100" required>
+
+                            <label for="eExperiencia">Experiencia</label>
+                            <input type="text" id="eExperiencia" maxlength="255" required>
+
+                            <label for="ePrecio">Precio por hora (Q)</label>
+                            <input type="number" id="ePrecio" min="0" step="0.01" required>
+
+                            <label for="eDescripcion">Sobre mí</label>
+                            <textarea id="eDescripcion" rows="4" maxlength="500"></textarea>
+
+                            <button type="submit">Guardar cambios</button>
+                            <p class="mensaje-form" id="msgPerfil"></p>
+                        </form>
+
+                        <form id="formMateria" class="formulario-mini">
+                            <label for="eMateria">Agregar una materia</label>
+                            <select id="eMateria"></select>
+
+                            <button type="submit">Agregar materia</button>
+                            <p class="mensaje-form" id="msgMateria"></p>
+                        </form>
+                    </section>
+
+                    <section class="tarjeta">
+                        <h2>Disponibilidad</h2>
+
+                        <div id="horarios"></div>
+
+                        <form id="formHorario" class="formulario-mini" hidden>
+                            <div class="fila">
+                                <div>
+                                    <label for="hDia">Día</label>
+                                    <select id="hDia" required>
+                                        <option>Lunes</option>
+                                        <option>Martes</option>
+                                        <option>Miércoles</option>
+                                        <option>Jueves</option>
+                                        <option>Viernes</option>
+                                        <option>Sábado</option>
+                                        <option>Domingo</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="hInicio">Desde</label>
+                                    <input type="time" id="hInicio" required>
+                                </div>
+                                <div>
+                                    <label for="hFin">Hasta</label>
+                                    <input type="time" id="hFin" required>
+                                </div>
+                            </div>
+                            <button type="submit">Agregar horario</button>
+                            <p class="mensaje-form" id="msgHorario"></p>
+                        </form>
+                    </section>
+
+                    <section class="tarjeta">
+                        <h2>Opiniones</h2>
+
+                        <p class="resumen-opiniones" id="resumenOpiniones"></p>
+
+                        <div id="opiniones"></div>
+
+                        <form id="formOpinion" class="formulario-mini" hidden>
+                            <label for="oValoracion">Tu valoración</label>
+                            <select id="oValoracion" required>
+                                <option value="5">5 - Excelente</option>
+                                <option value="4">4 - Muy bueno</option>
+                                <option value="3">3 - Bueno</option>
+                                <option value="2">2 - Regular</option>
+                                <option value="1">1 - Malo</option>
+                            </select>
+
+                            <label for="oComentario">Tu comentario</label>
+                            <textarea id="oComentario" rows="3"
+                                      maxlength="1000" required></textarea>
+
+                            <button type="submit">Publicar opinión</button>
+                            <p class="mensaje-form" id="msgOpinion"></p>
+                        </form>
+                    </section>
+
                 </div>
             </div>
 
@@ -685,14 +827,324 @@
                 lista.appendChild(vacio);
             }
 
+            const esDueno = sesionActual
+                && sesionActual.tipoUsuario === "TUTOR"
+                && String(sesionActual.id) === String(tutor.id);
+
             materias.forEach(function (materia) {
                 const item = document.createElement("li");
                 item.textContent = materia.nombre;
+
+                if (esDueno && materias.length > 1) {
+                    const quitar = document.createElement("button");
+                    quitar.type = "button";
+                    quitar.textContent = "×";
+                    quitar.title = "Quitar esta materia";
+                    quitar.style.cssText =
+                        "margin-left:8px;border:none;background:none;"
+                        + "color:inherit;font-weight:bold;cursor:pointer;";
+                    quitar.addEventListener("click", function () {
+                        quitarMateria(tutor.id, materia.idMateria);
+                    });
+                    item.appendChild(quitar);
+                }
+
                 lista.appendChild(item);
             });
 
+            prepararEdicion(tutor, esDueno);
+
             estado.hidden = true;
             perfil.hidden = false;
+        }
+
+
+        let tutorId = null;
+        let sesionActual = null;
+
+        function estrellas(n) {
+            return "★".repeat(n) + "☆".repeat(5 - n);
+        }
+
+        function recortarHora(h) {
+            return String(h).slice(0, 5);
+        }
+
+
+
+        async function quitarMateria(idTutor, idMateria) {
+            const respuesta = await fetch(
+                "/tutores/" + idTutor + "/materias/" + idMateria,
+                { method: "DELETE" });
+
+            if (respuesta.ok) {
+                mostrarTutor(await respuesta.json());
+            } else {
+                alert((await respuesta.text()) || "No se pudo quitar la materia.");
+            }
+        }
+
+        async function prepararEdicion(tutor, esDueno) {
+
+            const tarjeta = document.getElementById("tarjetaEdicion");
+            tarjeta.hidden = !esDueno;
+
+            if (!esDueno) {
+                return;
+            }
+
+            document.getElementById("eNombre").value = tutor.nombre;
+            document.getElementById("eExperiencia").value = tutor.experiencia;
+            document.getElementById("ePrecio").value = tutor.precio;
+            document.getElementById("eDescripcion").value =
+                tutor.descripcion || "";
+
+            const select = document.getElementById("eMateria");
+            select.innerHTML = "";
+
+            try {
+                const resp = await fetch("/materias");
+                const todas = resp.ok ? await resp.json() : [];
+                const propias = new Set(
+                    (tutor.materias || []).map(function (m) { return m.idMateria; }));
+
+                todas
+                    .filter(function (m) { return !propias.has(m.idMateria); })
+                    .forEach(function (m) {
+                        const op = document.createElement("option");
+                        op.value = m.idMateria;
+                        op.textContent = m.nombre;
+                        select.appendChild(op);
+                    });
+            } catch (e) {
+                console.error(e);
+            }
+
+            const formMateria = document.getElementById("formMateria");
+            formMateria.hidden = select.options.length === 0;
+
+            document.getElementById("formPerfil").onsubmit =
+                async function (evento) {
+                    evento.preventDefault();
+
+                    const msg = document.getElementById("msgPerfil");
+
+                    const datos = new URLSearchParams({
+                        nombre: document.getElementById("eNombre").value,
+                        experiencia: document.getElementById("eExperiencia").value,
+                        precio: document.getElementById("ePrecio").value,
+                        descripcion: document.getElementById("eDescripcion").value
+                    });
+
+                    const respuesta = await fetch("/tutores/" + tutor.id, {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: datos
+                    });
+
+                    if (respuesta.ok) {
+                        mostrarTutor(await respuesta.json());
+                        document.getElementById("msgPerfil").textContent =
+                            "Cambios guardados.";
+                    } else {
+                        msg.textContent =
+                            (await respuesta.text()) || "No se pudo guardar.";
+                    }
+                };
+
+            formMateria.onsubmit = async function (evento) {
+                evento.preventDefault();
+
+                const msg = document.getElementById("msgMateria");
+
+                if (!select.value) {
+                    return;
+                }
+
+                const respuesta = await fetch(
+                    "/tutores/" + tutor.id + "/materias/" + select.value,
+                    { method: "POST" });
+
+                if (respuesta.ok) {
+                    mostrarTutor(await respuesta.json());
+                } else {
+                    msg.textContent =
+                        (await respuesta.text()) || "No se pudo agregar.";
+                }
+            };
+        }
+
+
+        async function cargarHorarios() {
+
+            const contenedor = document.getElementById("horarios");
+            const esDueno = sesionActual.tipoUsuario === "TUTOR"
+                && String(sesionActual.id) === String(tutorId);
+
+            const url = "/api/tutores/" + tutorId + "/disponibilidades"
+                + (esDueno ? "?soloDisponibles=false" : "");
+
+            contenedor.textContent = "";
+
+            const respuesta = await fetch(url);
+
+            if (!respuesta.ok) {
+                contenedor.textContent = "No se pudo cargar la disponibilidad.";
+                return;
+            }
+
+            const horarios = await respuesta.json();
+
+            if (horarios.length === 0) {
+                contenedor.textContent = "Este tutor aún no ha publicado horarios.";
+                return;
+            }
+
+            horarios.forEach(function (h) {
+
+                const fila = document.createElement("div");
+                fila.className = "horario" + (h.disponible ? "" : " inactivo");
+
+                const dia = document.createElement("strong");
+                dia.textContent = h.dia;
+
+                const hora = document.createElement("span");
+                hora.textContent =
+                    recortarHora(h.horaInicio) + " - " + recortarHora(h.horaFin);
+
+                fila.append(dia, hora);
+
+                if (esDueno) {
+                    const boton = document.createElement("button");
+                    boton.type = "button";
+                    boton.textContent = h.disponible ? "Desactivar" : "Activar";
+                    boton.addEventListener("click", async function () {
+                        await fetch(
+                            "/api/tutores/" + tutorId + "/disponibilidades/"
+                                + h.id + "/estado?disponible=" + !h.disponible,
+                            { method: "PATCH" });
+                        cargarHorarios();
+                    });
+                    fila.appendChild(boton);
+                }
+
+                contenedor.appendChild(fila);
+            });
+        }
+
+        function prepararFormHorario() {
+
+            const esDueno = sesionActual.tipoUsuario === "TUTOR"
+                && String(sesionActual.id) === String(tutorId);
+
+            const form = document.getElementById("formHorario");
+            form.hidden = !esDueno;
+
+            form.addEventListener("submit", async function (evento) {
+                evento.preventDefault();
+
+                const msg = document.getElementById("msgHorario");
+
+                const datos = new URLSearchParams({
+                    dia: document.getElementById("hDia").value,
+                    horaInicio: document.getElementById("hInicio").value + ":00",
+                    horaFin: document.getElementById("hFin").value + ":00"
+                });
+
+                const respuesta = await fetch(
+                    "/api/tutores/" + tutorId + "/disponibilidades",
+                    {
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: datos
+                    });
+
+                if (respuesta.ok) {
+                    msg.textContent = "";
+                    form.reset();
+                    cargarHorarios();
+                } else {
+                    msg.textContent = (await respuesta.text()) || "No se pudo guardar.";
+                }
+            });
+        }
+
+
+        async function cargarOpiniones() {
+
+            const contenedor = document.getElementById("opiniones");
+            const resumen = document.getElementById("resumenOpiniones");
+
+            contenedor.textContent = "";
+
+            const respuesta = await fetch("/opiniones/tutor/" + tutorId);
+
+            if (!respuesta.ok) {
+                resumen.textContent = "No se pudieron cargar las opiniones.";
+                return;
+            }
+
+            const datos = await respuesta.json();
+
+            resumen.textContent = datos.totalOpiniones === 0
+                ? "Todavía no hay opiniones."
+                : datos.promedio + " / 5 · " + datos.totalOpiniones
+                    + (datos.totalOpiniones === 1 ? " opinión" : " opiniones");
+
+            datos.opiniones.forEach(function (o) {
+
+                const caja = document.createElement("div");
+                caja.className = "opinion";
+
+                const cabecera = document.createElement("div");
+
+                const nombre = document.createElement("strong");
+                nombre.textContent = o.nombreEstudiante + " ";
+
+                const stars = document.createElement("span");
+                stars.className = "estrellas";
+                stars.textContent = estrellas(o.valoracion);
+
+                cabecera.append(nombre, stars);
+
+                const texto = document.createElement("p");
+                texto.textContent = o.comentario;
+
+                caja.append(cabecera, texto);
+                contenedor.appendChild(caja);
+            });
+        }
+
+        function prepararFormOpinion() {
+
+            const form = document.getElementById("formOpinion");
+            form.hidden = sesionActual.tipoUsuario !== "ESTUDIANTE";
+
+            form.addEventListener("submit", async function (evento) {
+                evento.preventDefault();
+
+                const msg = document.getElementById("msgOpinion");
+
+                const datos = new URLSearchParams({
+                    idTutor: tutorId,
+                    comentario: document.getElementById("oComentario").value,
+                    valoracion: document.getElementById("oValoracion").value
+                });
+
+                const respuesta = await fetch("/opiniones", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: datos
+                });
+
+                if (respuesta.ok) {
+                    msg.textContent = "";
+                    form.reset();
+                    cargarOpiniones();
+                } else {
+                    msg.textContent = (await respuesta.text()) || "No se pudo publicar.";
+                }
+            });
         }
 
         async function iniciar() {
@@ -703,7 +1155,8 @@
                 return;
             }
 
-            // Un tutor que mira su propio perfil vuelve al menú, no a la búsqueda.
+            sesionActual = sesion;
+
             if (sesion.tipoUsuario === "TUTOR") {
                 const volver = document.getElementById("enlaceVolver");
                 volver.href = "menu.html";
@@ -730,6 +1183,12 @@
                 }
 
                 mostrarTutor(await respuesta.json());
+
+                tutorId = id;
+                prepararFormHorario();
+                prepararFormOpinion();
+                cargarHorarios();
+                cargarOpiniones();
 
             } catch (error) {
                 mostrarError("No se pudo cargar el perfil del tutor.");

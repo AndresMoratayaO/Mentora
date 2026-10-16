@@ -68,6 +68,35 @@ CREATE TABLE tutor_materia (
         FOREIGN KEY (id_materia) REFERENCES materias (id_materia)
 );
 
+CREATE TABLE IF NOT EXISTS opiniones (
+    id_opinion    BIGINT        NOT NULL AUTO_INCREMENT,
+    id_estudiante BIGINT        NOT NULL,
+    id_tutor      BIGINT        NOT NULL,
+    comentario    VARCHAR(1000) NOT NULL,
+    valoracion    INT           NOT NULL,
+    PRIMARY KEY (id_opinion),
+    CONSTRAINT ck_opiniones_valoracion CHECK (valoracion BETWEEN 1 AND 5),
+    CONSTRAINT fk_op_estudiante
+        FOREIGN KEY (id_estudiante) REFERENCES estudiantes (id)
+        ON DELETE CASCADE,
+    CONSTRAINT fk_op_tutor
+        FOREIGN KEY (id_tutor) REFERENCES tutores (id)
+        ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS disponibilidades (
+    id          BIGINT      NOT NULL AUTO_INCREMENT,
+    tutor_id    BIGINT      NOT NULL,
+    dia         VARCHAR(15) NOT NULL,
+    hora_inicio TIME        NOT NULL,
+    hora_fin    TIME        NOT NULL,
+    disponible  BOOLEAN     NOT NULL DEFAULT TRUE,
+    PRIMARY KEY (id),
+    CONSTRAINT fk_disp_tutor
+        FOREIGN KEY (tutor_id) REFERENCES tutores (id)
+        ON DELETE CASCADE
+);
+
 -- ---------------------------------------------------------------------
 -- PASO 2: materias iniciales (necesarias para que un tutor pueda
 -- registrarse: el formulario le pide elegir una). Se pueden editar.

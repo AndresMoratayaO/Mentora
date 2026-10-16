@@ -74,6 +74,10 @@ public class Tutor {
         return nombre;
     }
 
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
     public String getCorreo() {
         return correo;
     }
