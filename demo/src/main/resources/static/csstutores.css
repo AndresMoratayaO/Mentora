@@ -238,3 +238,67 @@ body {
         border-top: 1px solid #e2e8f0;
     }
 }
+
+/* --- Añadidos: navegación y tarjetas que llevan al perfil --- */
+
+[hidden] {
+    display: none !important;
+}
+
+.barra-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.barra-nav a {
+    color: #0f766e;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.barra-nav a:hover {
+    text-decoration: underline;
+}
+
+.boton-salir {
+    padding: 9px 16px;
+    border: 1px solid #1e293b;
+    border-radius: 8px;
+    color: #1e293b;
+    background: #ffffff;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.boton-salir:hover {
+    background: #f1f5f9;
+}
+
+.enlace-tarjeta {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    border-radius: 18px;
+}
+
+.enlace-tarjeta:hover .tarjeta-tutor {
+    border-color: #2ec4a3;
+    box-shadow: 0 14px 36px rgba(30, 41, 59, 0.12);
+}
+
+.enlace-tarjeta:focus-visible {
+    outline: 3px solid #0f766e;
+    outline-offset: 4px;
+}
+
+.ver-perfil {
+    display: block;
+    margin-top: 8px;
+    color: #0f766e;
+    font-size: 13px;
+    font-weight: 700;
+}

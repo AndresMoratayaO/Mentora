@@ -7,11 +7,20 @@
     <title>Buscar tutores | Mentora</title>
 
     <link rel="stylesheet" href="csstutores.css">
+    <script src="mentora.js"></script>
 </head>
 
 <body>
 
     <main class="contenedor">
+
+        <nav class="barra-nav">
+            <a href="menu.html">← Volver al menú</a>
+
+            <button type="button" id="btnSalir" class="boton-salir">
+                Cerrar sesión
+            </button>
+        </nav>
 
         <header class="encabezado">
             <img
@@ -23,7 +32,8 @@
             <h1>Encuentra tu tutor</h1>
 
             <p>
-                Busca tutores según la materia en la que necesites apoyo.
+                Busca tutores según la materia en la que necesites apoyo
+                o por el nombre del tutor.
             </p>
         </header>
 
@@ -32,7 +42,7 @@
             <form id="formBusqueda">
 
                 <label for="materia">
-                    ¿Qué materia necesitas?
+                    Materia o nombre del tutor
                 </label>
 
                 <div class="barra-busqueda">
@@ -42,7 +52,6 @@
                         id="materia"
                         name="materia"
                         placeholder="Ej. Matemática"
-                        required
                     >
 
                     <button type="submit">
@@ -67,19 +76,16 @@
 
     <script>
         const formulario = document.getElementById("formBusqueda");
+        const campoBusqueda = document.getElementById("materia");
         const resultados = document.getElementById("resultados");
         const mensaje = document.getElementById("mensaje");
 
-        formulario.addEventListener("submit", async function (evento) {
+        // Evita que una respuesta lenta pise a una búsqueda más reciente.
+        let numeroBusqueda = 0;
 
-            evento.preventDefault();
+        async function buscar(texto) {
 
-            const materia =
-                document.getElementById("materia").value.trim();
-
-            if (!materia) {
-                return;
-            }
+            const esta = ++numeroBusqueda;
 
             resultados.innerHTML = "";
             mensaje.textContent = "Buscando tutores...";
@@ -87,8 +93,7 @@
             try {
 
                 const respuesta = await fetch(
-                    "/tutores/buscar?materia=" +
-                    encodeURIComponent(materia)
+                    "/tutores/buscar?q=" + encodeURIComponent(texto)
                 );
 
                 if (!respuesta.ok) {
@@ -97,9 +102,14 @@
 
                 const tutores = await respuesta.json();
 
+                if (esta !== numeroBusqueda) {
+                    return;
+                }
+
                 if (tutores.length === 0) {
-                    mensaje.textContent =
-                        "No se encontraron tutores para esta materia.";
+                    mensaje.textContent = texto
+                        ? "No se encontraron tutores para \"" + texto + "\"."
+                        : "Todavía no hay tutores registrados.";
                     return;
                 }
 
@@ -111,10 +121,13 @@
 
                 tutores.forEach(function (tutor) {
 
-                    const tarjeta = document.createElement("article");
-                    tarjeta.className = "tarjeta-tutor";
+                    const enlace = document.createElement("a");
+                    enlace.className = "enlace-tarjeta";
+                    enlace.href =
+                        "perfil-tutor.html?id=" + encodeURIComponent(tutor.id);
 
                     const materias = Array.isArray(tutor.materias)
+                            && tutor.materias.length > 0
                         ? tutor.materias
                             .map(function (materia) {
                                 return materia.nombre;
@@ -122,48 +135,53 @@
                             .join(", ")
                         : "Sin materias registradas";
 
-                    tarjeta.innerHTML = `
-                        <div class="avatar">
-                            ${obtenerInicial(tutor.nombre)}
-                        </div>
+                    enlace.innerHTML = `
+                        <article class="tarjeta-tutor">
+                            <div class="avatar">
+                                ${escaparHTML(obtenerInicial(tutor.nombre))}
+                            </div>
 
-                        <div class="informacion-tutor">
-                            <h2>${escaparHTML(tutor.nombre)}</h2>
+                            <div class="informacion-tutor">
+                                <h2>${escaparHTML(tutor.nombre)}</h2>
 
-                            <p class="experiencia">
-                                ${escaparHTML(tutor.experiencia)}
-                            </p>
+                                <p class="experiencia">
+                                    ${escaparHTML(tutor.experiencia)}
+                                </p>
 
-                            <p>
-                                <strong>Materias:</strong>
-                                ${escaparHTML(materias)}
-                            </p>
+                                <p>
+                                    <strong>Materias:</strong>
+                                    ${escaparHTML(materias)}
+                                </p>
 
-                            <p class="descripcion">
-                                ${escaparHTML(
-                                    tutor.descripcion ||
-                                    "Sin descripción"
-                                )}
-                            </p>
-                        </div>
+                                <p class="descripcion">
+                                    ${escaparHTML(
+                                        tutor.descripcion ||
+                                        "Sin descripción"
+                                    )}
+                                </p>
+                            </div>
 
-                        <div class="precio">
-                            <span>Precio</span>
-                            <strong>Q${Number(tutor.precio).toFixed(2)}</strong>
-                        </div>
+                            <div class="precio">
+                                <span>Precio por hora</span>
+                                <strong>Q${Number(tutor.precio).toFixed(2)}</strong>
+                                <span class="ver-perfil">Ver perfil →</span>
+                            </div>
+                        </article>
                     `;
 
-                    resultados.appendChild(tarjeta);
+                    resultados.appendChild(enlace);
                 });
 
             } catch (error) {
 
-                mensaje.textContent =
-                    "Ocurrió un error al buscar los tutores.";
+                if (esta === numeroBusqueda) {
+                    mensaje.textContent =
+                        "Ocurrió un error al buscar los tutores.";
+                }
 
                 console.error(error);
             }
-        });
+        }
 
         function obtenerInicial(nombre) {
 
@@ -174,13 +192,20 @@
             return nombre.trim().charAt(0).toUpperCase();
         }
 
-        function escaparHTML(valor) {
+        formulario.addEventListener("submit", function (evento) {
+            evento.preventDefault();
+            buscar(campoBusqueda.value.trim());
+        });
 
-            const elemento = document.createElement("div");
-            elemento.textContent = valor ?? "";
+        document.getElementById("btnSalir")
+            .addEventListener("click", cerrarSesion);
 
-            return elemento.innerHTML;
-        }
+        // Página privada: exige sesión y muestra todos los tutores al entrar.
+        exigirSesion().then(function (sesion) {
+            if (sesion) {
+                buscar("");
+            }
+        });
     </script>
 
 </body>

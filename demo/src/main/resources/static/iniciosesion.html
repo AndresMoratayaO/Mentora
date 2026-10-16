@@ -6,19 +6,19 @@
 
     <title>Mentora inicio de sesión</title>
     <link rel="stylesheet" href="cssiniciosesion.css">
+    <script src="mentora.js"></script>
 </head>
 <body>
     <main class="tarjeta">
         <header class="encabezado">
-            <img src="logomentora.png" width="250" height="250">
+            <img src="logomentora.png" alt="Mentora" width="250" height="250">
         </header>
 
-        <section aria-labelledby="titulo">
-            
+        <section aria-label="Iniciar sesión">
 
-            <form action="/login" method="post">
+            <form id="formLogin">
                 <div class="campo">
-                    <label>Correo electrónico</label>
+                    <label for="correo">Correo electrónico</label>
                     <input
                         type="email"
                         id="correo"
@@ -29,7 +29,7 @@
                 </div>
 
                 <div class="campo">
-                    <label>Contraseña</label>
+                    <label for="contrasena">Contraseña</label>
                     <input
                         type="password"
                         id="contrasena"
@@ -39,10 +39,12 @@
                     >
                 </div>
 
-                <button type="submit" class="difuminado">Iniciar sesión</button>
+                <button type="submit" id="btnLogin" class="difuminado">Iniciar sesión</button>
+
+                <p id="mensaje" class="mensaje" role="alert"></p>
             </form>
 
-            <p class="crear-cuenta">¿No tienes cuenta?<a href="registro.html">Crear cuenta</a></p>
+            <p class="crear-cuenta">¿No tienes cuenta? <a href="registro.html">Crear cuenta</a></p>
         </section>
 
         <footer>
@@ -50,5 +52,63 @@
         </footer>
     </main>
 
+    <script>
+        const formulario = document.getElementById("formLogin");
+        const boton = document.getElementById("btnLogin");
+        const mensaje = document.getElementById("mensaje");
+
+        function mostrarMensaje(texto, clase) {
+            mensaje.textContent = texto;
+            mensaje.className = "mensaje " + clase;
+        }
+
+        // Si ya hay una sesión iniciada, no hace falta volver a entrar.
+        obtenerSesion().then(function (sesion) {
+            if (sesion) {
+                window.location.replace("menu.html");
+            }
+        });
+
+        formulario.addEventListener("submit", async function (evento) {
+
+            evento.preventDefault();
+            mostrarMensaje("", "");
+            boton.disabled = true;
+
+            try {
+                const respuesta = await fetch("/login", {
+                    method: "POST",
+                    body: new URLSearchParams({
+                        correo: document.getElementById("correo").value,
+                        contrasena: document.getElementById("contrasena").value
+                    })
+                });
+
+                if (respuesta.ok) {
+                    window.location.href = "menu.html";
+                    return;
+                }
+
+                // 404: no existe la cuenta. 401: contraseña incorrecta.
+                mostrarMensaje(
+                    await leerMensaje(
+                        respuesta,
+                        "No se pudo iniciar sesión. Inténtalo de nuevo."
+                    ),
+                    "error"
+                );
+
+            } catch (error) {
+                mostrarMensaje(
+                    "No se pudo conectar con el servidor.",
+                    "error"
+                );
+                console.error(error);
+
+            } finally {
+                boton.disabled = false;
+            }
+        });
+    </script>
 </body>
 </html>

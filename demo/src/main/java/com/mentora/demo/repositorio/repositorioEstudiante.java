@@ -4,11 +4,11 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.mentora.demo.modelo.Usuario;
+import com.mentora.demo.modelo.Estudiante;
 
-public interface repositoriousuario extends JpaRepository<Usuario, Long> {
+public interface repositorioEstudiante extends JpaRepository<Estudiante, Long> {
 
     boolean existsByCorreo(String correo);
 
-    Optional<Usuario> findByCorreo(String correo);
+    Optional<Estudiante> findByCorreo(String correo);
 }

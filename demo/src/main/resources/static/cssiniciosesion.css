@@ -173,3 +173,42 @@ select:focus {
     border-color: #4f46e5;
     outline: 3px solid #e0e7ff;
 }
+
+/* --- Añadidos para conectar las páginas con el servidor --- */
+
+[hidden] {
+    display: none !important;
+}
+
+textarea {
+    width: 100%;
+    padding: 13px 14px;
+    border: 1px solid #94a3b8;
+    border-radius: 10px;
+    font: inherit;
+    color: #1e293b;
+    background: #ffffff;
+    resize: vertical;
+    min-height: 90px;
+}
+
+textarea:focus {
+    border-color: #4f46e5;
+    outline: 3px solid #e0e7ff;
+}
+
+.mensaje.error {
+    color: #b91c1c;
+    font-weight: 600;
+}
+
+.mensaje.ok {
+    color: #047857;
+    font-weight: 600;
+}
+
+.ayuda {
+    margin: 6px 0 0;
+    color: #64748b;
+    font-size: 12px;
+}
