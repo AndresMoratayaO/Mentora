@@ -92,8 +92,6 @@ public class Registrocontroller {
                     .body("Las contraseñas no coinciden.");
         }
 
-        // Estudiantes y tutores viven en tablas distintas, así que el correo
-        // se revisa en ambas: así el inicio de sesión nunca es ambiguo.
         if (estudiantes.existsByCorreo(correo)
                 || tutores.existsByCorreo(correo)) {
             return ResponseEntity.status(409)
@@ -153,10 +151,8 @@ public class Registrocontroller {
 
         try {
             if (tutor != null) {
-                // Guarda en "tutores" y en "tutor_materia".
                 tutores.saveAndFlush(tutor);
             } else {
-                // Guarda en "estudiantes".
                 estudiantes.saveAndFlush(new Estudiante(
                         nombre,
                         correo,

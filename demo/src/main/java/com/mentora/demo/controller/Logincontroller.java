@@ -24,7 +24,7 @@ public class Logincontroller {
     private final repositorioTutor tutores;
     private final PasswordEncoder encoder;
 
-    /** Datos mínimos de una cuenta, sin importar en qué tabla estaba. */
+
     private record Cuenta(Long id, String nombre, String contrasenaHash, String tipoUsuario) {
     }
 
@@ -43,8 +43,6 @@ public class Logincontroller {
             @RequestParam("correo") String correo,
             @RequestParam("contrasena") String contrasena,
             HttpServletRequest request) {
-
-        // El registro guarda el correo en minúsculas y sin espacios.
         correo = correo.trim().toLowerCase(Locale.ROOT);
 
         if (correo.isBlank() || contrasena.isBlank()) {
@@ -62,7 +60,6 @@ public class Logincontroller {
 
         Cuenta cuenta = encontrada.get();
 
-        // BCrypt solo admite 72 bytes; una contraseña más larga nunca pudo registrarse.
         boolean contrasenaValida =
                 contrasena.getBytes(StandardCharsets.UTF_8).length <= 72
                 && encoder.matches(contrasena, cuenta.contrasenaHash());
@@ -72,7 +69,6 @@ public class Logincontroller {
                     .body("La contraseña es incorrecta.");
         }
 
-        // Sesión nueva en cada inicio de sesión (evita reutilizar una anterior).
         HttpSession anterior = request.getSession(false);
         if (anterior != null) {
             anterior.invalidate();
@@ -86,7 +82,6 @@ public class Logincontroller {
         return ResponseEntity.ok("Inicio de sesión correcto.");
     }
 
-    /** Busca primero en estudiantes y luego en tutores. */
     private Optional<Cuenta> buscarCuenta(String correo) {
         return estudiantes.findByCorreo(correo)
                 .map(e -> new Cuenta(
