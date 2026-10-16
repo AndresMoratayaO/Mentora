@@ -1,0 +1,13 @@
+# Archivos compilados
+**/target/
+*.class
+
+# Configuración local del editor
+**/.vscode/
+**/.idea/
+*.iml
+
+# Variables de entorno
+.env
+.env.*
+!.env.example
