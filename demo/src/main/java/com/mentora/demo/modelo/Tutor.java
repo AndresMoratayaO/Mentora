@@ -5,16 +5,35 @@ import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.JoinTable;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 
+/**
+ * Cuenta de tutor. Se guarda en su propia tabla: "tutores".
+ * Ya no hereda de Usuario: estudiantes y tutores son tablas independientes.
+ */
 @Entity
 @Table(name = "tutores")
-@PrimaryKeyJoinColumn(name = "id_usuario")
-public class Tutor extends Usuario {
+public class Tutor {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, length = 100)
+    private String nombre;
+
+    @Column(nullable = false, unique = true, length = 254)
+    private String correo;
+
+    @Column(name = "contrasena_hash", nullable = false, length = 255)
+    private String contrasenaHash;
 
     @Column(nullable = false, length = 255)
     private String experiencia;
@@ -25,7 +44,8 @@ public class Tutor extends Usuario {
     @Column(length = 500)
     private String descripcion;
 
-    @ManyToMany
+    // EAGER: la lista de materias es pequeña y siempre se muestra junto al tutor.
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "tutor_materia",
         joinColumns = @JoinColumn(name = "id_tutor"),
@@ -34,19 +54,32 @@ public class Tutor extends Usuario {
     private List<Materia> materias = new ArrayList<>();
 
     protected Tutor() {
-        super();
     }
 
     public Tutor(String nombre, String correo, String contrasenaHash,
                  String experiencia, double precio, String descripcion) {
-        super(nombre, correo, contrasenaHash, "TUTOR");
+        this.nombre = nombre;
+        this.correo = correo;
+        this.contrasenaHash = contrasenaHash;
         this.experiencia = experiencia;
         this.precio = precio;
         this.descripcion = descripcion;
     }
 
-    public Long getIdTutor() {
-        return getId();
+    public Long getId() {
+        return id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public String getContrasenaHash() {
+        return contrasenaHash;
     }
 
     public String getExperiencia() {
@@ -94,9 +127,9 @@ public class Tutor extends Usuario {
     @Override
     public String toString() {
         return "Tutor{" +
-                "idTutor=" + getId() +
-                ", nombre='" + getNombre() + '\'' +
-                ", correo='" + getCorreo() + '\'' +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", correo='" + correo + '\'' +
                 ", experiencia='" + experiencia + '\'' +
                 ", precio=" + precio +
                 ", descripcion='" + descripcion + '\'' +

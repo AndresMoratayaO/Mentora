@@ -5,15 +5,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
 
-
-@Entity 
-@Table(name = "usuarios")
-@Inheritance(strategy = InheritanceType.JOINED)
-public class Usuario {
+/**
+ * Cuenta de estudiante. Se guarda en su propia tabla: "estudiantes".
+ */
+@Entity
+@Table(name = "estudiantes")
+public class Estudiante {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,17 +27,13 @@ public class Usuario {
     @Column(name = "contrasena_hash", nullable = false, length = 255)
     private String contrasenaHash;
 
-    @Column(name = "tipo_usuario", nullable = false, length = 20)
-    private String tipoUsuario;
-
-    protected Usuario() {
+    protected Estudiante() {
     }
 
-    public Usuario(String nombre, String correo, String contrasenaHash, String tipoUsuario) {
+    public Estudiante(String nombre, String correo, String contrasenaHash) {
         this.nombre = nombre;
         this.correo = correo;
         this.contrasenaHash = contrasenaHash;
-        this.tipoUsuario = tipoUsuario;
     }
 
     public Long getId() {
@@ -57,7 +52,10 @@ public class Usuario {
         return contrasenaHash;
     }
 
-    public String getTipoUsuario() {
-        return tipoUsuario;
+    @Override
+    public String toString() {
+        return "Estudiante{id=" + id
+                + ", nombre='" + nombre + '\''
+                + ", correo='" + correo + "'}";
     }
 }

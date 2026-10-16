@@ -6,32 +6,36 @@ import java.util.Locale;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mentora.demo.modelo.Estudiante;
 import com.mentora.demo.modelo.Materia;
 import com.mentora.demo.modelo.Tutor;
-import com.mentora.demo.modelo.Usuario;
+import com.mentora.demo.repositorio.repositorioEstudiante;
 import com.mentora.demo.repositorio.repositorioMateria;
-import com.mentora.demo.repositorio.repositoriousuario;
+import com.mentora.demo.repositorio.repositorioTutor;
 
 @RestController
 public class Registrocontroller {
 
-    private final repositoriousuario repositorio;
+    private final repositorioEstudiante estudiantes;
+    private final repositorioTutor tutores;
     private final repositorioMateria materias;
-
-    private final BCryptPasswordEncoder encoder =
-            new BCryptPasswordEncoder();
+    private final PasswordEncoder encoder;
 
     public Registrocontroller(
-            repositoriousuario repositorio,
-            repositorioMateria materias) {
+            repositorioEstudiante estudiantes,
+            repositorioTutor tutores,
+            repositorioMateria materias,
+            PasswordEncoder encoder) {
 
-        this.repositorio = repositorio;
+        this.estudiantes = estudiantes;
+        this.tutores = tutores;
         this.materias = materias;
+        this.encoder = encoder;
     }
 
     @PostMapping(
@@ -88,12 +92,15 @@ public class Registrocontroller {
                     .body("Las contraseñas no coinciden.");
         }
 
-        if (repositorio.existsByCorreo(correo)) {
+        // Estudiantes y tutores viven en tablas distintas, así que el correo
+        // se revisa en ambas: así el inicio de sesión nunca es ambiguo.
+        if (estudiantes.existsByCorreo(correo)
+                || tutores.existsByCorreo(correo)) {
             return ResponseEntity.status(409)
                     .body("Ya existe una cuenta con ese correo.");
         }
 
-        Usuario usuario;
+        Tutor tutor = null;
 
         if (tipoUsuario.equals("TUTOR")) {
 
@@ -132,7 +139,7 @@ public class Registrocontroller {
                         .body("La materia seleccionada no existe.");
             }
 
-            Tutor tutor = new Tutor(
+            tutor = new Tutor(
                     nombre,
                     correo,
                     encoder.encode(contrasena),
@@ -142,22 +149,20 @@ public class Registrocontroller {
             );
 
             tutor.agregarMateria(materia);
-            usuario = tutor;
-
-        } else {
-
-            usuario = new Usuario(
-                    nombre,
-                    correo,
-                    encoder.encode(contrasena),
-                    "ESTUDIANTE"
-            );
         }
 
         try {
-            // Para Tutor, guarda usuarios, tutores y tutor_materia
-            // en la transacción del repositorio.
-            repositorio.saveAndFlush(usuario);
+            if (tutor != null) {
+                // Guarda en "tutores" y en "tutor_materia".
+                tutores.saveAndFlush(tutor);
+            } else {
+                // Guarda en "estudiantes".
+                estudiantes.saveAndFlush(new Estudiante(
+                        nombre,
+                        correo,
+                        encoder.encode(contrasena)
+                ));
+            }
 
         } catch (DataIntegrityViolationException ex) {
             return ResponseEntity.status(409)

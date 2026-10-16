@@ -271,7 +271,7 @@
 
         .contenido {
             display: grid;
-            grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+            grid-template-columns: minmax(0, 1fr);
             gap: 30px;
             margin-top: 25px;
         }
@@ -483,14 +483,42 @@
                 font-size: 13px;
             }
         }
+
+        /* Añadidos para el perfil dinámico */
+
+        [hidden] {
+            display: none !important;
+        }
+
+        .navegacion button.boton-iniciar {
+            font: inherit;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .estado-carga {
+            padding: 30px;
+            color: var(--texto-suave);
+            background-color: var(--blanco);
+            border: 1px solid var(--borde);
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .boton:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+        }
     </style>
+
+    <script src="mentora.js"></script>
 </head>
 
 <body>
 
     <header class="barra-superior">
 
-        <a href="/" class="marca">
+        <a href="menu.html" class="marca">
             <img
                 src="logomentora.png"
                 alt="Logo de Mentora"
@@ -500,207 +528,92 @@
         </a>
 
         <nav class="navegacion">
-            <a href="/">Inicio</a>
+            <a href="menu.html">Inicio</a>
 
-            <a href="#disponibilidad">
-                Disponibilidad
-            </a>
-
-            <a
-                href="iniciosesion.html"
+            <button
+                type="button"
+                id="btnSalir"
                 class="boton-iniciar"
             >
-                Iniciar sesión
-            </a>
+                Cerrar sesión
+            </button>
         </nav>
 
     </header>
 
     <main class="contenedor">
 
-        <a href="/" class="volver">
+        <a href="buscartutores.html" class="volver" id="enlaceVolver">
             ← Volver a tutores
         </a>
 
-        <section class="perfil-principal">
+        <p id="estado" class="estado-carga">Cargando perfil...</p>
 
-            <div class="informacion-tutor">
+        <div id="perfil" hidden>
 
-                <!--
-                    Aquí puedes colocar las iniciales
-                    o cambiarlo posteriormente por una imagen.
-                -->
-                <div class="foto-tutor">
-                    AM
-                </div>
+            <section class="perfil-principal">
 
-                <div class="datos-tutor">
+                <div class="informacion-tutor">
 
-                    <!-- Nombre del tutor -->
-                    <h1>Ana Martínez</h1>
+                    <div class="foto-tutor" id="iniciales"></div>
 
-                    <span class="verificado">
-                        Tutor verificado
-                    </span>
+                    <div class="datos-tutor">
 
-                    <!-- Especialidad del tutor -->
-                    <p class="especialidad">
-                        Matemática y Física
-                    </p>
+                        <h1 id="nombre"></h1>
 
-                    <!-- Ubicación y modalidad -->
-                    <p class="ubicacion">
-                        Guatemala · Clases virtuales
-                    </p>
-                    <div class="estado-disponible">
-                        <span class="punto-disponible"></span>
-                        <span>Disponible para nuevas tutorías</span>
-                    </div>
-                    <div class="estadisticas">
-
-                        <span>
-                            <strong>4.9</strong>
-                            ★ calificación
-                        </span>
-
-                        <span>
-                            <strong>38</strong>
-                            reseñas
-                        </span>
-
-                        <span>
-                            <strong>5</strong>
-                            años de experiencia
-                        </span>
+                        <p class="especialidad" id="especialidad"></p>
 
                     </div>
                 </div>
-            </div>
 
-            <aside class="reserva">
+                <aside class="reserva">
 
-                <p class="precio">
-                    <span>Desde</span>
-                    <strong>Q75</strong> / hora
-                </p>
-
-                <a
-                    href="#disponibilidad"
-                    class="boton boton-reservar"
-                >
-                    Ver disponibilidad
-                </a>
-
-                <button
-                    type="button"
-                    class="boton boton-contactar"
-                >
-                    Contactar al tutor
-                </button>
-
-                <p class="nota">
-                    No se realizará ningún cobro todavía.
-                </p>
-
-            </aside>
-        </section>
-
-        <div class="contenido">
-
-            <div class="columna-principal">
-
-                <section class="tarjeta">
-                    <h2>Sobre mí</h2>
-
-                    <p>
-                        Soy tutora de Matemática y Física.
-                        Me gusta explicar cada tema paso a paso
-                        y adaptar las clases al ritmo y objetivos
-                        de cada estudiante.
+                    <p class="precio">
+                        <span>Precio por hora</span>
+                        <strong id="precio"></strong>
                     </p>
-                </section>
 
-                <section class="tarjeta">
-                    <h2>Materias que enseño</h2>
+                    <button
+                        type="button"
+                        class="boton boton-contactar"
+                        disabled
+                        title="Disponible próximamente"
+                    >
+                        Contactar al tutor (próximamente)
+                    </button>
 
-                    <ul class="materias">
-                        <li>Álgebra</li>
-                        <li>Geometría</li>
-                        <li>Cálculo</li>
-                        <li>Física básica</li>
-                    </ul>
-                </section>
+                    <p class="nota">
+                        No se realizará ningún cobro todavía.
+                    </p>
 
-                <section class="tarjeta">
-                    <h2>Metodología</h2>
+                </aside>
+            </section>
 
-                    <ul class="metodologia">
+            <div class="contenido">
 
-                        <li>
-                            Diagnóstico inicial para conocer las
-                            necesidades del estudiante.
-                        </li>
+                <div class="columna-principal">
 
-                        <li>
-                            Explicaciones claras con ejemplos y
-                            ejercicios prácticos.
-                        </li>
+                    <section class="tarjeta">
+                        <h2>Sobre mí</h2>
 
-                        <li>
-                            Material de apoyo y seguimiento
-                            después de cada sesión.
-                        </li>
+                        <p id="descripcion"></p>
+                    </section>
 
-                    </ul>
-                </section>
+                    <section class="tarjeta">
+                        <h2>Materias que enseño</h2>
 
-                <section
-                    class="tarjeta"
-                    id="disponibilidad"
-                >
-                    <h2>Disponibilidad semanal</h2>
+                        <ul class="materias" id="materias"></ul>
+                    </section>
 
-                    <div class="horario">
-                        <strong>Lunes a miércoles</strong>
-                        <span>16:00 – 20:00</span>
-                    </div>
+                    <section class="tarjeta">
+                        <h2>Experiencia</h2>
 
-                    <div class="horario">
-                        <strong>Sábado</strong>
-                        <span>09:00 – 13:00</span>
-                    </div>
+                        <p id="experiencia"></p>
+                    </section>
 
-                </section>
+                </div>
             </div>
 
-            <aside class="columna-lateral">
-
-                <section class="tarjeta">
-                    <h2>Formación</h2>
-
-                    <div class="formacion">
-                        <strong>Licenciatura en Física</strong>
-
-                        <span>
-                            Universidad de San Carlos
-                            de Guatemala
-                        </span>
-                    </div>
-
-                    <div class="formacion">
-                        <strong>Diplomado en Docencia</strong>
-                        <span>Formación complementaria</span>
-                    </div>
-                </section>
-
-                <section class="tarjeta">
-                    <h2>Idiomas</h2>
-
-                    <p>Español · Nativo</p>
-                    <p>Inglés · Intermedio</p>
-                </section>
-
-            </aside>
         </div>
 
     </main>
@@ -708,6 +621,127 @@
     <footer>
         © 2026 Mentora · Aprende con acompañamiento personalizado
     </footer>
+
+    <script>
+        const estado = document.getElementById("estado");
+        const perfil = document.getElementById("perfil");
+
+        function mostrarError(texto) {
+            perfil.hidden = true;
+            estado.hidden = false;
+            estado.textContent = texto;
+        }
+
+        function obtenerIniciales(nombre) {
+
+            const partes = (nombre || "").trim().split(/\s+/).filter(Boolean);
+
+            if (partes.length === 0) {
+                return "T";
+            }
+
+            return partes
+                .slice(0, 2)
+                .map(function (parte) {
+                    return parte.charAt(0).toUpperCase();
+                })
+                .join("");
+        }
+
+        function mostrarTutor(tutor) {
+
+            document.title = tutor.nombre + " | Mentora";
+
+            document.getElementById("iniciales").textContent =
+                obtenerIniciales(tutor.nombre);
+
+            document.getElementById("nombre").textContent = tutor.nombre;
+
+            const materias = Array.isArray(tutor.materias)
+                ? tutor.materias
+                : [];
+
+            document.getElementById("especialidad").textContent =
+                materias.length > 0
+                    ? materias.map(function (m) { return m.nombre; }).join(" · ")
+                    : "Sin materias registradas";
+
+            document.getElementById("precio").textContent =
+                "Q" + Number(tutor.precio).toFixed(2);
+
+            document.getElementById("descripcion").textContent =
+                tutor.descripcion ||
+                "Este tutor todavía no ha agregado una descripción.";
+
+            document.getElementById("experiencia").textContent =
+                tutor.experiencia;
+
+            const lista = document.getElementById("materias");
+            lista.innerHTML = "";
+
+            if (materias.length === 0) {
+                const vacio = document.createElement("li");
+                vacio.textContent = "Sin materias registradas";
+                lista.appendChild(vacio);
+            }
+
+            materias.forEach(function (materia) {
+                const item = document.createElement("li");
+                item.textContent = materia.nombre;
+                lista.appendChild(item);
+            });
+
+            estado.hidden = true;
+            perfil.hidden = false;
+        }
+
+        async function iniciar() {
+
+            const sesion = await exigirSesion();
+
+            if (!sesion) {
+                return;
+            }
+
+            // Un tutor que mira su propio perfil vuelve al menú, no a la búsqueda.
+            if (sesion.tipoUsuario === "TUTOR") {
+                const volver = document.getElementById("enlaceVolver");
+                volver.href = "menu.html";
+                volver.textContent = "← Volver al menú";
+            }
+
+            const id = new URLSearchParams(window.location.search).get("id");
+
+            if (!id || !/^\d+$/.test(id)) {
+                mostrarError("No se indicó qué tutor mostrar.");
+                return;
+            }
+
+            try {
+                const respuesta = await fetch("/tutores/" + id);
+
+                if (respuesta.status === 404) {
+                    mostrarError("No encontramos a este tutor.");
+                    return;
+                }
+
+                if (!respuesta.ok) {
+                    throw new Error("Error al cargar el perfil.");
+                }
+
+                mostrarTutor(await respuesta.json());
+
+            } catch (error) {
+                mostrarError("No se pudo cargar el perfil del tutor.");
+                console.error(error);
+            }
+        }
+
+        document.getElementById("btnSalir")
+            .addEventListener("click", cerrarSesion);
+
+        iniciar();
+    </script>
 
 </body>
 </html>
