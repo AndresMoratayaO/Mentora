@@ -14,14 +14,6 @@
 
     <main class="contenedor">
 
-        <nav class="barra-nav">
-            <a href="menu.html">← Volver al menú</a>
-
-            <button type="button" id="btnSalir" class="boton-salir">
-                Cerrar sesión
-            </button>
-        </nav>
-
         <header class="encabezado">
             <img
                 src="logomentora.png"
@@ -32,8 +24,7 @@
             <h1>Encuentra tu tutor</h1>
 
             <p>
-                Busca tutores según la materia en la que necesites apoyo
-                o por el nombre del tutor.
+                Busca tutores según la materia en la que necesites apoyo.
             </p>
         </header>
 
@@ -42,7 +33,7 @@
             <form id="formBusqueda">
 
                 <label for="materia">
-                    Materia o nombre del tutor
+                    ¿Qué materia necesitas?
                 </label>
 
                 <div class="barra-busqueda">
@@ -52,6 +43,7 @@
                         id="materia"
                         name="materia"
                         placeholder="Ej. Matemática"
+                        required
                     >
 
                     <button type="submit">
@@ -76,16 +68,19 @@
 
     <script>
         const formulario = document.getElementById("formBusqueda");
-        const campoBusqueda = document.getElementById("materia");
         const resultados = document.getElementById("resultados");
         const mensaje = document.getElementById("mensaje");
 
-        // Evita que una respuesta lenta pise a una búsqueda más reciente.
-        let numeroBusqueda = 0;
+        formulario.addEventListener("submit", async function (evento) {
 
-        async function buscar(texto) {
+            evento.preventDefault();
 
-            const esta = ++numeroBusqueda;
+            const materia =
+                document.getElementById("materia").value.trim();
+
+            if (!materia) {
+                return;
+            }
 
             resultados.innerHTML = "";
             mensaje.textContent = "Buscando tutores...";
@@ -93,7 +88,8 @@
             try {
 
                 const respuesta = await fetch(
-                    "/tutores/buscar?q=" + encodeURIComponent(texto)
+                    "/tutores/buscar?materia=" +
+                    encodeURIComponent(materia)
                 );
 
                 if (!respuesta.ok) {
@@ -102,14 +98,9 @@
 
                 const tutores = await respuesta.json();
 
-                if (esta !== numeroBusqueda) {
-                    return;
-                }
-
                 if (tutores.length === 0) {
-                    mensaje.textContent = texto
-                        ? "No se encontraron tutores para \"" + texto + "\"."
-                        : "Todavía no hay tutores registrados.";
+                    mensaje.textContent =
+                        "No se encontraron tutores para esta materia.";
                     return;
                 }
 
@@ -121,13 +112,10 @@
 
                 tutores.forEach(function (tutor) {
 
-                    const enlace = document.createElement("a");
-                    enlace.className = "enlace-tarjeta";
-                    enlace.href =
-                        "perfil-tutor.html?id=" + encodeURIComponent(tutor.id);
+                    const tarjeta = document.createElement("article");
+                    tarjeta.className = "tarjeta-tutor";
 
                     const materias = Array.isArray(tutor.materias)
-                            && tutor.materias.length > 0
                         ? tutor.materias
                             .map(function (materia) {
                                 return materia.nombre;
@@ -135,53 +123,48 @@
                             .join(", ")
                         : "Sin materias registradas";
 
-                    enlace.innerHTML = `
-                        <article class="tarjeta-tutor">
-                            <div class="avatar">
-                                ${escaparHTML(obtenerInicial(tutor.nombre))}
-                            </div>
+                    tarjeta.innerHTML = `
+                        <div class="avatar">
+                            ${obtenerInicial(tutor.nombre)}
+                        </div>
 
-                            <div class="informacion-tutor">
-                                <h2>${escaparHTML(tutor.nombre)}</h2>
+                        <div class="informacion-tutor">
+                            <h2>${escaparHTML(tutor.nombre)}</h2>
 
-                                <p class="experiencia">
-                                    ${escaparHTML(tutor.experiencia)}
-                                </p>
+                            <p class="experiencia">
+                                ${escaparHTML(tutor.experiencia)}
+                            </p>
 
-                                <p>
-                                    <strong>Materias:</strong>
-                                    ${escaparHTML(materias)}
-                                </p>
+                            <p>
+                                <strong>Materias:</strong>
+                                ${escaparHTML(materias)}
+                            </p>
 
-                                <p class="descripcion">
-                                    ${escaparHTML(
-                                        tutor.descripcion ||
-                                        "Sin descripción"
-                                    )}
-                                </p>
-                            </div>
+                            <p class="descripcion">
+                                ${escaparHTML(
+                                    tutor.descripcion ||
+                                    "Sin descripción"
+                                )}
+                            </p>
+                        </div>
 
-                            <div class="precio">
-                                <span>Precio por hora</span>
-                                <strong>Q${Number(tutor.precio).toFixed(2)}</strong>
-                                <span class="ver-perfil">Ver perfil →</span>
-                            </div>
-                        </article>
+                        <div class="precio">
+                            <span>Precio</span>
+                            <strong>Q${Number(tutor.precio).toFixed(2)}</strong>
+                        </div>
                     `;
 
-                    resultados.appendChild(enlace);
+                    resultados.appendChild(tarjeta);
                 });
 
             } catch (error) {
 
-                if (esta === numeroBusqueda) {
-                    mensaje.textContent =
-                        "Ocurrió un error al buscar los tutores.";
-                }
+                mensaje.textContent =
+                    "Ocurrió un error al buscar los tutores.";
 
                 console.error(error);
             }
-        }
+        });
 
         function obtenerInicial(nombre) {
 
@@ -192,20 +175,13 @@
             return nombre.trim().charAt(0).toUpperCase();
         }
 
-        formulario.addEventListener("submit", function (evento) {
-            evento.preventDefault();
-            buscar(campoBusqueda.value.trim());
-        });
+        function escaparHTML(valor) {
 
-        document.getElementById("btnSalir")
-            .addEventListener("click", cerrarSesion);
+            const elemento = document.createElement("div");
+            elemento.textContent = valor ?? "";
 
-        // Página privada: exige sesión y muestra todos los tutores al entrar.
-        exigirSesion().then(function (sesion) {
-            if (sesion) {
-                buscar("");
-            }
-        });
+            return elemento.innerHTML;
+        }
     </script>
 
 </body>
