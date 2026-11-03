@@ -1,0 +1,31 @@
+ demo/database/schema.sql                           |  133 [32m+++[m
+ .../com/mentora/demo/config/ConfiguracionApp.java  |   16 [32m+[m
+ .../demo/controller/ControladorMateria.java        |   32 [32m+[m[31m-[m
+ .../demo/controller/ControladorOpinion.java        |  146 [32m+++[m
+ .../mentora/demo/controller/ControladorSesion.java |   47 [32m+[m
+ .../mentora/demo/controller/ControladorTutor.java  |  251 [32m++[m[31m--[m
+ .../demo/controller/DisponibilidadController.java  |  345 [32m++++++[m
+ .../mentora/demo/controller/Logincontroller.java   |   86 [32m+[m[31m-[m
+ .../demo/controller/Registrocontroller.java        |  114 [32m+[m[31m-[m
+ .../main/java/com/mentora/demo/dto/TutorDTO.java   |   35 [32m+[m
+ .../com/mentora/demo/modelo/Disponibilidad.java    |  105 [32m++[m
+ .../demo/modelo/{Usuario.java => Estudiante.java}  |   25 [32m+[m[31m-[m
+ .../main/java/com/mentora/demo/modelo/Opinion.java |  108 [32m++[m
+ .../main/java/com/mentora/demo/modelo/Tutor.java   |   63 [32m+[m[31m-[m
+ .../repositorio/DisponibilidadRepositorio.java     |   20 [32m+[m
+ .../demo/repositorio/RepositorioOpinion.java       |   17 [32m+[m
+ ...oriousuario.java => repositorioEstudiante.java} |    6 [32m+[m[31m-[m
+ .../mentora/demo/repositorio/repositorioTutor.java |   15 [32m+[m[31m-[m
+ demo/src/main/resources/static/buscartutores.html  |  137 [32m++[m[31m-[m
+ demo/src/main/resources/static/cssiniciosesion.css |   41 [32m+[m[31m-[m
+ demo/src/main/resources/static/cssmenu.css         |  107 [32m++[m
+ demo/src/main/resources/static/cssperfiltutor.css  |  495 [31m--------[m
+ demo/src/main/resources/static/csstutores.css      |   66 [32m+[m[31m-[m
+ demo/src/main/resources/static/index.html          |   23 [32m+[m
+ demo/src/main/resources/static/iniciosesion.html   |   78 [32m+[m[31m-[m
+ demo/src/main/resources/static/mentora.js          |   54 [32m+[m
+ demo/src/main/resources/static/menu.html           |   93 [32m++[m
+ demo/src/main/resources/static/perfil-tutor.html   | 1206 [32m++++++++++++++++++++[m
+ demo/src/main/resources/static/perfiltutor.html    |  838 [31m--------------[m
+ demo/src/main/resources/static/registro.html       |  199 [32m+++[m[31m-[m
+ 30 files changed, 3311 insertions(+), 1590 deletions(-)
