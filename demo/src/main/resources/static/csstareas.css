@@ -1,0 +1,234 @@
+:root {
+    --fondo: #f4f7fb;
+    --superficie: #ffffff;
+    --texto: #203047;
+    --secundario: #607086;
+    --principal: #245c49;
+    --principal-suave: #eaf4ee;
+    --borde: #dce4ec;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: var(--fondo);
+    color: var(--texto);
+    font-family: "Segoe UI", Arial, sans-serif;
+    line-height: 1.6;
+}
+
+body > header,
+main,
+body > footer {
+    width: min(1100px, calc(100% - 40px));
+    margin-inline: auto;
+}
+
+body > header {
+    padding: 40px 0 24px;
+}
+
+body > header > a {
+    display: inline-block;
+    margin-bottom: 18px;
+    color: var(--principal);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+body > header > a:hover {
+    text-decoration: underline;
+}
+
+h1,
+h2,
+h3,
+p {
+    margin-top: 0;
+}
+
+h1 {
+    margin-bottom: 8px;
+    font-size: 2.2rem;
+    line-height: 1.2;
+}
+
+body > header > p {
+    color: var(--secundario);
+}
+
+body > header > p:last-child {
+    display: inline-block;
+    margin-bottom: 0;
+    padding: 7px 12px;
+    border: 1px solid #cdded3;
+    border-radius: 8px;
+    background: var(--principal-suave);
+    color: var(--principal);
+    font-size: 0.85rem;
+}
+
+main > section {
+    margin-bottom: 32px;
+}
+
+h2 {
+    margin-bottom: 18px;
+    font-size: 1.3rem;
+}
+
+section[aria-labelledby="titulo-resumen"] {
+    padding: 24px;
+    border: 1px solid var(--borde);
+    border-radius: 16px;
+    background: var(--superficie);
+}
+
+section[aria-labelledby="titulo-resumen"] ul {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+section[aria-labelledby="titulo-resumen"] li {
+    padding: 20px;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+section[aria-labelledby="titulo-resumen"] li:nth-child(1) {
+    background: #fff4dc;
+    color: #795010;
+}
+
+section[aria-labelledby="titulo-resumen"] li:nth-child(2) {
+    background: #eaf1ff;
+    color: #285394;
+}
+
+section[aria-labelledby="titulo-resumen"] li:nth-child(3) {
+    background: #eaf5ed;
+    color: #285b39;
+}
+
+section[aria-labelledby="titulo-asignaciones"] {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+#titulo-asignaciones {
+    grid-column: 1 / -1;
+    margin-bottom: 0;
+}
+
+article {
+    min-width: 0;
+    padding: 26px;
+    border: 1px solid var(--borde);
+    border-top: 4px solid var(--principal);
+    border-radius: 14px;
+    background: var(--superficie);
+    box-shadow: 0 5px 18px rgb(32 48 71 / 5%);
+    overflow-wrap: anywhere;
+}
+
+article > header > p {
+    margin-bottom: 12px;
+    color: var(--principal);
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+article h3 {
+    margin-bottom: 14px;
+    font-size: 1.2rem;
+    line-height: 1.4;
+}
+
+article > p {
+    color: var(--secundario);
+    font-size: 0.95rem;
+}
+
+article time {
+    color: var(--texto);
+    font-weight: 600;
+}
+
+details {
+    margin-top: 22px;
+    padding-top: 16px;
+    border-top: 1px solid var(--borde);
+}
+
+summary {
+    color: var(--principal);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+details[open] summary {
+    margin-bottom: 14px;
+}
+
+details p,
+details ol {
+    margin-bottom: 0;
+    color: var(--secundario);
+    font-size: 0.95rem;
+}
+
+details ol {
+    padding-left: 22px;
+}
+
+details li + li {
+    margin-top: 8px;
+}
+
+/* Las tarjetas ya proporcionan la separación visual. */
+hr {
+    display: none;
+}
+
+a:focus-visible,
+summary:focus-visible {
+    outline: 3px solid #2676bc;
+    outline-offset: 5px;
+    border-radius: 4px;
+}
+
+body > footer {
+    padding: 20px 0 30px;
+    border-top: 1px solid var(--borde);
+    color: var(--secundario);
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 700px) {
+    section[aria-labelledby="titulo-resumen"] ul,
+    section[aria-labelledby="titulo-asignaciones"] {
+        grid-template-columns: 1fr;
+    }
+
+    body > header {
+        padding-top: 26px;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    article,
+    section[aria-labelledby="titulo-resumen"] {
+        padding: 20px;
+    }
+}
