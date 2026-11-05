@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mis tareas | Mentora</title>
+
+    <script src="mentora.js"></script>
+</head>
+<body>
+
+    <header>
+        <a href="menu.html">Volver al menú</a>
+
+        <h1>Mis tareas</h1>
+
+        <p>
+            Consulta las asignaciones y actividades de tus tutorías.
+        </p>
+
+        <p>
+            Vista de demostración con asignaciones de ejemplo.
+        </p>
+    </header>
+
+    <main>
+        <section aria-labelledby="titulo-resumen">
+            <h2 id="titulo-resumen">Resumen de actividades</h2>
+
+            <ul>
+                <li>2 tareas pendientes</li>
+                <li>1 tarea en revisión</li>
+                <li>1 tarea completada</li>
+            </ul>
+        </section>
+
+        <section aria-labelledby="titulo-asignaciones">
+            <h2 id="titulo-asignaciones">Asignaciones del tutor</h2>
+
+            <article>
+                <header>
+                    <p>Matemática · Pendiente</p>
+                    <h3>Práctica de ecuaciones lineales</h3>
+                </header>
+
+                <p>Tutora de ejemplo: Ana López</p>
+
+                <p>
+                    Resuelve cinco ecuaciones lineales y explica
+                    el procedimiento utilizado en cada ejercicio.
+                </p>
+
+                <p>
+                    Entrega:
+                    <time datetime="2026-11-12">12 de noviembre de 2026</time>
+                </p>
+
+                <details>
+                    <summary>Ver instrucciones</summary>
+
+                    <ol>
+                        <li>Identifica la incógnita de cada ecuación.</li>
+                        <li>Muestra los pasos para despejarla.</li>
+                        <li>Comprueba el resultado por sustitución.</li>
+                    </ol>
+                </details>
+            </article>
+
+            <hr>
+
+            <article>
+                <header>
+                    <p>Programación · Pendiente</p>
+                    <h3>Diseño de una clase en Java</h3>
+                </header>
+
+                <p>Tutor de ejemplo: Carlos Pérez</p>
+
+                <p>
+                    Diseña una clase Libro con atributos privados,
+                    un constructor y métodos de acceso.
+                </p>
+
+                <p>
+                    Entrega:
+                    <time datetime="2026-11-14">14 de noviembre de 2026</time>
+                </p>
+
+                <details>
+                    <summary>Ver instrucciones</summary>
+
+                    <ol>
+                        <li>Agrega los atributos título, autor y año.</li>
+                        <li>Inicializa los datos desde el constructor.</li>
+                        <li>Crea un objeto y muestra su información.</li>
+                    </ol>
+                </details>
+            </article>
+
+            <hr>
+
+            <article>
+                <header>
+                    <p>Física · En revisión</p>
+                    <h3>Ejercicios de movimiento rectilíneo</h3>
+                </header>
+
+                <p>Tutora de ejemplo: Lucía Ramírez</p>
+
+                <p>
+                    Actividad de ejemplo que representa una tarea
+                    pendiente de recibir retroalimentación.
+                </p>
+
+                <p>
+                    Entrega:
+                    <time datetime="2026-11-04">4 de noviembre de 2026</time>
+                </p>
+
+                <details>
+                    <summary>Ver instrucciones</summary>
+
+                    <p>
+                        Calcula distancia, velocidad y tiempo en tres
+                        problemas e incluye las unidades correspondientes.
+                    </p>
+                </details>
+            </article>
+
+            <hr>
+
+            <article>
+                <header>
+                    <p>Comunicación Efectiva · Completada</p>
+                    <h3>Resumen de lectura</h3>
+                </header>
+
+                <p>Tutor de ejemplo: Diego Morales</p>
+
+                <p>
+                    Elabora un resumen que presente la idea principal
+                    y los argumentos de una lectura.
+                </p>
+
+                <p>
+                    Entrega:
+                    <time datetime="2026-11-02">2 de noviembre de 2026</time>
+                </p>
+
+                <details>
+                    <summary>Ver retroalimentación de ejemplo</summary>
+
+                    <p>
+                        El resumen presenta las ideas principales con
+                        claridad. Revisa la puntuación en el último párrafo.
+                    </p>
+                </details>
+            </article>
+        </section>
+    </main>
+
+    <footer>
+        <p>Mentora · Aprende con acompañamiento.</p>
+    </footer>
+
+    <script>
+        exigirSesion();
+    </script>
+
+</body>
+</html>
