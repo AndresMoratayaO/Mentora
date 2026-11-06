@@ -8,18 +8,62 @@
 
     <link rel="stylesheet" href="csstutores.css">
     <script src="mentora.js"></script>
+
+    <style>
+        .barra-nav {
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .acciones-navegacion {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .barra-nav .enlace-tareas {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 40px;
+            padding: 9px 18px;
+            border: 1px solid #007f83;
+            border-radius: 9px;
+            background: #ffffff;
+            color: #007f83;
+            font: inherit;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .barra-nav .enlace-tareas:hover {
+            background: #e6f6f5;
+        }
+
+        .barra-nav .enlace-tareas:focus-visible {
+            outline: 3px solid #007f83;
+            outline-offset: 4px;
+        }
+    </style>
 </head>
 
 <body>
 
     <main class="contenedor">
 
-        <nav class="barra-nav">
+        <nav class="barra-nav" aria-label="Navegación principal">
             <a href="menu.html">← Volver al menú</a>
 
-            <button type="button" id="btnSalir" class="boton-salir">
-                Cerrar sesión
-            </button>
+            <div class="acciones-navegacion">
+                <a href="tareas.html" class="enlace-tareas">
+                    Mis tareas
+                </a>
+
+                <button type="button" id="btnSalir" class="boton-salir">
+                    Cerrar sesión
+                </button>
+            </div>
         </nav>
 
         <header class="encabezado">
@@ -64,11 +108,12 @@
 
         </section>
 
-        <p id="mensaje" class="mensaje"></p>
+        <p id="mensaje" class="mensaje" role="status"></p>
 
         <section
             id="resultados"
             class="resultados"
+            aria-label="Tutores encontrados"
             aria-live="polite">
         </section>
 
@@ -80,18 +125,16 @@
         const resultados = document.getElementById("resultados");
         const mensaje = document.getElementById("mensaje");
 
-        // Evita que una respuesta lenta pise a una búsqueda más reciente.
+        // Evita que una respuesta anterior reemplace la búsqueda actual.
         let numeroBusqueda = 0;
 
         async function buscar(texto) {
-
             const esta = ++numeroBusqueda;
 
             resultados.innerHTML = "";
             mensaje.textContent = "Buscando tutores...";
 
             try {
-
                 const respuesta = await fetch(
                     "/tutores/buscar?q=" + encodeURIComponent(texto)
                 );
@@ -110,6 +153,7 @@
                     mensaje.textContent = texto
                         ? "No se encontraron tutores para \"" + texto + "\"."
                         : "Todavía no hay tutores registrados.";
+
                     return;
                 }
 
@@ -120,8 +164,8 @@
                         : " tutores encontrados");
 
                 tutores.forEach(function (tutor) {
-
                     const enlace = document.createElement("a");
+
                     enlace.className = "enlace-tarjeta";
                     enlace.href =
                         "perfil-tutor.html?id=" + encodeURIComponent(tutor.id);
@@ -163,8 +207,14 @@
 
                             <div class="precio">
                                 <span>Precio por hora</span>
-                                <strong>Q${Number(tutor.precio).toFixed(2)}</strong>
-                                <span class="ver-perfil">Ver perfil →</span>
+
+                                <strong>
+                                    Q${Number(tutor.precio).toFixed(2)}
+                                </strong>
+
+                                <span class="ver-perfil">
+                                    Ver perfil →
+                                </span>
                             </div>
                         </article>
                     `;
@@ -173,7 +223,6 @@
                 });
 
             } catch (error) {
-
                 if (esta === numeroBusqueda) {
                     mensaje.textContent =
                         "Ocurrió un error al buscar los tutores.";
@@ -184,8 +233,7 @@
         }
 
         function obtenerInicial(nombre) {
-
-            if (!nombre) {
+            if (!nombre || !nombre.trim()) {
                 return "T";
             }
 
@@ -200,7 +248,6 @@
         document.getElementById("btnSalir")
             .addEventListener("click", cerrarSesion);
 
-        // Página privada: exige sesión y muestra todos los tutores al entrar.
         exigirSesion().then(function (sesion) {
             if (sesion) {
                 buscar("");

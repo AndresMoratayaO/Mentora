@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mis tareas | Mentora</title>
+
+    <link rel="stylesheet" href="csstareas.css">
+    <script src="mentora.js"></script>
+</head>
+<body>
+
+    <header class="encabezado-pagina">
+        <a href="menu.html" class="enlace-regreso">
+            <span aria-hidden="true">←</span> Volver al menú
+        </a>
+
+        <h1>Mis tareas</h1>
+
+        <p class="descripcion-pagina">
+            Consulta las asignaciones y actividades de tus tutorías.
+        </p>
+
+
+    <main>
+        <section class="resumen" aria-labelledby="titulo-resumen">
+            <h2 id="titulo-resumen">Resumen de actividades</h2>
+
+            <ul class="resumen-lista">
+                <li class="resumen-pendientes">
+                    <strong class="resumen-numero">2</strong>
+                    <span>Tareas pendientes</span>
+                </li>
+
+                <li class="resumen-revision">
+                    <strong class="resumen-numero">1</strong>
+                    <span>En revisión</span>
+                </li>
+
+                <li class="resumen-completadas">
+                    <strong class="resumen-numero">1</strong>
+                    <span>Completada</span>
+                </li>
+            </ul>
+        </section>
+
+        <section class="asignaciones" aria-labelledby="titulo-asignaciones">
+            <h2 id="titulo-asignaciones">Asignaciones del tutor</h2>
+
+            <div class="lista-tareas">
+                <article class="tarjeta-tarea">
+                    <header>
+                        <div class="tarjeta-etiquetas">
+                            <span class="materia">Matemática</span>
+                            <span class="estado estado-pendiente">
+                                Pendiente
+                            </span>
+                        </div>
+
+                        <h3>Práctica de ecuaciones lineales</h3>
+                    </header>
+
+                    <p class="nombre-tutor">
+                        Tutora de ejemplo: Ana López
+                    </p>
+
+                    <p class="descripcion-tarea">
+                        Resuelve cinco ecuaciones lineales y explica
+                        el procedimiento utilizado en cada ejercicio.
+                    </p>
+
+                    <p class="fecha-entrega">
+                        Entrega:
+                        <time datetime="2026-11-12">
+                            12 de noviembre de 2026
+                        </time>
+                    </p>
+
+                    <details>
+                        <summary>Ver instrucciones</summary>
+
+                        <ol>
+                            <li>
+                                Identifica la incógnita de cada ecuación.
+                            </li>
+                            <li>
+                                Muestra los pasos para despejarla.
+                            </li>
+                            <li>
+                                Comprueba el resultado por sustitución.
+                            </li>
+                        </ol>
+                    </details>
+                </article>
+
+                <article class="tarjeta-tarea">
+                    <header>
+                        <div class="tarjeta-etiquetas">
+                            <span class="materia">Programación</span>
+                            <span class="estado estado-pendiente">
+                                Pendiente
+                            </span>
+                        </div>
+
+                        <h3>Diseño de una clase en Java</h3>
+                    </header>
+
+                    <p class="nombre-tutor">
+                        Tutor de ejemplo: Carlos Pérez
+                    </p>
+
+                    <p class="descripcion-tarea">
+                        Diseña una clase Libro con atributos privados,
+                        un constructor y métodos de acceso.
+                    </p>
+
+                    <p class="fecha-entrega">
+                        Entrega:
+                        <time datetime="2026-11-14">
+                            14 de noviembre de 2026
+                        </time>
+                    </p>
+
+                    <details>
+                        <summary>Ver instrucciones</summary>
+
+                        <ol>
+                            <li>
+                                Agrega los atributos título, autor y año.
+                            </li>
+                            <li>
+                                Inicializa los datos desde el constructor.
+                            </li>
+                            <li>
+                                Crea un objeto y muestra su información.
+                            </li>
+                        </ol>
+                    </details>
+                </article>
+
+                <article class="tarjeta-tarea">
+                    <header>
+                        <div class="tarjeta-etiquetas">
+                            <span class="materia">Física</span>
+                            <span class="estado estado-revision">
+                                En revisión
+                            </span>
+                        </div>
+
+                        <h3>Ejercicios de movimiento rectilíneo</h3>
+                    </header>
+
+                    <p class="nombre-tutor">
+                        Tutora de ejemplo: Lucía Ramírez
+                    </p>
+
+                    <p class="descripcion-tarea">
+                        Actividad de ejemplo que representa una tarea
+                        pendiente de recibir retroalimentación.
+                    </p>
+
+                    <p class="fecha-entrega">
+                        Entrega:
+                        <time datetime="2026-11-04">
+                            4 de noviembre de 2026
+                        </time>
+                    </p>
+
+                    <details>
+                        <summary>Ver instrucciones</summary>
+
+                        <p>
+                            Calcula distancia, velocidad y tiempo en tres
+                            problemas e incluye las unidades correspondientes.
+                        </p>
+                    </details>
+                </article>
+
+                <article class="tarjeta-tarea">
+                    <header>
+                        <div class="tarjeta-etiquetas">
+                            <span class="materia">
+                                Comunicación Efectiva
+                            </span>
+
+                            <span class="estado estado-completada">
+                                Completada
+                            </span>
+                        </div>
+
+                        <h3>Resumen de lectura</h3>
+                    </header>
+
+                    <p class="nombre-tutor">
+                        Tutor de ejemplo: Diego Morales
+                    </p>
+
+                    <p class="descripcion-tarea">
+                        Elabora un resumen que presente la idea principal
+                        y los argumentos de una lectura.
+                    </p>
+
+                    <p class="fecha-entrega">
+                        Entrega:
+                        <time datetime="2026-11-02">
+                            2 de noviembre de 2026
+                        </time>
+                    </p>
+
+                    <details>
+                        <summary>Ver retroalimentación de ejemplo</summary>
+
+                        <p>
+                            El resumen presenta las ideas principales con
+                            claridad. Revisa la puntuación en el último párrafo.
+                        </p>
+                    </details>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer class="pie-pagina">
+        <p>Mentora · Aprende con acompañamiento.</p>
+    </footer>
+
+    <script>
+        exigirSesion();
+    </script>
+
+</body>
+</html>
