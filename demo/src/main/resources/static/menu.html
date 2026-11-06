@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -20,10 +21,18 @@
             <p id="subtitulo"></p>
         </header>
 
-        <section id="opciones" class="opciones" aria-label="Opciones"></section>
+        <section
+            id="opciones"
+            class="opciones"
+            aria-label="Opciones"
+        ></section>
 
         <div class="acciones">
-            <button type="button" id="btnSalir" class="boton-salir">
+            <button
+                type="button"
+                id="btnSalir"
+                class="boton-salir"
+            >
                 Cerrar sesión
             </button>
         </div>
@@ -31,22 +40,45 @@
     </main>
 
     <script>
+
+        // OPCIONES DEL MENÚ SEGÚN EL TIPO DE USUARIO
+
         function opcionesPara(sesion) {
 
             if (sesion.tipoUsuario === "TUTOR") {
-                return [{
-                    titulo: "Mi perfil",
-                    texto: "Mira cómo ven los estudiantes tu perfil de tutor.",
-                    href: "perfil-tutor.html?id=" + encodeURIComponent(sesion.id)
-                }];
+
+                return [
+                    {
+                        titulo: "Mi perfil",
+                        texto: "Mira cómo ven los estudiantes tu perfil de tutor.",
+                        href: "perfil-tutor.html?id=" +
+                            encodeURIComponent(sesion.id)
+                    },
+                    {
+                        titulo: "Soporte técnico",
+                        texto: "Encuentra respuestas a tus dudas o reporta un problema con Mentora.",
+                        href: "soporte.html"
+                    }
+                ];
+
             }
 
-            return [{
-                titulo: "Buscar tutores",
-                texto: "Encuentra un tutor por materia o por nombre y consulta su perfil.",
-                href: "buscartutores.html"
-            }];
+            return [
+                {
+                    titulo: "Buscar tutores",
+                    texto: "Encuentra un tutor por materia o por nombre y consulta su perfil.",
+                    href: "buscartutores.html"
+                },
+                {
+                    titulo: "Soporte técnico",
+                    texto: "Consulta preguntas frecuentes y reporta problemas con la plataforma.",
+                    href: "soporte.html"
+                }
+            ];
         }
+
+
+        // INICIAR EL MENÚ
 
         async function iniciar() {
 
@@ -64,11 +96,19 @@
                     ? "Cuenta de tutor"
                     : "Cuenta de estudiante";
 
-            const contenedor = document.getElementById("opciones");
+            const contenedor =
+                document.getElementById("opciones");
+
+            // LIMPIAR OPCIONES ANTERIORES
+
+            contenedor.replaceChildren();
+
+            // CREAR LAS TARJETAS DEL MENÚ
 
             opcionesPara(sesion).forEach(function (opcion) {
 
                 const enlace = document.createElement("a");
+
                 enlace.className = "opcion";
                 enlace.href = opcion.href;
 
@@ -79,14 +119,23 @@
                 texto.textContent = opcion.texto;
 
                 enlace.append(titulo, texto);
+
                 contenedor.appendChild(enlace);
+
             });
         }
+
+
+        // CERRAR SESIÓN
 
         document.getElementById("btnSalir")
             .addEventListener("click", cerrarSesion);
 
+
+        // EJECUTAR MENÚ
+
         iniciar();
+
     </script>
 
 </body>

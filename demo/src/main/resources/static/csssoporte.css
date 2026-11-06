@@ -1,0 +1,296 @@
+
+/* ESTILOS GENERALES */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 35px 20px;
+    min-height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #1e293b;
+    background: linear-gradient(135deg, #eef2ff, #f0fdfa);
+}
+
+.contenedor {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* ENCABEZADO */
+
+.encabezado {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.logo {
+    width: 160px;
+    height: 160px;
+    object-fit: contain;
+}
+
+.encabezado h1 {
+    margin: 12px 0;
+    font-size: 36px;
+    color: #172033;
+}
+
+.encabezado p {
+    max-width: 650px;
+    margin: 0 auto;
+    color: #64748b;
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+/* PANELES */
+
+.panel {
+    padding: 32px;
+    margin-bottom: 25px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 22px;
+    box-shadow: 0 15px 40px rgba(30, 41, 59, 0.08);
+}
+
+.panel h2 {
+    margin: 0 0 24px;
+    font-size: 24px;
+    color: #1e293b;
+}
+
+/* CATEGORIAS */
+
+.categorias {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+}
+
+.categoria {
+    padding: 24px 16px;
+    text-align: center;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    transition: transform 0.2s ease,
+                box-shadow 0.2s ease;
+}
+
+.categoria:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(30, 41, 59, 0.1);
+}
+
+.categoria span {
+    display: block;
+    margin-bottom: 12px;
+    font-size: 36px;
+}
+
+.categoria h3 {
+    margin: 0 0 10px;
+    font-size: 17px;
+    color: #1e293b;
+}
+
+.categoria p {
+    margin: 0;
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* PREGUNTAS FRECUENTES */
+
+details {
+    margin-bottom: 12px;
+    padding: 18px 20px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+}
+
+details[open] {
+    border-color: #2ec4a3;
+    background: #f0fdfa;
+}
+
+summary {
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+summary:hover {
+    color: #0f766e;
+}
+
+details p {
+    margin: 14px 0 0;
+    color: #64748b;
+    line-height: 1.7;
+}
+
+/* FORMULARIO */
+
+.subtitulo {
+    margin: -10px 0 25px;
+    color: #64748b;
+    line-height: 1.6;
+}
+
+label {
+    display: block;
+    margin: 20px 0 8px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #334155;
+}
+
+input,
+select,
+textarea {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    font: inherit;
+    color: #1e293b;
+    background: #ffffff;
+    border: 1px solid #94a3b8;
+    border-radius: 10px;
+}
+
+textarea {
+    min-height: 140px;
+    resize: vertical;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: 3px solid #e0e7ff;
+    border-color: #4f46e5;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #94a3b8;
+}
+
+/* BOTON PRINCIPAL */
+
+.boton-principal {
+    display: block;
+    width: 100%;
+    margin-top: 28px;
+    padding: 16px 24px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(to right, #000033, #2ec4a3);
+    color: #ffffff;
+    font: inherit;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(83, 212, 216, 0.35);
+    transition: transform 0.2s ease,
+                opacity 0.2s ease;
+}
+
+.boton-principal:hover {
+    transform: translateY(-2px);
+    opacity: 0.95;
+}
+
+.boton-principal:focus-visible {
+    outline: 3px solid #0f766e;
+    outline-offset: 4px;
+}
+
+.boton-principal:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* MENSAJES */
+
+#mensajeFormulario {
+    margin-top: 18px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.aviso {
+    color: #047857;
+}
+
+.error {
+    color: #b91c1c;
+}
+
+/* PIE DE PAGINA */
+
+footer {
+    padding: 20px;
+    text-align: center;
+}
+
+footer a {
+    color: #00796f;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+footer p {
+    margin-top: 14px;
+    color: #64748b;
+    font-size: 13px;
+}
+
+/* DISEÑO RESPONSIVO */
+
+@media (max-width: 850px) {
+
+    .categorias {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .encabezado h1 {
+        font-size: 30px;
+    }
+}
+
+@media (max-width: 550px) {
+
+    body {
+        padding: 22px 14px;
+    }
+
+    .panel {
+        padding: 22px;
+    }
+
+    .categorias {
+        grid-template-columns: 1fr;
+    }
+
+    .encabezado h1 {
+        font-size: 27px;
+    }
+
+    .logo {
+        width: 130px;
+        height: 130px;
+    }
+}
