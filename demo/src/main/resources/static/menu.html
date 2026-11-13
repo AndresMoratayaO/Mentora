@@ -8,6 +8,34 @@
 
     <link rel="stylesheet" href="cssmenu.css">
     <script src="mentora.js"></script>
+
+    <style>
+        .boton-soporte {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            padding: 9px 14px;
+            border-radius: 20px;
+            background-color: #2563eb;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.2s;
+        }
+
+        .boton-soporte:hover {
+            background-color: #1d4ed8;
+        }
+
+        .boton-soporte:focus-visible {
+            outline: 3px solid #93c5fd;
+            outline-offset: 3px;
+        }
+    </style>
 </head>
 <body>
 
@@ -29,6 +57,10 @@
         </div>
 
     </main>
+
+    <a href="soporte.html" class="boton-soporte">
+        Soporte
+    </a>
 
     <script>
         function opcionesPara(sesion) {
