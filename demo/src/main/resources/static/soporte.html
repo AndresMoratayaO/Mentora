@@ -1,0 +1,479 @@
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Soporte técnico | Mentora</title>
+
+    <link rel="stylesheet" href="csssoporte.css">
+</head>
+
+<body>
+
+<main class="contenedor">
+
+    <!-- ENCABEZADO -->
+
+    <header class="encabezado">
+
+        <img
+            src="logomentora.png"
+            alt="Logo de Mentora"
+            class="logo"
+        >
+
+        <h1>Centro de soporte técnico</h1>
+
+        <p>
+            ¿Necesitas ayuda? Estamos aquí para apoyarte.
+            Encuentra respuestas a tus dudas o reporta
+            un problema con Mentora.
+        </p>
+
+    </header>
+
+
+    <!-- CATEGORÍAS DE AYUDA -->
+
+    <section class="panel">
+
+        <h2>¿En qué podemos ayudarte?</h2>
+
+        <div class="categorias">
+
+            <article class="categoria">
+                <span>🔐</span>
+                <h3>Inicio de sesión</h3>
+                <p>
+                    Problemas para ingresar a tu cuenta.
+                </p>
+            </article>
+
+            <article class="categoria">
+                <span>👤</span>
+                <h3>Registro</h3>
+                <p>
+                    Ayuda para crear tu cuenta
+                    de estudiante o tutor.
+                </p>
+            </article>
+
+            <article class="categoria">
+                <span>📚</span>
+                <h3>Tutores</h3>
+                <p>
+                    Problemas al buscar tutores
+                    o consultar perfiles.
+                </p>
+            </article>
+
+            <article class="categoria">
+                <span>📅</span>
+                <h3>Horarios</h3>
+                <p>
+                    Ayuda con los horarios
+                    y la disponibilidad.
+                </p>
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <!-- PREGUNTAS FRECUENTES -->
+
+    <section class="panel">
+
+        <h2>Preguntas frecuentes</h2>
+
+        <details>
+            <summary>
+                ¿Cómo puedo crear una cuenta?
+            </summary>
+
+            <p>
+                Ingresa a la página de registro,
+                completa tus datos personales y
+                selecciona si deseas registrarte
+                como estudiante o tutor.
+            </p>
+        </details>
+
+        <details>
+            <summary>
+                ¿Cómo encuentro un tutor?
+            </summary>
+
+            <p>
+                Ingresa a la búsqueda de tutores
+                y escribe la materia en la que
+                necesitas apoyo académico.
+
+                El sistema mostrará los tutores
+                disponibles para esa materia.
+            </p>
+        </details>
+
+        <details>
+            <summary>
+                ¿Cómo puedo consultar las opiniones?
+            </summary>
+
+            <p>
+                Desde la búsqueda de tutores
+                puedes acceder a sus opiniones
+                y consultar las valoraciones
+                realizadas por otros estudiantes.
+            </p>
+        </details>
+
+        <details>
+            <summary>
+                ¿Qué hago si no puedo iniciar sesión?
+            </summary>
+
+            <p>
+                Verifica que tu correo electrónico
+                y contraseña sean correctos.
+
+                Si el problema continúa,
+                utiliza el formulario de soporte
+                técnico para reportarlo.
+            </p>
+        </details>
+
+        <details>
+            <summary>
+                ¿Cómo consulto los horarios de un tutor?
+            </summary>
+
+            <p>
+                Revisa el perfil del tutor
+                para consultar los horarios
+                y la disponibilidad que
+                haya registrado.
+            </p>
+        </details>
+
+    </section>
+
+
+    <!-- FORMULARIO DE SOPORTE -->
+
+    <section class="panel">
+
+        <h2>Reportar un problema</h2>
+
+        <p class="subtitulo">
+            Completa el siguiente formulario
+            para describir el inconveniente
+            que encontraste en Mentora.
+        </p>
+
+        <form id="formSoporte">
+
+            <!-- NOMBRE -->
+
+            <label for="nombre">
+                Nombre completo
+            </label>
+
+            <input
+                type="text"
+                id="nombre"
+                name="nombre"
+                maxlength="100"
+                placeholder="Escribe tu nombre completo"
+                required
+            >
+
+
+            <!-- CORREO -->
+
+            <label for="correo">
+                Correo electrónico
+            </label>
+
+            <input
+                type="email"
+                id="correo"
+                name="correo"
+                maxlength="254"
+                placeholder="ejemplo@correo.com"
+                required
+            >
+
+
+            <!-- CATEGORÍA -->
+
+            <label for="categoria">
+                Tipo de problema
+            </label>
+
+            <select
+                id="categoria"
+                name="categoria"
+                required
+            >
+
+                <option value="">
+                    Selecciona una categoría
+                </option>
+
+                <option value="INICIO_SESION">
+                    Inicio de sesión
+                </option>
+
+                <option value="REGISTRO">
+                    Registro
+                </option>
+
+                <option value="TUTORES">
+                    Búsqueda de tutores
+                </option>
+
+                <option value="HORARIOS">
+                    Horarios
+                </option>
+
+                <option value="OPINIONES">
+                    Opiniones y valoraciones
+                </option>
+
+                <option value="OTRO">
+                    Otro problema
+                </option>
+
+            </select>
+
+
+            <!-- ASUNTO -->
+
+            <label for="asunto">
+                Asunto
+            </label>
+
+            <input
+                type="text"
+                id="asunto"
+                name="asunto"
+                maxlength="150"
+                placeholder="Resumen del problema"
+                required
+            >
+
+
+            <!-- DESCRIPCIÓN -->
+
+            <label for="descripcion">
+                Descripción del problema
+            </label>
+
+            <textarea
+                id="descripcion"
+                name="descripcion"
+                rows="6"
+                maxlength="2000"
+                placeholder="Explica qué sucedió y qué estabas intentando hacer..."
+                required
+            ></textarea>
+
+
+            <!-- BOTÓN -->
+
+            <button
+                type="submit"
+                class="boton-principal"
+            >
+                Enviar reporte
+            </button>
+
+        </form>
+
+
+        <!-- MENSAJES DEL SISTEMA -->
+
+        <p
+            id="mensajeFormulario"
+            role="status"
+            aria-live="polite"
+        ></p>
+
+    </section>
+
+
+    <!-- PIE DE PÁGINA -->
+
+    <footer>
+
+        <a href="index.html">
+            ← Volver al inicio
+        </a>
+
+        <p>
+            Mentora · Centro de soporte técnico
+        </p>
+
+    </footer>
+
+</main>
+
+
+<!-- CONEXIÓN CON SPRING BOOT -->
+
+<script>
+
+const formulario = document.getElementById("formSoporte");
+
+const mensaje = document.getElementById("mensajeFormulario");
+
+const boton = formulario.querySelector(
+    "button[type='submit']"
+);
+
+
+formulario.addEventListener(
+    "submit",
+    async function(evento) {
+
+        evento.preventDefault();
+
+        mensaje.textContent = "";
+        mensaje.className = "";
+
+
+        // OBTENER DATOS DEL FORMULARIO
+
+        const datos = {
+
+            nombre: document.getElementById("nombre")
+                .value.trim(),
+
+            correo: document.getElementById("correo")
+                .value.trim(),
+
+            categoria: document.getElementById("categoria")
+                .value,
+
+            asunto: document.getElementById("asunto")
+                .value.trim(),
+
+            descripcion: document.getElementById("descripcion")
+                .value.trim()
+
+        };
+
+
+        // VALIDAR CAMPOS
+
+        if (
+            !datos.nombre ||
+            !datos.correo ||
+            !datos.categoria ||
+            !datos.asunto ||
+            !datos.descripcion
+        ) {
+
+            mensaje.textContent =
+                "Por favor, completa todos los campos.";
+
+            mensaje.className = "error";
+
+            return;
+        }
+
+
+        // DESACTIVAR BOTÓN DURANTE EL ENVÍO
+
+        boton.disabled = true;
+
+        boton.textContent = "Enviando reporte...";
+
+
+        try {
+
+            // ENVIAR DATOS AL BACKEND
+
+            const respuesta = await fetch(
+                "/api/soporte",
+                {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify(datos)
+
+                }
+            );
+
+
+            // LEER RESPUESTA DEL SERVIDOR
+
+            const resultado = await respuesta.json();
+
+
+            // COMPROBAR ERRORES
+
+            if (!respuesta.ok) {
+
+                throw new Error(
+                    resultado.error ||
+                    "No se pudo registrar el reporte."
+                );
+
+            }
+
+
+            // MOSTRAR CONFIRMACIÓN
+
+            mensaje.textContent =
+                "¡Reporte enviado correctamente! " +
+                "Tu número de seguimiento es #" +
+                resultado.id +
+                ". Estado: " +
+                resultado.estado;
+
+
+            mensaje.className = "aviso";
+
+
+            // LIMPIAR FORMULARIO
+
+            formulario.reset();
+
+
+        } catch (error) {
+
+            // MOSTRAR ERROR
+
+            mensaje.textContent =
+                "Error: " + error.message;
+
+            mensaje.className = "error";
+
+
+        } finally {
+
+            // REACTIVAR BOTÓN
+
+            boton.disabled = false;
+
+            boton.textContent = "Enviar reporte";
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>
