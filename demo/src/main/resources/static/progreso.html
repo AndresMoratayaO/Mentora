@@ -8,87 +8,12 @@
 
     <link rel="stylesheet" href="csstareas.css">
     <script src="mentora.js"></script>
-
-    <style>
-        .formulario-progreso {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 16px;
-            padding: 24px;
-            margin-bottom: 32px;
-            background: var(--superficie);
-            border: 1px solid var(--borde);
-            border-radius: 16px;
-        }
-
-        .formulario-progreso label {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            font-weight: 700;
-            font-size: 14px;
-        }
-
-        .formulario-progreso input,
-        .formulario-progreso textarea {
-            padding: 10px 12px;
-            font: inherit;
-            border: 1px solid var(--borde);
-            border-radius: 10px;
-        }
-
-        .formulario-progreso .completo,
-        .formulario-progreso .acciones-form {
-            grid-column: 1 / -1;
-        }
-
-        .formulario-progreso button {
-            padding: 12px 20px;
-            font: inherit;
-            font-weight: 700;
-            color: #ffffff;
-            background: var(--principal);
-            border: 0;
-            border-radius: 10px;
-            cursor: pointer;
-        }
-
-        .formulario-progreso button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .mensaje {
-            margin: 12px 0 0;
-            font-weight: 700;
-        }
-
-        .mensaje.error {
-            color: #b91c1c;
-        }
-
-        .mensaje.ok {
-            color: var(--principal);
-        }
-
-        .nota-valor {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--principal);
-        }
-
-        .vacio {
-            padding: 24px;
-            text-align: center;
-            color: var(--secundario);
-        }
-    </style>
 </head>
 <body>
-
     <header class="encabezado-pagina">
         <a href="menu.html" class="enlace-regreso">
-            <span aria-hidden="true">←</span> Volver al menú
+            <span aria-hidden="true">←</span>
+            Volver al menú
         </a>
 
         <h1>Mi progreso académico</h1>
@@ -99,55 +24,117 @@
     </header>
 
     <main>
+        <section class="filtro-progreso" aria-labelledby="titulo-filtro">
+            <div>
+                <h2 id="titulo-filtro">Consultar progreso</h2>
+                <p>Filtra el resumen, la gráfica y tus registros por materia.</p>
+            </div>
+
+            <label for="filtroMateria">
+                Materia
+                <select id="filtroMateria" disabled>
+                    <option value="">Todas las materias</option>
+                </select>
+            </label>
+        </section>
 
         <section class="resumen" aria-labelledby="titulo-resumen">
-            <h2 id="titulo-resumen">Resumen</h2>
+            <h2 id="titulo-resumen">Resumen de la selección</h2>
 
             <ul class="resumen-lista">
-                <li class="resumen-completadas">
-                    <strong class="resumen-numero" id="resTotal">0</strong>
+                <li class="resumen-actividades">
+                    <strong class="resumen-numero" id="resTotal">–</strong>
                     <span>Actividades registradas</span>
                 </li>
 
-                <li class="resumen-revision">
+                <li class="resumen-promedio">
                     <strong class="resumen-numero" id="resPromedio">–</strong>
-                    <span>Promedio general</span>
+                    <span>Promedio sobre 100</span>
                 </li>
             </ul>
         </section>
 
-        <section aria-labelledby="titulo-nuevo">
+        <section class="panel-grafica" aria-labelledby="titulo-grafica">
+            <div class="encabezado-seccion">
+                <h2 id="titulo-grafica">Progreso de mis notas</h2>
+                <span class="etiqueta-escala">Escala de 0 a 100</span>
+            </div>
+
+            <p class="descripcion-grafica">
+                Cada barra representa una actividad.
+                Se muestran de la más antigua a la más reciente.
+            </p>
+
+            <div id="graficaProgreso" class="grafica-progreso">
+                <p class="vacio">Cargando gráfica…</p>
+            </div>
+
+            <p id="resumenGrafica" class="resumen-grafica" role="status">
+                Cargando resultados…
+            </p>
+        </section>
+
+        <section class="seccion-registro" aria-labelledby="titulo-nuevo">
             <h2 id="titulo-nuevo">Registrar actividad</h2>
 
-            <form id="formProgreso" class="formulario-progreso" novalidate>
-
-                <label>
+            <form id="formProgreso" class="formulario-progreso">
+                <label for="materia">
                     Materia
-                    <input type="text" id="materia" maxlength="100" required>
+                    <input
+                        type="text"
+                        id="materia"
+                        list="materiasDisponibles"
+                        placeholder="Ej. Matemática"
+                        maxlength="100"
+                        required
+                    >
+                    <datalist id="materiasDisponibles"></datalist>
                 </label>
 
-                <label>
+                <label for="actividad">
                     Actividad
-                    <input type="text" id="actividad" maxlength="200" required>
+                    <input
+                        type="text"
+                        id="actividad"
+                        placeholder="Ej. Práctica de ecuaciones"
+                        maxlength="200"
+                        required
+                    >
                 </label>
 
-                <label>
+                <label for="nota">
                     Nota (0 a 100)
-                    <input type="number" id="nota" min="0" max="100" step="0.01" required>
+                    <input
+                        type="number"
+                        id="nota"
+                        placeholder="Ej. 85"
+                        min="0"
+                        max="100"
+                        step="0.01"
+                        required
+                    >
                 </label>
 
-                <label>
+                <label for="fecha">
                     Fecha
                     <input type="date" id="fecha" required>
                 </label>
 
-                <label class="completo">
+                <label for="observaciones" class="completo">
                     Observaciones (opcional)
-                    <textarea id="observaciones" rows="3" maxlength="500"></textarea>
+                    <textarea
+                        id="observaciones"
+                        rows="3"
+                        maxlength="500"
+                        placeholder="Escribe comentarios sobre esta actividad."
+                    ></textarea>
                 </label>
 
                 <div class="acciones-form">
-                    <button type="submit" id="btnGuardar">Guardar</button>
+                    <button type="submit" id="btnGuardar">
+                        Guardar actividad
+                    </button>
+
                     <p id="mensajeForm" class="mensaje" role="status"></p>
                 </div>
             </form>
@@ -156,9 +143,10 @@
         <section class="asignaciones" aria-labelledby="titulo-lista">
             <h2 id="titulo-lista">Mis registros</h2>
 
-            <div class="lista-tareas" id="lista"></div>
+            <div class="lista-tareas" id="lista" aria-busy="true">
+                <p class="vacio">Cargando registros…</p>
+            </div>
         </section>
-
     </main>
 
     <footer class="pie-pagina">
@@ -167,47 +155,118 @@
 
     <script>
         const lista = document.getElementById("lista");
+        const formulario = document.getElementById("formProgreso");
         const mensajeForm = document.getElementById("mensajeForm");
         const btnGuardar = document.getElementById("btnGuardar");
+        const filtroMateria = document.getElementById("filtroMateria");
+        const materiasDisponibles =
+            document.getElementById("materiasDisponibles");
+        const graficaProgreso = document.getElementById("graficaProgreso");
+        const resumenGrafica = document.getElementById("resumenGrafica");
+
+        let todosLosRegistros = [];
 
         function formatearFecha(iso) {
-            const [anio, mes, dia] = String(iso).split("-");
-            return dia + "/" + mes + "/" + anio;
+            const partes = String(iso).slice(0, 10).split("-");
+
+            if (partes.length !== 3) {
+                return String(iso);
+            }
+
+            return partes[2] + "/" + partes[1] + "/" + partes[0];
+        }
+
+        function normalizarMateria(materia) {
+            return String(materia || "")
+                .trim()
+                .replace(/\s+/g, " ")
+                .toLocaleLowerCase("es");
         }
 
         function mostrarMensaje(texto, tipo) {
             mensajeForm.textContent = texto;
-            mensajeForm.className = "mensaje " + tipo;
+            mensajeForm.className = "mensaje" + (tipo ? " " + tipo : "");
+        }
+
+        function calcularPromedio(registros) {
+            if (registros.length === 0) {
+                return null;
+            }
+
+            const suma = registros.reduce(function (total, registro) {
+                return total + Number(registro.nota);
+            }, 0);
+
+            return suma / registros.length;
         }
 
         function pintarResumen(registros) {
-            document.getElementById("resTotal").textContent = registros.length;
+            document.getElementById("resTotal").textContent =
+                registros.length;
 
-            if (registros.length === 0) {
-                document.getElementById("resPromedio").textContent = "–";
-                return;
-            }
-
-            const suma = registros.reduce(function (acc, r) {
-                return acc + Number(r.nota);
-            }, 0);
+            const promedio = calcularPromedio(registros);
 
             document.getElementById("resPromedio").textContent =
-                (suma / registros.length).toFixed(1);
+                promedio === null ? "–" : promedio.toFixed(1);
+        }
+
+        function actualizarOpcionesMateria() {
+            const seleccionAnterior = filtroMateria.value;
+            const materias = new Map();
+
+            todosLosRegistros.forEach(function (registro) {
+                const clave = normalizarMateria(registro.materia);
+
+                if (clave && !materias.has(clave)) {
+                    materias.set(
+                        clave,
+                        String(registro.materia).trim().replace(/\s+/g, " ")
+                    );
+                }
+            });
+
+            filtroMateria.replaceChildren(
+                new Option("Todas las materias", "")
+            );
+
+            materiasDisponibles.replaceChildren();
+
+            [...materias.entries()]
+                .sort(function (a, b) {
+                    return a[1].localeCompare(b[1], "es");
+                })
+                .forEach(function ([clave, nombre]) {
+                    filtroMateria.add(new Option(nombre, clave));
+
+                    const opcion = document.createElement("option");
+                    opcion.value = nombre;
+                    materiasDisponibles.appendChild(opcion);
+                });
+
+            filtroMateria.value = materias.has(seleccionAnterior)
+                ? seleccionAnterior
+                : "";
         }
 
         function pintarLista(registros) {
-            lista.innerHTML = "";
+            lista.replaceChildren();
 
             if (registros.length === 0) {
                 const vacio = document.createElement("p");
                 vacio.className = "vacio";
-                vacio.textContent = "Todavía no has registrado actividades.";
+                vacio.textContent = filtroMateria.value
+                    ? "No hay actividades registradas para esta materia."
+                    : "Todavía no has registrado actividades.";
+
                 lista.appendChild(vacio);
                 return;
             }
 
-            registros.forEach(function (r) {
+            const ordenados = [...registros].sort(function (a, b) {
+                return String(b.fecha).localeCompare(String(a.fecha));
+            });
+
+            ordenados.forEach(function (registro) {
                 const tarjeta = document.createElement("article");
                 tarjeta.className = "tarjeta-tarea";
 
@@ -218,37 +277,174 @@
 
                 const materia = document.createElement("span");
                 materia.className = "materia";
-                materia.textContent = r.materia;
+                materia.textContent = registro.materia;
+
+                const bloqueNota = document.createElement("div");
+                bloqueNota.className = "bloque-nota";
 
                 const nota = document.createElement("span");
                 nota.className = "nota-valor";
-                nota.textContent = Number(r.nota).toFixed(1);
+                nota.textContent = Number(registro.nota).toFixed(1);
 
-                etiquetas.append(materia, nota);
+                const escala = document.createElement("span");
+                escala.className = "nota-escala";
+                escala.textContent = "/ 100";
+
+                bloqueNota.append(nota, escala);
+                etiquetas.append(materia, bloqueNota);
 
                 const titulo = document.createElement("h3");
-                titulo.textContent = r.actividad;
+                titulo.textContent = registro.actividad;
 
                 encabezado.append(etiquetas, titulo);
                 tarjeta.appendChild(encabezado);
 
-                if (r.observaciones) {
-                    const obs = document.createElement("p");
-                    obs.className = "descripcion-tarea";
-                    obs.textContent = r.observaciones;
-                    tarjeta.appendChild(obs);
+                if (registro.observaciones) {
+                    const observaciones = document.createElement("p");
+                    observaciones.className = "descripcion-tarea";
+                    observaciones.textContent = registro.observaciones;
+                    tarjeta.appendChild(observaciones);
                 }
 
                 const fecha = document.createElement("p");
                 fecha.className = "fecha-entrega";
-                fecha.textContent = "Fecha: " + formatearFecha(r.fecha);
-                tarjeta.appendChild(fecha);
 
+                const tiempo = document.createElement("time");
+                tiempo.dateTime = String(registro.fecha).slice(0, 10);
+                tiempo.textContent = formatearFecha(registro.fecha);
+
+                fecha.append("Fecha: ", tiempo);
+                tarjeta.appendChild(fecha);
                 lista.appendChild(tarjeta);
             });
         }
 
+        function pintarGrafica(registros) {
+            graficaProgreso.replaceChildren();
+
+            if (registros.length === 0) {
+                const mensaje = document.createElement("p");
+                mensaje.className = "vacio";
+                mensaje.textContent =
+                    "Registra una actividad para visualizar tu progreso.";
+
+                graficaProgreso.appendChild(mensaje);
+                resumenGrafica.textContent = "Sin notas para mostrar.";
+                return;
+            }
+
+            const ordenados = [...registros].sort(function (a, b) {
+                return String(a.fecha).localeCompare(String(b.fecha));
+            });
+
+            ordenados.forEach(function (registro) {
+                const nota = Number(registro.nota);
+
+                const fila = document.createElement("div");
+                fila.className = "fila-grafica";
+
+                const etiqueta = document.createElement("div");
+                etiqueta.className = "etiqueta-grafica";
+
+                const actividad = document.createElement("strong");
+                actividad.textContent = registro.actividad;
+
+                const detalle = document.createElement("small");
+                detalle.textContent =
+                    registro.materia + " · " +
+                    formatearFecha(registro.fecha);
+
+                etiqueta.append(actividad, detalle);
+
+                const pista = document.createElement("div");
+                pista.className = "pista-grafica";
+                pista.setAttribute("aria-hidden", "true");
+
+                const barra = document.createElement("div");
+                barra.className = "barra-grafica";
+                barra.style.width =
+                    Math.max(0, Math.min(100, nota)) + "%";
+
+                pista.appendChild(barra);
+
+                const valor = document.createElement("span");
+                valor.className = "valor-grafica";
+                valor.textContent = nota.toFixed(1);
+                valor.setAttribute(
+                    "aria-label",
+                    nota.toFixed(1) + " puntos de 100"
+                );
+
+                fila.append(etiqueta, pista, valor);
+                graficaProgreso.appendChild(fila);
+            });
+
+            const promedio = calcularPromedio(registros);
+            const nombreMateria = filtroMateria.value
+                ? filtroMateria.selectedOptions[0].textContent
+                : "Todas las materias";
+
+            resumenGrafica.textContent =
+                nombreMateria + " · " +
+                registros.length +
+                (registros.length === 1 ? " actividad" : " actividades") +
+                " · Promedio: " + promedio.toFixed(1) + " / 100";
+        }
+
+        function aplicarFiltro() {
+            const materiaSeleccionada = filtroMateria.value;
+
+            const registrosFiltrados =
+                todosLosRegistros.filter(function (registro) {
+                    return !materiaSeleccionada ||
+                        normalizarMateria(registro.materia) ===
+                        materiaSeleccionada;
+                });
+
+            pintarResumen(registrosFiltrados);
+            pintarLista(registrosFiltrados);
+            pintarGrafica(registrosFiltrados);
+        }
+
+        function mostrarErrorCarga() {
+            todosLosRegistros = [];
+            actualizarOpcionesMateria();
+            filtroMateria.disabled = true;
+
+            document.getElementById("resTotal").textContent = "–";
+            document.getElementById("resPromedio").textContent = "–";
+
+            lista.replaceChildren();
+            graficaProgreso.replaceChildren();
+
+            const contenedor = document.createElement("div");
+            contenedor.className = "estado-error";
+
+            const mensaje = document.createElement("p");
+            mensaje.textContent =
+                "No se pudo cargar tu progreso. Intenta de nuevo.";
+
+            const boton = document.createElement("button");
+            boton.type = "button";
+            boton.className = "boton-secundario";
+            boton.textContent = "Reintentar";
+
+            boton.addEventListener("click", async function () {
+                boton.disabled = true;
+                await cargarRegistros();
+                boton.disabled = false;
+            });
+
+            contenedor.append(mensaje, boton);
+            lista.appendChild(contenedor);
+
+            resumenGrafica.textContent =
+                "No se pudieron cargar los datos de la gráfica.";
+        }
+
         async function cargarRegistros() {
+            lista.setAttribute("aria-busy", "true");
+
             try {
                 const respuesta = await fetch("/progresos/mio");
 
@@ -262,95 +458,148 @@
                 }
 
                 const registros = await respuesta.json();
-                pintarResumen(registros);
-                pintarLista(registros);
+
+                if (!Array.isArray(registros)) {
+                    throw new Error("Formato de registros incorrecto");
+                }
+
+                const datosValidos = registros.every(function (registro) {
+                    return registro &&
+                        typeof registro.materia === "string" &&
+                        typeof registro.actividad === "string" &&
+                        typeof registro.fecha === "string" &&
+                        registro.nota !== null &&
+                        String(registro.nota).trim() !== "" &&
+                        Number.isFinite(Number(registro.nota)) &&
+                        Number(registro.nota) >= 0 &&
+                        Number(registro.nota) <= 100;
+                });
+
+                if (!datosValidos) {
+                    throw new Error("Los registros contienen datos inválidos");
+                }
+
+                todosLosRegistros = registros;
+                actualizarOpcionesMateria();
+                filtroMateria.disabled = false;
+                aplicarFiltro();
 
             } catch (error) {
-                lista.innerHTML = "";
-                const p = document.createElement("p");
-                p.className = "vacio";
-                p.textContent = "No se pudo cargar tu progreso. Intenta de nuevo.";
-                lista.appendChild(p);
+                mostrarErrorCarga();
+            } finally {
+                lista.setAttribute("aria-busy", "false");
             }
         }
 
-        document.getElementById("formProgreso")
-            .addEventListener("submit", async function (evento) {
+        filtroMateria.addEventListener("change", aplicarFiltro);
 
-                evento.preventDefault();
-                mostrarMensaje("", "");
+        formulario.addEventListener("submit", async function (evento) {
+            evento.preventDefault();
+            mostrarMensaje("", "");
 
-                const datos = {
-                    materia: document.getElementById("materia").value.trim(),
-                    actividad: document.getElementById("actividad").value.trim(),
-                    nota: document.getElementById("nota").value,
-                    fecha: document.getElementById("fecha").value,
-                    observaciones: document.getElementById("observaciones").value.trim() || null
-                };
+            const datos = {
+                materia: document.getElementById("materia")
+                    .value.trim().replace(/\s+/g, " "),
+                actividad: document.getElementById("actividad").value.trim(),
+                nota: document.getElementById("nota").value,
+                fecha: document.getElementById("fecha").value,
+                observaciones: document.getElementById("observaciones")
+                    .value.trim() || null
+            };
 
-                if (!datos.materia || !datos.actividad || datos.nota === "" || !datos.fecha) {
-                    mostrarMensaje("Completa materia, actividad, nota y fecha.", "error");
+            if (
+                !datos.materia ||
+                !datos.actividad ||
+                datos.nota === "" ||
+                !datos.fecha
+            ) {
+                mostrarMensaje(
+                    "Completa materia, actividad, nota y fecha.",
+                    "error"
+                );
+                return;
+            }
+
+            const nota = Number(datos.nota);
+
+            if (!Number.isFinite(nota) || nota < 0 || nota > 100) {
+                mostrarMensaje(
+                    "La nota debe estar entre 0 y 100.",
+                    "error"
+                );
+                return;
+            }
+
+            datos.nota = nota;
+            btnGuardar.disabled = true;
+            btnGuardar.textContent = "Guardando…";
+
+            try {
+                const respuesta = await fetch("/progresos", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(datos)
+                });
+
+                if (respuesta.status === 401) {
+                    window.location.replace("iniciosesion.html");
                     return;
                 }
 
-                const nota = Number(datos.nota);
+                if (!respuesta.ok) {
+                    const mensaje = typeof leerMensaje === "function"
+                        ? await leerMensaje(
+                            respuesta,
+                            "No se pudo guardar. Revisa los datos."
+                        )
+                        : "No se pudo guardar. Revisa los datos.";
 
-                if (nota < 0 || nota > 100) {
-                    mostrarMensaje("La nota debe estar entre 0 y 100.", "error");
+                    mostrarMensaje(mensaje, "error");
                     return;
                 }
 
-                datos.nota = nota;
-                btnGuardar.disabled = true;
+                formulario.reset();
+                mostrarMensaje("Actividad guardada.", "ok");
+                await cargarRegistros();
 
-                try {
-                    const respuesta = await fetch("/progresos", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(datos)
-                    });
-
-                    if (respuesta.status === 401) {
-                        window.location.replace("iniciosesion.html");
-                        return;
-                    }
-
-                    if (!respuesta.ok) {
-                        mostrarMensaje(
-                            await leerMensaje(respuesta,
-                                "No se pudo guardar. Revisa los datos."),
-                            "error");
-                        return;
-                    }
-
-                    document.getElementById("formProgreso").reset();
-                    mostrarMensaje("Actividad guardada.", "ok");
-                    await cargarRegistros();
-
-                } catch (error) {
-                    mostrarMensaje("No se pudo conectar con el servidor.", "error");
-                } finally {
-                    btnGuardar.disabled = false;
-                }
-            });
+            } catch (error) {
+                mostrarMensaje(
+                    "No se pudo conectar con el servidor.",
+                    "error"
+                );
+            } finally {
+                btnGuardar.disabled = false;
+                btnGuardar.textContent = "Guardar actividad";
+            }
+        });
 
         async function iniciar() {
-            const sesion = await exigirSesion();
+            try {
+                const sesion = await exigirSesion();
 
-            if (!sesion) {
-                return;
+                if (!sesion) {
+                    return;
+                }
+
+                if (sesion.tipoUsuario !== "ESTUDIANTE") {
+                    window.location.replace("menu.html");
+                    return;
+                }
+
+                await cargarRegistros();
+            } catch (error) {
+                lista.setAttribute("aria-busy", "false");
+                lista.textContent =
+                    "No se pudo verificar la sesión. Recarga la página.";
+                graficaProgreso.replaceChildren();
+                resumenGrafica.textContent =
+                    "La gráfica estará disponible al verificar tu sesión.";
             }
-
-            if (sesion.tipoUsuario !== "ESTUDIANTE") {
-                window.location.replace("menu.html");
-                return;
-            }
-
-            await cargarRegistros();
         }
 
         iniciar();
     </script>
-
 </body>
 </html>
